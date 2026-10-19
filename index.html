@@ -24,10 +24,10 @@
     .text-honda { color: #ff3333; }
     @keyframes expandFullscreen {
       0% { transform: scale(0.2); opacity: 0; border-radius: 50%; }
-      50% { transform: scale(1.1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 1; }
       100% { transform: scale(1); opacity: 1; border-radius: 0; }
     }
-    .animate-expand { animation: expandFullscreen 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-expand { animation: expandFullscreen 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .modal-backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); }
   </style>
 </head>
@@ -48,10 +48,12 @@
         <span id="headerPlayerName" class="font-semibold text-white">---</span>
         <span class="text-slate-500">|</span>
         <span id="headerPlayerMatricula" class="text-slate-300">---</span>
+        <span class="text-slate-500">|</span>
+        <span id="headerPlayerScore" class="font-bold text-yellow-400">0 pts</span>
       </div>
       <div class="flex items-center gap-2">
         <button onclick="goToRegistration()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg border border-slate-600 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-user-pen text-yellow-400"></i> Alterar Jogador
+          <i class="fa-solid fa-user-pen text-yellow-400"></i> Trocar Operador
         </button>
         <button onclick="goToCover()" class="px-3 py-1.5 bg-red-900/60 hover:bg-red-800 text-xs font-semibold rounded-lg border border-red-500/50 transition flex items-center gap-1.5">
           <i class="fa-solid fa-house text-red-300"></i> Capa
@@ -69,7 +71,7 @@
         Jogo das <span class="text-honda">Três Pistas</span>
       </h1>
       <p class="text-slate-400 text-sm sm:text-base mb-8">
-        Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-400 font-semibold">Honda & Bulgarelli</span>
+        Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-400 font-semibold">Honda &amp; Bulgarelli</span>
       </p>
       <button onclick="goToRegistration()" class="w-full sm:w-auto px-10 py-4 honda-red honda-red-hover text-white font-bold text-lg rounded-2xl shadow-lg shadow-red-900/50 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-3 mx-auto">
         <span>COMEÇAR JOGO</span>
@@ -84,18 +86,18 @@
       <div class="text-center mb-6">
         <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
         <h2 class="text-2xl font-bold">Identificação do Operador</h2>
-        <p class="text-xs text-slate-400">Insira os seus dados para registar a sua pontuação no ranking on-line</p>
+        <p class="text-xs text-slate-400">Insira seus dados para sincronizar ou registrar sua pontuação no ranking on-line</p>
       </div>
       <form id="formRegistration" onsubmit="handleRegistrationSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome ou Apelido</label>
-          <input type="text" id="inputName" required placeholder="Ex: Carlos Silva" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome e Sobrenome</label>
+          <input type="text" id="inputName" required maxlength="40" placeholder="Ex: Carlos Silva" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
         </div>
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Matrícula</label>
-          <input type="text" id="inputMatricula" required placeholder="Ex: 84920" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Matrícula (Apenas números ou letras)</label>
+          <input type="text" id="inputMatricula" required maxlength="20" placeholder="Ex: 84920" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
         </div>
-        <button type="submit" class="w-full py-4 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg shadow-red-900/50 transition duration-300 flex items-center justify-center gap-2">
+        <button type="submit" id="btnSubmitRegistration" class="w-full py-4 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg shadow-red-900/50 transition duration-300 flex items-center justify-center gap-2">
           <span>CONFIRMAR E JOGAR</span>
           <i class="fa-solid fa-circle-check"></i>
         </button>
@@ -108,7 +110,7 @@
     <div>
       <i class="fa-solid fa-gamepad text-7xl text-white mb-4 animate-pulse"></i>
       <h2 class="text-4xl sm:text-6xl font-black uppercase tracking-wider text-white">VAMOS JOGAR!</h2>
-      <p class="text-red-200 mt-2 text-sm sm:text-lg">Carregando desafios da Operação...</p>
+      <p class="text-red-200 mt-2 text-sm sm:text-lg">Sincronizando dados com a Operação...</p>
     </div>
   </section>
 
@@ -123,45 +125,51 @@
           <span class="text-xs font-normal text-slate-400">(Matrícula: <span id="displayPlayerMatricula">---</span>)</span>
         </h3>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="goToRegistration()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl border border-slate-600 transition flex items-center gap-2">
-          <i class="fa-solid fa-user-pen text-yellow-400"></i> Alterar Jogador
-        </button>
-        <button onclick="goToCover()" class="px-4 py-2 bg-red-900/80 hover:bg-red-800 text-xs font-bold rounded-xl border border-red-500/50 transition flex items-center gap-2">
-          <i class="fa-solid fa-house text-red-300"></i> Capa
-        </button>
+      <div class="flex items-center gap-4">
+        <div class="text-right bg-black/40 px-4 py-1.5 rounded-xl border border-yellow-500/30">
+          <span class="text-[10px] text-slate-400 uppercase block">Pontuação Total</span>
+          <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
+        </div>
       </div>
     </div>
 
-    <!-- Simulação de Data -->
-    <div class="glass-card p-3 rounded-xl border-yellow-500/30 flex flex-wrap justify-between items-center text-xs text-slate-300">
+    <!-- Barra de Simulação de Data (Visível apenas com ?admin=true na URL) -->
+    <div id="adminDateBar" class="hidden glass-card p-3 rounded-xl border-yellow-500/40 flex flex-wrap justify-between items-center gap-2 text-xs text-slate-300">
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-clock text-yellow-400"></i>
-        <span>Data Atual do Sistema: <strong id="currentDateDisplay" class="text-white">--/--/----</strong></span>
+        <i class="fa-solid fa-user-shield text-yellow-400"></i>
+        <span>Modo Admin | Data Ativa: <strong id="currentDateDisplay" class="text-white">--/--/----</strong></span>
       </div>
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400">Simular Data:</span>
-        <button onclick="simulateDate('2026-10-15')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">Atual (15/10)</button>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="text-slate-400">Simular Cronograma:</span>
+        <button onclick="simulateDate('2026-10-15')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">15/10</button>
         <button onclick="simulateDate('2026-10-22')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">22/10</button>
         <button onclick="simulateDate('2026-10-26')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">26/10</button>
         <button onclick="simulateDate('2026-10-28')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">28/10</button>
-        <button onclick="simulateDate('2026-10-30')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">30/10</button>
+        <button onclick="simulateDate('2026-10-30')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600">30/10 (Todos)</button>
       </div>
     </div>
 
     <!-- Grid de Níveis -->
     <div>
-      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio
-      </h2>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio
+        </h2>
+        <span class="text-xs text-slate-400">Data do Sistema: <strong id="publicDateDisplay" class="text-slate-200">--/--/----</strong></span>
+      </div>
       <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
 
     <!-- Tabela de Ranking On-line (Firebase) -->
     <div class="glass-card p-6 rounded-2xl border-red-500/20">
-      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-ranking-star text-yellow-400"></i> Ranking da Operação On-line (Firebase)
-      </h2>
+      <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-ranking-star text-yellow-400"></i> Ranking da Operação On-line
+        </h2>
+        <span id="dbStatusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> Conectando ao Firebase...
+        </span>
+      </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
           <thead>
@@ -169,11 +177,15 @@
               <th class="p-3">Posição</th>
               <th class="p-3">Operador</th>
               <th class="p-3">Matrícula</th>
-              <th class="p-3">Rodadas</th>
+              <th class="p-3">Progresso</th>
               <th class="p-3 text-right">Pontos</th>
             </tr>
           </thead>
-          <tbody id="rankingTableBody"></tbody>
+          <tbody id="rankingTableBody">
+            <tr>
+              <td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando classificação...</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -185,14 +197,19 @@
       <div class="flex justify-between items-center border-b border-slate-700/60 pb-4">
         <div>
           <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block">Nível 1</span>
-          <h2 id="gameRoundTitle" class="text-lg font-bold">Rodada 1 de 3</h2>
+          <div class="flex items-center gap-2 mt-0.5">
+            <h2 id="gameRoundTitle" class="text-lg font-bold">Rodada 1 de 3</h2>
+            <span id="roundStatusBadge" class="hidden text-[10px] bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 px-2 py-0.5 rounded-full font-semibold">Já Concluída</span>
+          </div>
         </div>
         <div class="text-right">
           <span class="text-xs text-slate-400 block">Sua Pontuação</span>
           <span id="gameScoreDisplay" class="text-2xl font-black text-yellow-400">0 pts</span>
         </div>
       </div>
+
       <div id="cluesContainer" class="space-y-3"></div>
+
       <form id="formAnswer" onsubmit="handleAnswerSubmit(event)" class="space-y-3 pt-2">
         <label class="block text-xs font-semibold uppercase text-slate-300">Sua Resposta para a Pista Ativa:</label>
         <div class="flex gap-2">
@@ -202,9 +219,10 @@
           </button>
         </div>
       </form>
+
       <div class="pt-2 text-center">
         <button onclick="showLevelsScreen()" class="text-xs text-slate-400 hover:text-white transition underline">
-          <i class="fa-solid fa-arrow-left"></i> Voltar ao Seleção de Níveis
+          <i class="fa-solid fa-arrow-left"></i> Voltar à Seleção de Níveis
         </button>
       </div>
     </div>
@@ -212,7 +230,7 @@
 
   <!-- MODAL CENTRALIZADO -->
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
-    <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border text-center shadow-2xl transform transition-all scale-95 opacity-0">
+    <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
       <div id="modalIconContainer" class="mb-4"></div>
       <h3 id="modalTitle" class="text-2xl font-bold mb-2">---</h3>
       <p id="modalMessage" class="text-sm text-slate-300 mb-6">---</p>
@@ -221,21 +239,27 @@
   </div>
 
   <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto">
-    <p>Treinamento Operacional Honda & Bulgarelli Advogados — © 2026</p>
+    <p>Treinamento Operacional Honda &amp; Bulgarelli Advogados — © 2026</p>
   </footer>
 
-  <!-- SCRIPT COM INTEGRAÇÃO DO FIREBASE (TYPE="MODULE") -->
+  <!-- SCRIPT COM INTEGRAÇÃO DO FIREBASE (CLOUD FIRESTORE + FALLBACK) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getFirestore, 
+      collection, 
+      doc, 
+      setDoc, 
+      getDoc, 
+      onSnapshot 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     /* ========================================================== */
-    /* CONFIGURAÇÃO DO FIREBASE                                   */
+    /* CONFIGURAÇÃO OFICIAL DO FIREBASE                           */
     /* ========================================================== */
     const firebaseConfig = {
       apiKey: "AIzaSyBqCYHv6kzXeF_zCsbzCNSMkHfwrImhjVc",
       authDomain: "jogo-tres-pontos.firebaseapp.com",
-      databaseURL: "https://jogo-tres-pontos-default-rtdb.firebaseio.com",
       projectId: "jogo-tres-pontos",
       storageBucket: "jogo-tres-pontos.firebasestorage.app",
       messagingSenderId: "60682371403",
@@ -244,8 +268,12 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    const db = getFirestore(app);
+    const rankingsCol = collection(db, "rankings");
 
+    /* ========================================================== */
+    /* ESTRUTURA DOS NÍVEIS E RODADAS                             */
+    /* ========================================================== */
     const gameLevels = [
       {
         id: 1,
@@ -260,7 +288,7 @@
               { points: 9, text: "Dica 2: Atende clientes que estão atrasados entre 11 e 15 dias (e atualizados de 16 a 30 dias)." },
               { points: 8, text: "Dica 3: Foco em reabilitar o acesso do cliente às plataformas digitais rapidamente." }
             ],
-            explanation: "Safra Diária é o segmento de cobrança para clientes com atrasos recentes (11 a 15 dias e 16 a 30 dias)[cite: 1]."
+            explanation: "Safra Diária é o segmento de cobrança para clientes com atrasos recentes (11 a 15 dias e 16 a 30 dias)."
           },
           {
             id: "1-2",
@@ -270,7 +298,7 @@
               { points: 9, text: "Dica 2: Impede a transferência de propriedade do veículo enquanto houver saldo devedor." },
               { points: 8, text: "Dica 3: A sua baixa é efetuada em até 10 dias úteis após a quitação total do financiamento." }
             ],
-            explanation: "O Gravame é a restrição cadastrada no Detran referente ao financiamento do veículo[cite: 1]."
+            explanation: "O Gravame é a restrição cadastrada no Detran referente ao financiamento do veículo."
           },
           {
             id: "1-3",
@@ -280,7 +308,7 @@
               { points: 9, text: "Dica 2: Prioriza a empatia e o entendimento do imprevisto financeiro antes de impor propostas." },
               { points: 8, text: "Dica 3: Trata o devedor como pessoa e parceiro, não apenas como um número de contrato." }
             ],
-            explanation: "Atendimento Humanizado consiste em conduzir a negociação com empatia e respeito[cite: 1]."
+            explanation: "Atendimento Humanizado consiste em conduzir a negociação com empatia e respeito."
           }
         ]
       },
@@ -297,7 +325,7 @@
               { points: 9, text: "Dica 2: Abrange o período em atraso compreendido entre 31 e 180 dias." },
               { points: 8, text: "Dica 3: Refere-se a clientes com parcelas em aberto entre o 1º e o 6º mês de atraso." }
             ],
-            explanation: "Estoque 1 representa a faixa de cobrança para parcelas vencidas entre 31 e 180 dias[cite: 1]."
+            explanation: "Estoque 1 representa a faixa de cobrança para parcelas vencidas entre 31 e 180 dias."
           },
           {
             id: "2-2",
@@ -307,7 +335,7 @@
               { points: 9, text: "Dica 2: O devedor utiliza o veículo enquanto paga, mas a propriedade resolúvel é do banco." },
               { points: 8, text: "Dica 3: Permite ao credor reaver o bem garantido mediante ação judicial em caso de inadimplemento." }
             ],
-            explanation: "Alienação Fiduciária transfere a propriedade do bem ao credor como garantia até a quitação[cite: 1]."
+            explanation: "Alienação Fiduciária transfere a propriedade do bem ao credor como garantia até a quitação."
           },
           {
             id: "2-3",
@@ -317,7 +345,7 @@
               { points: 9, text: "Dica 2: Cobre ou reembolsa despesas decorrentes de falecimento do segurado." },
               { points: 8, text: "Dica 3: Pode ser acionado pelos familiares apresentando a certidão de óbito e notas de despesa." }
             ],
-            explanation: "O Auxílio Funeral é um serviço gratuito complementar em apólices elegíveis do seguro SPF[cite: 1]."
+            explanation: "O Auxílio Funeral é um serviço gratuito complementar em apólices elegíveis do seguro SPF."
           }
         ]
       },
@@ -334,7 +362,7 @@
               { points: 9, text: "Dica 2: Abrange o período de inadimplência entre 181 e 360 dias." },
               { points: 8, text: "Dica 3: Equivale a atrasos do 7º ao 12º mês com risco iminente de ajuizamento." }
             ],
-            explanation: "Estoque 2 refere-se a contratos em atraso crítico de 181 a 360 dias[cite: 1]."
+            explanation: "Estoque 2 refere-se a contratos em atraso crítico de 181 a 360 dias."
           },
           {
             id: "3-2",
@@ -344,7 +372,7 @@
               { points: 9, text: "Dica 2: Geralmente solicitada pela instituição quando o atraso ultrapassa os limites amigáveis." },
               { points: 8, text: "Dica 3: Resulta no recolhimento do veículo por oficial de justiça com auxílio policial." }
             ],
-            explanation: "Busca e Apreensão é a ação judicial movida pelo credor para tomar a posse do bem financiado[cite: 1]."
+            explanation: "Busca e Apreensão é a ação judicial movida pelo credor para tomar a posse do bem financiado."
           },
           {
             id: "3-3",
@@ -354,7 +382,7 @@
               { points: 9, text: "Dica 2: Garante a quitação de até 6 parcelas em demissões sem justa causa." },
               { points: 8, text: "Dica 3: Exige a apresentação do Termo de Rescisão e da Carteira de Trabalho." }
             ],
-            explanation: "Desemprego Involuntário cobre parcelas do financiamento em demissões sem justa causa de celetistas[cite: 1]."
+            explanation: "Desemprego Involuntário cobre parcelas do financiamento em demissões sem justa causa de celetistas."
           }
         ]
       },
@@ -371,17 +399,17 @@
               { points: 9, text: "Dica 2: Evita os custos e desgaste de uma ação judicial de busca e apreensão." },
               { points: 8, text: "Dica 3: O veículo é entregue ao banco para quitação parcial ou total do contrato." }
             ],
-            explanation: "Entrega Amigável é a devolução voluntária do bem ao banco para amortizar ou quitar o débito[cite: 1]."
+            explanation: "Entrega Amigável é a devolução voluntária do bem ao banco para amortizar ou quitar o débito."
           },
           {
             id: "4-2",
             answer: "TABULAÇÃO 508",
             clues: [
-              { points: 10, text: "Dica 1: Código específico de sistema utilizado nas centrais de atendimento telefónico." },
+              { points: 10, text: "Dica 1: Código específico de sistema utilizado nas centrais de atendimento telefônico." },
               { points: 9, text: "Dica 2: Deve ser registrado pelo operador imediatamente quando a chamada é interrompida." },
               { points: 8, text: "Dica 3: Significa especificamente 'Queda de Ligação' durante o contato." }
             ],
-            explanation: "A tabulação 508 é utilizada para registrar a queda de ligação telefônica[cite: 1]."
+            explanation: "A tabulação 508 é utilizada para registrar a queda de ligação telefônica."
           },
           {
             id: "4-3",
@@ -391,7 +419,7 @@
               { points: 9, text: "Dica 2: Cobre o pagamento de parcelas em casos de afastamento por doença ou acidente." },
               { points: 8, text: "Dica 3: Exige comprovação de trabalho autônomo e relatório/laudo médico." }
             ],
-            explanation: "Incapacidade Física Temporária atende autônomos impedidos de trabalhar por motivo de saúde[cite: 1]."
+            explanation: "Incapacidade Física Temporária atende autônomos impedidos de trabalhar por motivo de saúde."
           }
         ]
       },
@@ -408,7 +436,7 @@
               { points: 9, text: "Dica 2: Insere bloqueios judiciais diretamente no cadastro do veículo em todo o país." },
               { points: 8, text: "Dica 3: Impede o licenciamento, circulação ou transferência do bem sob ordem do juiz." }
             ],
-            explanation: "O bloqueio via Renajud efetiva ordens judiciais de restrição sobre o veículo[cite: 1]."
+            explanation: "O bloqueio via Renajud efetiva ordens judiciais de restrição sobre o veículo."
           },
           {
             id: "5-2",
@@ -418,7 +446,7 @@
               { points: 9, text: "Dica 2: Usado quando o cliente relata ter perdido o vínculo empregatício sem justa causa." },
               { points: 8, text: "Dica 3: Classifica-se como 'Sem condições de pgto - Desemprego'." }
             ],
-            explanation: "A tabulação 4654 identifica o motivo de inadimplência por desemprego[cite: 1]."
+            explanation: "A tabulação 4654 identifica o motivo de inadimplência por desemprego."
           },
           {
             id: "5-3",
@@ -434,13 +462,162 @@
       }
     ];
 
-    let simulatedSystemDate = "2026-10-15";
-    let currentPlayer = { name: "", matricula: "", score: 0, completedRounds: 0 };
+    /* ========================================================== */
+    /* ESTADO DA APLICAÇÃO                                        */
+    /* ========================================================== */
+    let simulatedSystemDate = getTodayISO();
+    let currentPlayer = { 
+      name: "", 
+      matricula: "", 
+      score: 0, 
+      completedRounds: 0, 
+      completedRoundIds: [],
+      updatedAt: 0
+    };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
+    let cachedRankings = [];
 
-    // EXPOSIÇÃO EXPLÍCITA DE TODAS AS FUNÇÕES AO OBJETO WINDOW
+    /* ========================================================== */
+    /* FUNÇÕES UTILITÁRIAS E DE SEGURANÇA                         */
+    /* ========================================================== */
+    function getTodayISO() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function sanitizeMatricula(str) {
+      return String(str).replace(/[^a-zA-Z0-9_-]/g, "").trim().toUpperCase();
+    }
+
+    function escapeHTML(str) {
+      return String(str || "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[m]));
+    }
+
+    function normalizeString(str) {
+      return String(str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    function updateStatusBadge(status, message) {
+      const badge = document.getElementById("dbStatusBadge");
+      if (!badge) return;
+      if (status === "online") {
+        badge.className = "text-xs px-2.5 py-1 rounded-full bg-green-950/60 text-green-400 border border-green-500/40 flex items-center gap-1.5";
+        badge.innerHTML = `<i class="fa-solid fa-cloud-check text-[10px]"></i> ${message || "Sincronizado em Tempo Real"}`;
+      } else if (status === "error") {
+        badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-950/60 text-red-400 border border-red-500/40 flex items-center gap-1.5";
+        badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-[10px]"></i> ${message || "Erro de permissão no Firebase"}`;
+      } else {
+        badge.className = "text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5";
+        badge.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> ${message || "Sincronizando..."}`;
+      }
+    }
+
+    /* ========================================================== */
+    /* SINCRONIZAÇÃO COM O FIREBASE (CLOUD FIRESTORE)             */
+    /* ========================================================== */
+    window.updateRanking = async function(player) {
+      if (!player || !player.matricula) return;
+      try {
+        const playerRef = doc(db, "rankings", player.matricula);
+        await setDoc(playerRef, {
+          name: player.name,
+          matricula: player.matricula,
+          score: Number(player.score) || 0,
+          completedRounds: Array.isArray(player.completedRoundIds) ? player.completedRoundIds.length : 0,
+          completedRoundIds: Array.isArray(player.completedRoundIds) ? player.completedRoundIds : [],
+          updatedAt: player.updatedAt || Date.now()
+        }, { merge: true });
+        updateStatusBadge("online", "Sincronizado em Tempo Real");
+      } catch (err) {
+        console.error("Erro ao gravar no Firestore:", err);
+        updateStatusBadge("error", "Falha ao salvar no Firebase (Verifique Rules)");
+      }
+    };
+
+    // Listener em tempo real para atualizar a tabela de Ranking
+    onSnapshot(rankingsCol, (snapshot) => {
+      updateStatusBadge("online", "Online • Tempo Real");
+      const rankingArray = [];
+      snapshot.forEach(docSnap => {
+        const d = docSnap.data();
+        if (d && d.matricula) {
+          rankingArray.push({
+            name: d.name || "Operador",
+            matricula: d.matricula,
+            score: Number(d.score) || 0,
+            completedRounds: Number(d.completedRounds) || (Array.isArray(d.completedRoundIds) ? d.completedRoundIds.length : 0),
+            completedRoundIds: Array.isArray(d.completedRoundIds) ? d.completedRoundIds : [],
+            updatedAt: Number(d.updatedAt) || 0
+          });
+        }
+      });
+
+      // Ordenação: 1º Maior Score | 2º Mais Rodadas Concluídas | 3º Quem pontuou primeiro
+      rankingArray.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (b.completedRounds !== a.completedRounds) return b.completedRounds - a.completedRounds;
+        return a.updatedAt - b.updatedAt;
+      });
+
+      cachedRankings = rankingArray;
+      renderRankingTable(rankingArray);
+    }, (error) => {
+      console.error("Erro ao escutar coleção rankings no Firestore:", error);
+      updateStatusBadge("error", "Banco aguardando liberação de Rules no Console");
+    });
+
+    function renderRankingTable(rankingArray) {
+      const tbody = document.getElementById("rankingTableBody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      if (rankingArray.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum operador registrado ainda. Seja o primeiro!</td></tr>`;
+        return;
+      }
+
+      rankingArray.forEach((item, idx) => {
+        const isCurrent = item.matricula === currentPlayer.matricula;
+        let medal = `<span class="text-slate-400 font-semibold">#${idx + 1}</span>`;
+        if (idx === 0) medal = `🥇 <span class="text-yellow-400 font-bold">1º</span>`;
+        if (idx === 1) medal = `🥈 <span class="text-slate-300 font-bold">2º</span>`;
+        if (idx === 2) medal = `🥉 <span class="text-amber-600 font-bold">3º</span>`;
+
+        const tr = document.createElement("tr");
+        tr.className = `border-b border-slate-800/80 transition ${isCurrent ? "bg-red-950/40 font-semibold text-white" : "hover:bg-white/5 text-slate-300"}`;
+        tr.innerHTML = `
+          <td class="p-3">${medal}</td>
+          <td class="p-3 flex items-center gap-2">
+            <i class="fa-solid fa-user text-xs ${isCurrent ? "text-red-400" : "text-slate-500"}"></i>
+            <span>${escapeHTML(item.name)}</span>
+            ${isCurrent ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">Você</span>' : ""}
+          </td>
+          <td class="p-3 text-slate-400">${escapeHTML(item.matricula)}</td>
+          <td class="p-3 text-slate-400">${item.completedRounds}/15 rodadas</td>
+          <td class="p-3 text-right font-black text-yellow-400 text-base">${item.score} pts</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ========================================================== */
+    /* NAVEGAÇÃO E FLUXO DO JOGADOR                               */
+    /* ========================================================== */
     window.goToCover = () => showScreen("screenCover");
-    
+
     window.goToRegistration = () => {
       if (currentPlayer.name) {
         document.getElementById("inputName").value = currentPlayer.name;
@@ -449,21 +626,70 @@
       showScreen("screenRegistration");
     };
 
-    window.handleRegistrationSubmit = (event) => {
+    window.handleRegistrationSubmit = async (event) => {
       event.preventDefault();
       const name = document.getElementById("inputName").value.trim();
-      const matricula = document.getElementById("inputMatricula").value.trim();
-      if (!name || !matricula) return;
+      const rawMatricula = document.getElementById("inputMatricula").value.trim();
+      const matricula = sanitizeMatricula(rawMatricula);
 
-      if (currentPlayer.matricula !== matricula) {
-        currentPlayer = { name, matricula, score: 0, completedRounds: 0 };
-      } else {
-        currentPlayer.name = name;
+      if (!name || !matricula) {
+        openModal(false, "DADOS INVÁLIDOS", "Por favor, preencha seu nome e uma matrícula válida contendo letras ou números.", null);
+        return;
       }
-      savePlayerData();
-      updateHeaderAndPlayerDisplay();
+
+      const btn = document.getElementById("btnSubmitRegistration");
+      btn.disabled = true;
       showScreen("screenTransition");
-      setTimeout(() => { showLevelsScreen(); }, 1200);
+
+      try {
+        const docRef = doc(db, "rankings", matricula);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          // Se o operador já tinha dados no mesmo navegador para a mesma matrícula, faz merge seguro
+          const localIds = (currentPlayer.matricula === matricula && Array.isArray(currentPlayer.completedRoundIds)) 
+            ? currentPlayer.completedRoundIds 
+            : [];
+          const cloudIds = Array.isArray(cloudData.completedRoundIds) ? cloudData.completedRoundIds : [];
+          const mergedIds = Array.from(new Set([...cloudIds, ...localIds]));
+
+          currentPlayer = {
+            name: name,
+            matricula: matricula,
+            score: Math.max(Number(cloudData.score) || 0, currentPlayer.matricula === matricula ? currentPlayer.score : 0),
+            completedRounds: mergedIds.length,
+            completedRoundIds: mergedIds,
+            updatedAt: cloudData.updatedAt || Date.now()
+          };
+        } else {
+          currentPlayer = {
+            name: name,
+            matricula: matricula,
+            score: 0,
+            completedRounds: 0,
+            completedRoundIds: [],
+            updatedAt: Date.now()
+          };
+        }
+        savePlayerData();
+        await window.updateRanking(currentPlayer);
+      } catch (err) {
+        console.warn("Operando com cache local devido a falha na leitura inicial:", err);
+        if (currentPlayer.matricula !== matricula) {
+          currentPlayer = { name, matricula, score: 0, completedRounds: 0, completedRoundIds: [], updatedAt: Date.now() };
+        } else {
+          currentPlayer.name = name;
+        }
+        savePlayerData();
+      } finally {
+        btn.disabled = false;
+        updateHeaderAndPlayerDisplay();
+        renderRankingTable(cachedRankings);
+        setTimeout(() => {
+          showLevelsScreen();
+        }, 800);
+      }
     };
 
     window.simulateDate = (dateStr) => {
@@ -481,30 +707,65 @@
       showScreen("screenGame");
     };
 
-    window.handleAnswerSubmit = (event) => {
+    window.handleAnswerSubmit = async (event) => {
       event.preventDefault();
-      const userAns = document.getElementById("inputAnswer").value.trim();
+      const inputEl = document.getElementById("inputAnswer");
+      const userAns = inputEl.value.trim();
       if (!userAns) return;
 
       const round = currentRoundState.roundData;
       const isCorrect = normalizeString(userAns) === normalizeString(round.answer);
 
-      if (isCorrect) {
-        const earnedPoints = round.clues[currentRoundState.clueIndex].points;
-        currentPlayer.score += earnedPoints;
-        currentPlayer.completedRounds += 1;
-        savePlayerData();
-        window.updateRanking(currentPlayer);
+      if (!Array.isArray(currentPlayer.completedRoundIds)) {
+        currentPlayer.completedRoundIds = [];
+      }
+      const alreadyCompleted = currentPlayer.completedRoundIds.includes(round.id);
 
-        openModal(true, "RESPOSTA CORRETA!", `Parabéns, ${currentPlayer.name}! Acertou a resposta <strong>"${round.answer}"</strong> na Pista ${currentRoundState.clueIndex + 1} e ganhou <strong>+${earnedPoints} pontos</strong>!`, () => advanceRound());
+      if (isCorrect) {
+        const earnedPoints = alreadyCompleted ? 0 : round.clues[currentRoundState.clueIndex].points;
+
+        if (!alreadyCompleted) {
+          currentPlayer.score += earnedPoints;
+          currentPlayer.completedRoundIds.push(round.id);
+          currentPlayer.completedRounds = currentPlayer.completedRoundIds.length;
+          currentPlayer.updatedAt = Date.now();
+          savePlayerData();
+          updateHeaderAndPlayerDisplay();
+          await window.updateRanking(currentPlayer);
+        }
+
+        const feedbackMsg = alreadyCompleted
+          ? `Você acertou <strong>"${escapeHTML(round.answer)}"</strong>!<br><br><span class="text-xs text-yellow-400 bg-yellow-950/60 border border-yellow-500/40 px-2.5 py-1 rounded-lg inline-block">Modo Revisão: Esta rodada já foi pontuada anteriormente (+0 pts).</span>`
+          : `Parabéns, <strong>${escapeHTML(currentPlayer.name)}</strong>! Você acertou <strong>"${escapeHTML(round.answer)}"</strong> na Pista ${currentRoundState.clueIndex + 1} e somou <strong>+${earnedPoints} pontos</strong> no Ranking!`;
+
+        openModal(true, "RESPOSTA CORRETA!", feedbackMsg, () => advanceRound());
       } else {
         if (currentRoundState.clueIndex < 2) {
           currentRoundState.clueIndex += 1;
           renderClues();
-          document.getElementById("inputAnswer").value = "";
-          openModal(false, "RESPOSTA INCORRETA!", `Sua resposta está incorreta. Liberamos a <strong>Pista ${currentRoundState.clueIndex + 1}</strong> para você tentar novamente!`, () => document.getElementById("inputAnswer").focus());
+          inputEl.value = "";
+          openModal(
+            false,
+            "RESPOSTA INCORRETA!",
+            `Sua resposta não está exata. Liberamos a <strong>Pista ${currentRoundState.clueIndex + 1}</strong> (valendo ${round.clues[currentRoundState.clueIndex].points} pts) para você tentar novamente!`,
+            () => inputEl.focus()
+          );
         } else {
-          openModal(false, "TENTATIVAS ESGOTADAS!", `Não foi desta vez!<br><br><strong>Resposta Correta:</strong> <span class="text-yellow-400">${round.answer}</span><br><span class="text-xs text-slate-300">${round.explanation}</span>`, () => advanceRound());
+          // Marca a rodada como concluída mesmo com 0 pontos para evitar fraude com F5 após ver o gabarito
+          if (!alreadyCompleted) {
+            currentPlayer.completedRoundIds.push(round.id);
+            currentPlayer.completedRounds = currentPlayer.completedRoundIds.length;
+            currentPlayer.updatedAt = Date.now();
+            savePlayerData();
+            await window.updateRanking(currentPlayer);
+          }
+
+          openModal(
+            false,
+            "TENTATIVAS ESGOTADAS!",
+            `Não foi desta vez!<br><br><strong>Resposta Correta:</strong> <span class="text-yellow-400">${escapeHTML(round.answer)}</span><br><span class="text-xs text-slate-300 mt-1 block">${escapeHTML(round.explanation)}</span>`,
+            () => advanceRound()
+          );
         }
       }
     };
@@ -512,52 +773,8 @@
     window.showLevelsScreen = showLevelsScreen;
     window.closeModal = closeModal;
 
-    // INTEGRAÇÃO COM O FIREBASE REALTIME DATABASE
-    window.updateRanking = function(player) {
-      set(ref(db, 'rankings/' + player.matricula), {
-        name: player.name,
-        matricula: player.matricula,
-        score: player.score,
-        completedRounds: player.completedRounds
-      });
-    };
-
-    onValue(ref(db, 'rankings'), (snapshot) => {
-      const data = snapshot.val();
-      const rankingArray = data ? Object.values(data) : [];
-      rankingArray.sort((a, b) => b.score - a.score);
-
-      const tbody = document.getElementById("rankingTableBody");
-      tbody.innerHTML = "";
-      if (rankingArray.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum jogador registrado ainda. Seja o primeiro!</td></tr>`;
-        return;
-      }
-      rankingArray.forEach((item, idx) => {
-        const isCurrent = item.matricula === currentPlayer.matricula;
-        let medal = `#${idx + 1}`;
-        if (idx === 0) medal = `🥇 <span class="text-yellow-400 font-bold">1º</span>`;
-        if (idx === 1) medal = `🥈 <span class="text-slate-300 font-bold">2º</span>`;
-        if (idx === 2) medal = `🥉 <span class="text-amber-600 font-bold">3º</span>`;
-
-        const tr = document.createElement("tr");
-        tr.className = `border-b border-slate-800/80 transition ${isCurrent ? 'bg-red-950/40 font-semibold text-white' : 'hover:bg-white/5 text-slate-300'}`;
-        tr.innerHTML = `
-          <td class="p-3">${medal}</td>
-          <td class="p-3 flex items-center gap-2">
-            <i class="fa-solid fa-user text-xs ${isCurrent ? 'text-red-400' : 'text-slate-500'}"></i>
-            <span>${item.name}</span>
-            ${isCurrent ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">Você</span>' : ''}
-          </td>
-          <td class="p-3 text-slate-400">${item.matricula}</td>
-          <td class="p-3 text-slate-400">${item.completedRounds || 0} rodadas</td>
-          <td class="p-3 text-right font-black text-yellow-400 text-base">${item.score} pts</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    });
-
     function showLevelsScreen() {
+      updateHeaderAndPlayerDisplay();
       renderLevels();
       showScreen("screenLevels");
     }
@@ -566,6 +783,7 @@
       const screens = ["screenCover", "screenRegistration", "screenTransition", "screenLevels", "screenGame"];
       screens.forEach(id => document.getElementById(id).classList.add("hidden"));
       document.getElementById(screenId).classList.remove("hidden");
+
       const header = document.getElementById("appHeader");
       if (screenId === "screenLevels" || screenId === "screenGame") {
         header.classList.remove("hidden");
@@ -575,12 +793,25 @@
     }
 
     function loadSimulatedDate() {
-      const saved = localStorage.getItem("honda_simulated_date");
-      if (saved) simulatedSystemDate = saved;
+      const isAdmin = new URLSearchParams(window.location.search).get("admin") === "true";
+      const adminBar = document.getElementById("adminDateBar");
+      if (isAdmin) {
+        if (adminBar) adminBar.classList.remove("hidden");
+        const saved = localStorage.getItem("honda_simulated_date");
+        simulatedSystemDate = saved || getTodayISO();
+      } else {
+        if (adminBar) adminBar.classList.add("hidden");
+        localStorage.removeItem("honda_simulated_date");
+        simulatedSystemDate = getTodayISO();
+      }
     }
 
     function updateDateDisplays() {
-      document.getElementById("currentDateDisplay").innerText = formatDateBR(simulatedSystemDate);
+      const formatted = formatDateBR(simulatedSystemDate);
+      const adminDateEl = document.getElementById("currentDateDisplay");
+      const pubDateEl = document.getElementById("publicDateDisplay");
+      if (adminDateEl) adminDateEl.innerText = formatted;
+      if (pubDateEl) pubDateEl.innerText = formatted;
     }
 
     function formatDateBR(dateStr) {
@@ -595,24 +826,44 @@
     function renderLevels() {
       const grid = document.getElementById("levelsGrid");
       grid.innerHTML = "";
+      const completedIds = Array.isArray(currentPlayer.completedRoundIds) ? currentPlayer.completedRoundIds : [];
+
       gameLevels.forEach(level => {
         const unlocked = isLevelUnlocked(level.unlockDate);
+        const doneCount = level.rounds.filter(r => completedIds.includes(r.id)).length;
+        const isLevelComplete = doneCount === level.rounds.length;
+
         const card = document.createElement("div");
+        if (unlocked) {
+          card.onclick = () => window.startLevel(level.id);
+        }
         card.className = `glass-card p-5 rounded-2xl border transition relative overflow-hidden flex flex-col justify-between ${
-          unlocked ? "border-red-500/40 hover:border-red-500 hover:bg-white/10 cursor-pointer" : "border-slate-800 opacity-60"
+          unlocked 
+            ? "border-red-500/40 hover:border-red-500 hover:bg-white/10 cursor-pointer" 
+            : "border-slate-800 opacity-60 cursor-not-allowed"
         }`;
+
+        let badgeHtml = `<span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700"><i class="fa-solid fa-lock"></i> ${formatDateBR(level.unlockDate)}</span>`;
+        if (unlocked) {
+          badgeHtml = isLevelComplete
+            ? `<span class="text-xs bg-yellow-900/60 text-yellow-300 px-2 py-0.5 rounded-full border border-yellow-500/40"><i class="fa-solid fa-check-double"></i> Concluído</span>`
+            : `<span class="text-xs bg-green-900/60 text-green-300 px-2 py-0.5 rounded-full border border-green-500/40"><i class="fa-solid fa-lock-open"></i> Liberado</span>`;
+        }
+
         card.innerHTML = `
           <div>
             <div class="flex justify-between items-start mb-3">
               <span class="text-xs font-bold uppercase tracking-wider text-red-400">Nível ${level.id}</span>
-              ${unlocked ? `<span class="text-xs bg-green-900/60 text-green-300 px-2 py-0.5 rounded-full border border-green-500/40"><i class="fa-solid fa-lock-open"></i> Liberado</span>` : `<span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700"><i class="fa-solid fa-lock"></i> ${formatDateBR(level.unlockDate)}</span>`}
+              ${badgeHtml}
             </div>
-            <h3 class="font-bold text-base mb-2 text-white">${level.title}</h3>
+            <h3 class="font-bold text-base mb-2 text-white">${escapeHTML(level.title)}</h3>
             <p class="text-xs text-slate-400">3 Rodadas com pontuação gradual (10, 9 e 8 pts).</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-700/50 flex justify-between items-center">
-            <span class="text-xs text-slate-400">${level.rounds.length} Rodadas</span>
-            ${unlocked ? `<button onclick="startLevel(${level.id})" class="px-4 py-1.5 honda-red honda-red-hover text-white text-xs font-bold rounded-lg shadow">JOGAR <i class="fa-solid fa-play ml-1"></i></button>` : `<span class="text-xs text-slate-500 italic">Bloqueado</span>`}
+            <span class="text-xs text-slate-400">${doneCount}/${level.rounds.length} Concluídas</span>
+            ${unlocked 
+              ? `<span class="px-4 py-1.5 honda-red honda-red-hover text-white text-xs font-bold rounded-lg shadow">${isLevelComplete ? "REVISAR" : "JOGAR"} <i class="fa-solid fa-play ml-1"></i></span>` 
+              : `<span class="text-xs text-slate-500 italic">Bloqueado</span>`}
           </div>
         `;
         grid.appendChild(card);
@@ -628,9 +879,18 @@
       document.getElementById("gameRoundTitle").innerText = `Rodada ${currentRoundState.roundIndex + 1} de ${level.rounds.length}`;
       document.getElementById("gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
 
+      const statusBadge = document.getElementById("roundStatusBadge");
+      const isDone = Array.isArray(currentPlayer.completedRoundIds) && currentPlayer.completedRoundIds.includes(round.id);
+      if (isDone) {
+        statusBadge.classList.remove("hidden");
+      } else {
+        statusBadge.classList.add("hidden");
+      }
+
       renderClues();
-      document.getElementById("inputAnswer").value = "";
-      document.getElementById("inputAnswer").focus();
+      const inputEl = document.getElementById("inputAnswer");
+      inputEl.value = "";
+      inputEl.focus();
     }
 
     function renderClues() {
@@ -641,13 +901,21 @@
         const clue = round.clues[i];
         const isCurrent = i === currentRoundState.clueIndex;
         const clueBox = document.createElement("div");
-        clueBox.className = `p-4 rounded-xl border text-sm transition-all ${isCurrent ? 'bg-red-950/40 border-red-500/60 text-white shadow-lg shadow-red-950/50' : 'bg-black/30 border-slate-800 text-slate-400'}`;
+        clueBox.className = `p-4 rounded-xl border text-sm transition-all ${
+          isCurrent 
+            ? "bg-red-950/40 border-red-500/60 text-white shadow-lg shadow-red-950/50" 
+            : "bg-black/30 border-slate-800 text-slate-400"
+        }`;
         clueBox.innerHTML = `
           <div class="flex justify-between items-center mb-1">
-            <span class="text-xs font-bold uppercase ${isCurrent ? 'text-red-400' : 'text-slate-500'}">Pista ${i + 1}</span>
-            <span class="text-xs px-2 py-0.5 rounded ${isCurrent ? 'bg-yellow-500/20 text-yellow-300 font-bold border border-yellow-500/40' : 'bg-slate-800 text-slate-500'}">${clue.points} Pontos</span>
+            <span class="text-xs font-bold uppercase ${isCurrent ? "text-red-400" : "text-slate-500"}">Pista ${i + 1}</span>
+            <span class="text-xs px-2 py-0.5 rounded ${
+              isCurrent 
+                ? "bg-yellow-500/20 text-yellow-300 font-bold border border-yellow-500/40" 
+                : "bg-slate-800 text-slate-500"
+            }">${clue.points} Pontos</span>
           </div>
-          <p class="font-medium">${clue.text}</p>
+          <p class="font-medium">${escapeHTML(clue.text)}</p>
         `;
         container.appendChild(clueBox);
       }
@@ -660,23 +928,16 @@
         currentRoundState.clueIndex = 0;
         loadRoundUI();
       } else {
-        // NÍVEL CONCLUÍDO: Atualiza e exibe modal de parabéns com a pontuação final registrada no Firebase
         savePlayerData();
         window.updateRanking(currentPlayer);
 
         openModal(
           true,
-          "NÍVEL CONCLUÍDO!",
-          `Parabéns, ${currentPlayer.name}! Você concluiu todas as rodadas do <strong>${level.title}</strong>.<br><br>Sua pontuação total acumulada é de <strong class="text-yellow-400">${currentPlayer.score} pontos</strong> e já foi salva oficialmente no <strong>Ranking On-line</strong>!`,
-          () => {
-            showLevelsScreen();
-          }
+          "NÍVEL FINALIZADO!",
+          `Excelente trabalho, <strong>${escapeHTML(currentPlayer.name)}</strong>! Você percorreu todas as rodadas do <strong>${escapeHTML(level.title)}</strong>.<br><br>Sua pontuação oficial acumulada é de <strong class="text-yellow-400">${currentPlayer.score} pontos</strong> e já está sincronizada no <strong>Ranking On-line</strong>!`,
+          () => showLevelsScreen()
         );
       }
-    }
-
-    function normalizeString(str) {
-      return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
     }
 
     function openModal(isSuccess, title, messageHtml, onCloseCallback) {
@@ -687,13 +948,15 @@
       const modalMessage = document.getElementById("modalMessage");
       const button = document.getElementById("modalButton");
 
+      const baseClasses = "max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0 ";
+
       if (isSuccess) {
-        card.className = "max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border border-green-500/50 text-center shadow-2xl bg-gradient-to-b from-green-950/80 to-black/90";
+        card.className = baseClasses + "border-green-500/50 bg-gradient-to-b from-green-950/80 to-black/90";
         iconContainer.innerHTML = `<i class="fa-solid fa-trophy text-6xl text-yellow-400 animate-bounce"></i>`;
         modalTitle.className = "text-2xl font-bold mb-2 text-green-400";
         button.className = "w-full py-3 font-bold rounded-xl text-white bg-green-600 hover:bg-green-500 shadow-lg shadow-green-900/50 transition";
       } else {
-        card.className = "max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border border-red-500/50 text-center shadow-2xl bg-gradient-to-b from-red-950/80 to-black/90";
+        card.className = baseClasses + "border-red-500/50 bg-gradient-to-b from-red-950/80 to-black/90";
         iconContainer.innerHTML = `<i class="fa-solid fa-circle-xmark text-6xl text-red-500 animate-pulse"></i>`;
         modalTitle.className = "text-2xl font-bold mb-2 text-red-400";
         button.className = "w-full py-3 font-bold rounded-xl text-white honda-red honda-red-hover shadow-lg shadow-red-900/50 transition";
@@ -703,22 +966,26 @@
       modalMessage.innerHTML = messageHtml;
       window.modalCloseHandler = onCloseCallback;
       overlay.classList.remove("hidden");
-      setTimeout(() => {
+
+      requestAnimationFrame(() => {
         card.classList.remove("scale-95", "opacity-0");
         card.classList.add("scale-100", "opacity-100");
-      }, 10);
+      });
     }
 
     function closeModal() {
       const overlay = document.getElementById("modalOverlay");
       const card = document.getElementById("modalCard");
+      const callback = window.modalCloseHandler;
+      window.modalCloseHandler = null;
+
       card.classList.remove("scale-100", "opacity-100");
       card.classList.add("scale-95", "opacity-0");
+
       setTimeout(() => {
         overlay.classList.add("hidden");
-        if (window.modalCloseHandler) {
-          window.modalCloseHandler();
-          window.modalCloseHandler = null;
+        if (typeof callback === "function") {
+          callback();
         }
       }, 200);
     }
@@ -730,16 +997,30 @@
     function loadPlayerData() {
       const saved = localStorage.getItem("honda_current_player");
       if (saved) {
-        currentPlayer = JSON.parse(saved);
-        updateHeaderAndPlayerDisplay();
+        try {
+          const parsed = JSON.parse(saved);
+          currentPlayer = {
+            name: parsed.name || "",
+            matricula: sanitizeMatricula(parsed.matricula || ""),
+            score: Number(parsed.score) || 0,
+            completedRounds: Array.isArray(parsed.completedRoundIds) ? parsed.completedRoundIds.length : 0,
+            completedRoundIds: Array.isArray(parsed.completedRoundIds) ? parsed.completedRoundIds : [],
+            updatedAt: Number(parsed.updatedAt) || Date.now()
+          };
+          updateHeaderAndPlayerDisplay();
+        } catch (e) {
+          console.error("Erro ao ler cache local:", e);
+        }
       }
     }
 
     function updateHeaderAndPlayerDisplay() {
       document.getElementById("headerPlayerName").innerText = currentPlayer.name || "---";
       document.getElementById("headerPlayerMatricula").innerText = currentPlayer.matricula || "---";
+      document.getElementById("headerPlayerScore").innerText = `${currentPlayer.score || 0} pts`;
       document.getElementById("displayPlayerName").innerText = currentPlayer.name || "---";
       document.getElementById("displayPlayerMatricula").innerText = currentPlayer.matricula || "---";
+      document.getElementById("displayPlayerScore").innerText = `${currentPlayer.score || 0} pts`;
     }
 
     window.addEventListener("DOMContentLoaded", () => {
