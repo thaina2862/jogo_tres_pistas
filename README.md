@@ -215,7 +215,7 @@
     }
     .launch-flash.active { opacity: 1; }
 
-    /* ANIMAÇÃO DA MOTO MOTO ESPORTIVA 3D */
+    /* ANIMAÇÃO DA MOTO ESPORTIVA 3D */
     @keyframes bikeDriveCustom {
       0% { left: -300px; opacity: 0; }
       10% { opacity: 1; }
@@ -564,7 +564,7 @@
       </div>
     </div>
 
-    <!-- Grid de Níveis (Totalmente Desbloqueados) -->
+    <!-- Grid de Níveis (Com Bloqueio por Data e Nível de Teste) -->
     <div>
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-bold font-game flex items-center gap-2">
@@ -574,14 +574,15 @@
       <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
 
-    <!-- Tabela de Ranking da Operação -->
+    <!-- Tabela de Ranking da Operação (COM SINCRONIZAÇÃO EM TEMPO REAL) -->
     <div class="glass-card p-6 rounded-2xl border-red-500/20">
       <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
         <h2 class="text-xl font-bold flex items-center gap-2 font-game tracking-wide text-yellow-400">
           <i class="fa-solid fa-ranking-star"></i> Ranking da Operação
         </h2>
-        <span id="dbStatusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-check text-green-400"></i> Ranking Ativo
+        <span id="dbStatusBadge" class="text-xs px-2.5 py-1 rounded-full bg-green-950/80 text-green-300 border border-green-500/40 flex items-center gap-1.5 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+          Ranking Sincronizado (Tempo Real)
         </span>
       </div>
       <div class="overflow-x-auto">
@@ -611,9 +612,9 @@
       <div class="absolute inset-0 bg-red-900/5 blur-xl -z-10 rounded-3xl"></div>
       <div class="flex justify-between items-center border-b border-slate-700/60 pb-4">
         <div>
-          <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block font-game">Nível 1</span>
+          <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block font-game">Módulo 1</span>
           <div class="flex items-center gap-2 mt-0.5">
-            <h2 id="gameRoundTitle" class="text-lg font-bold font-game">Rodada 1 de 3</h2>
+            <h2 id="gameRoundTitle" class="text-lg font-bold font-game">Desafio 1 de 3</h2>
             <span id="roundStatusBadge" class="hidden text-[10px] bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 px-2 py-0.5 rounded-full font-semibold">Já Concluída</span>
           </div>
         </div>
@@ -657,7 +658,7 @@
     <p>Treinamento Operacional Honda &amp; Bulgarelli Advogados — © 2026</p>
   </footer>
 
-  <!-- SCRIPT UNIFICADO -->
+  <!-- SCRIPT UNIFICADO E CORRIGIDO -->
   <script>
     let audioCtx = null;
 
@@ -766,7 +767,6 @@
             clearInterval(rpmInterval);
             document.getElementById("screenCover").classList.add("hidden");
             
-            // Se já houver sessão ativa, vai direto para os níveis
             if (currentPlayer.matricula) {
                 showLevelsScreen();
             } else {
@@ -789,14 +789,17 @@
         }, 1350); 
     };
 
-    /* DADOS DOS NÍVEIS (SEM BLOQUEIO DE DATA) */
+    /* DADOS DOS NÍVEIS (TÍTULOS DISCRETOS + DATAS DE DESBLOQUEIO) */
     const gameLevels = [
       {
         id: 1,
-        title: "Nível 1: Fase de Teste (Treinamento Livre)",
+        title: "Módulo 1: Treinamento & Aquecimento",
+        unlockDate: null, // Sempre liberado para testes
+        isTest: true,
         rounds: [
           {
             id: "1-1",
+            titleName: "Desafio 1.1",
             answer: "SAFRA DIARIA",
             clues: [
               { points: 10, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
@@ -807,6 +810,7 @@
           },
           {
             id: "1-2",
+            titleName: "Desafio 1.2",
             answer: "CONFIRMACAO POSITIVA",
             clues: [
               { points: 10, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
@@ -817,6 +821,7 @@
           },
           {
             id: "1-3",
+            titleName: "Desafio 1.3",
             answer: "ATENDIMENTO HUMANIZADO",
             clues: [
               { points: 10, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
@@ -829,10 +834,13 @@
       },
       {
         id: 2,
-        title: "Nível 2: Procedimentos & Validação",
+        title: "Módulo 2: Procedimentos & Fluxos",
+        unlockDate: "2026-11-04", // 04/11
+        isTest: false,
         rounds: [
           {
             id: "2-1",
+            titleName: "Desafio 2.1",
             answer: "OCORRENCIA 2600",
             clues: [
               { points: 10, text: "Dica 1: Status acionado em sistema quando o cliente pagou por engano uma parcela futura." },
@@ -843,6 +851,7 @@
           },
           {
             id: "2-2",
+            titleName: "Desafio 2.2",
             answer: "BOLETO COMPLEMENTAR",
             clues: [
               { points: 10, text: "Dica 1: Emitido pela Honda quando o valor pago na parcela errada é menor que o valor correto." },
@@ -853,6 +862,7 @@
           },
           {
             id: "2-3",
+            titleName: "Desafio 2.3",
             answer: "OCORRENCIA 2601",
             clues: [
               { points: 10, text: "Dica 1: Solicitação obrigatória direcionada ao setor Jurídico em contratos ajuizados." },
@@ -865,82 +875,95 @@
       },
       {
         id: 3,
-        title: "Nível 3: Argumentação & Objeções",
+        title: "Módulo 3: Reestruturação Financeira",
+        unlockDate: "2026-11-11", // 11/11
+        isTest: false,
         rounds: [
           {
             id: "3-1",
-            answer: "BOLETIM DE OCORRENCIA",
+            titleName: "Desafio 3.1",
+            answer: "REFINANCIAMENTO",
             clues: [
-              { points: 10, text: "Dica 1: Documento indispensável a ser solicitado ao cliente em casos de veículo roubado ou furtado." },
-              { points: 9, text: "Dica 2: Encaminhado ao banco para análise de tentativa de concessão de desconto." },
-              { points: 8, text: "Dica 3: Não isenta o cliente do débito, mantendo os juros diários até a regularização." }
+              { points: 10, text: "Dica 1: Solução ofertada para reduzir o valor mensal das parcelas do financiamento do cliente." },
+              { points: 9, text: "Dica 2: Consequentemente aumenta a quantidade de parcelas, podendo estender o contrato em até mais 12x." },
+              { points: 8, text: "Dica 3: Exige o pagamento mínimo de 1 parcela em atraso do financiamento para poder ser realizado." }
             ],
-            explanation: "Em casos de roubo do veículo, solicita-se o B.O. para tentar condições especiais com o Banco."
+            explanation: "O refinanciamento reduz o valor da parcela estendendo o prazo em até 12x, exigindo o pagamento mínimo de 1 parcela."
           },
           {
             id: "3-2",
-            answer: "EXECUCAO DE BENS",
+            titleName: "Desafio 3.2",
+            answer: "ACEITE EM LINHA",
             clues: [
-              { points: 10, text: "Dica 1: Medida judicial cabível quando a garantia (veículo) é perdida, roubada ou não localizada." },
-              { points: 9, text: "Dica 2: O Banco pode ingressar contra o titular do contrato para reaver o prejuízo." },
-              { points: 8, text: "Dica 3: Pode resultar na penhora de patrimônio ou bloqueio de contas bancárias do cliente." }
+              { points: 10, text: "Dica 1: Procedimento obrigatório gravado ou formalizado para firmar a contratação da proposta." },
+              { points: 9, text: "Dica 2: O cliente deve dizer com total clareza e sem margem de dúvida que aceita a proposta enviada." },
+              { points: 8, text: "Dica 3: É obtido pelo operador após entrar em contato e ofertar os termos gerados pelo Banco Honda." }
             ],
-            explanation: "Quando a garantia se perde, o Banco pode mover ação de execução de bens e bloqueio de contas."
+            explanation: "O aceite em linha garante a segurança jurídica e a formalização inequívoca do acordo pelo cliente."
           },
           {
             id: "3-3",
-            answer: "CESSAO DE DIREITOS",
+            titleName: "Desafio 3.3",
+            answer: "PRIMEIRA PARCELA",
             clues: [
-              { points: 10, text: "Dica 1: Procedimento indicado quando o titular falece ou transfere o financiamento a terceiros." },
-              { points: 9, text: "Dica 2: Realizado diretamente na Honda para alterar formalmente a titularidade do contrato." },
-              { points: 8, text: "Dica 3: Exige a prévia regularização do débito em atraso pelo herdeiro ou interessado." }
+              { points: 10, text: "Dica 1: Vencimento inicial gerado após a formalização do acordo de refinanciamento do veículo." },
+              { points: 9, text: "Dica 2: Após o aceite e a conclusão do processo, o cliente ganha fôlego para efetuar este pagamento." },
+              { points: 8, text: "Dica 3: O cliente pode efetuar o pagamento desta primeira parcela em um prazo de até 1 mês." }
             ],
-            explanation: "A Cessão de Direitos transfere o contrato para o nome do herdeiro/terceiro após quitar os débitos."
+            explanation: "Após o aceite do refinanciamento, o cliente ganha até 1 mês de prazo para efetuar o pagamento desta parcela inicial."
           }
         ]
       },
       {
         id: 4,
-        title: "Nível 4: Negociação & Jurídico",
+        title: "Módulo 4: Gestão de Inadimplência",
+        unlockDate: "2026-11-18", // 18/11
+        isTest: false,
         rounds: [
           {
             id: "4-1",
-            answer: "ENTREGA AMIGAVEL",
+            titleName: "Desafio 4.1",
+            answer: "PRORROGACAO",
             clues: [
-              { points: 10, text: "Dica 1: Procedimento obrigatório de oferta para contratos que possuem mais de 50% em aberto." },
-              { points: 9, text: "Dica 2: Devolução voluntária do veículo quando o cliente não tem mais condições de pagar." },
-              { points: 8, text: "Dica 3: Evita a inclusão de custas extras de busca e apreensão como guincho e pátio." }
+              { points: 10, text: "Dica 1: Solução voltada para casos em que o cliente está em atraso ou esqueceu de pagar uma parcela." },
+              { points: 9, text: "Dica 2: Realiza a diluição do valor da parcela em atraso nas parcelas futuras do contrato." },
+              { points: 8, text: "Dica 3: Faz com que o valor das parcelas em dia aumentem proporcionalmente conforme a quantidade de atrasos." }
             ],
-            explanation: "A Entrega Amigável deve ser oferecida a clientes sem condições financeiras de manter as parcelas."
+            explanation: "A prorrogação dilui a parcela em atraso nas futuras, elevando o valor das prestações seguintes conforme o montante acumulado."
           },
           {
             id: "4-2",
-            answer: "BANCO HONDA",
+            titleName: "Desafio 4.2",
+            answer: "DILUICAO DE PARCELAS",
             clues: [
-              { points: 10, text: "Dica 1: Razão Social obrigatória a ser informada no script antifraude do fechamento." },
-              { points: 9, text: "Dica 2: Deve constar como beneficiário do boleto sob o CNPJ 03.634.220/0001-65." },
-              { points: 8, text: "Dica 3: O código de barras emitido para este credor sempre se inicia com os dígitos 237." }
+              { points: 10, text: "Dica 1: Mecanismo financeiro aplicado na prorrogação para absorver o débito pendente." },
+              { points: 9, text: "Dica 2: Espalha o valor esquecido ou atrasado ao longo do fluxo remanescente do financiamento." },
+              { points: 8, text: "Dica 3: Impacta diretamente o reajuste das mensalidades correntes do cliente." }
             ],
-            explanation: "No Fechamento Antifraude, confirma-se o beneficiário Banco Honda, CNPJ e início de código 237."
+            explanation: "A diluição distribui o valor atrasado nas parcelas seguintes, reorganizando o fluxo de pagamento do cliente."
           },
           {
             id: "4-3",
-            answer: "CUSTAS PROCESSUAIS",
+            titleName: "Desafio 4.3",
+            answer: "PRAZO DE PAGAMENTO",
             clues: [
-              { points: 10, text: "Dica 1: Valores incorporados à dívida quando o contrato entra em vias de ajuizamento." },
-              { points: 9, text: "Dica 2: Inclui a cobrança do valor mínimo de 1% do valor da causa no agravamento." },
-              { points: 8, text: "Dica 3: Seu pagamento juntamente com o atraso é obrigatório para paralisar a ação." }
+              { points: 10, text: "Dica 1: Condição estipulada para a quitação da nova condição estabelecida na prorrogação." },
+              { points: 9, text: "Dica 2: Regra de vencimento concedida para dar fôlego ao cliente após a renegociação." },
+              { points: 8, text: "Dica 3: O pagamento da nova condição pode ser feito em até 1 mês após o aceite da proposta." }
             ],
-            explanation: "Ao ser ajuizado, somam-se custas processuais ao débito que devem ser pagas para suspender a ação."
+            explanation: "Após o aceite da prorrogação, o cliente dispõe de até 1 mês para efetuar o pagamento conforme o acordo reestruturado."
           }
         ]
       },
       {
         id: 5,
-        title: "Nível 5: Casos Especiais & Regras SPF",
+        title: "Módulo 5: Casos Especiais & Proteções",
+        unlockDate: "2026-11-25", // 25/11
+        isTest: false,
         rounds: [
           {
             id: "5-1",
+            titleName: "Desafio 5.1",
             answer: "SEGURO PROTECAO FINANCEIRA",
             clues: [
               { points: 10, text: "Dica 1: Benefício verificado na tela de início (F1) em casos de desemprego ou óbito." },
@@ -951,6 +974,7 @@
           },
           {
             id: "5-2",
+            titleName: "Desafio 5.2",
             answer: "QUEBRA DE SIGILO",
             clues: [
               { points: 10, text: "Dica 1: Considerada uma Não Conformidade Grave (NCG) na monitoria de qualidade." },
@@ -961,6 +985,7 @@
           },
           {
             id: "5-3",
+            titleName: "Desafio 5.3",
             answer: "RESTRICAO SPC SERASA",
             clues: [
               { points: 10, text: "Dica 1: Consequência de inadimplência informada na argumentação de cobrança." },
@@ -975,10 +1000,44 @@
 
     let currentPlayer = { name: "", matricula: "", score: 0, completedRounds: 0, completedRoundIds: [], updatedAt: 0 };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
-    let localRanking = JSON.parse(localStorage.getItem("honda_ranking") || "[]");
+    let localRanking = [];
 
-    // CARREGAR SESSÃO PERSISTENTE SE EXISTIR
+    // HELPER DE VALIDAÇÃO DE DESBLOQUEIO DE DATA
+    function isLevelUnlocked(unlockDateStr) {
+      if (!unlockDateStr) return true; // Nível 1 sempre liberado
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const [year, month, day] = unlockDateStr.split('-').map(Number);
+      const unlockDate = new Date(year, month - 1, day);
+      unlockDate.setHours(0, 0, 0, 0);
+
+      return today >= unlockDate;
+    }
+
+    function formatDateBR(dateStr) {
+      if (!dateStr) return "";
+      const [year, month, day] = dateStr.split('-');
+      return `${day}/${month}`;
+    }
+
+    // CANAL DE COMUNICAÇÃO EM TEMPO REAL ENTRE ABAS
+    let rankingChannel = null;
+    try {
+      if ('BroadcastChannel' in window) {
+        rankingChannel = new BroadcastChannel('honda_ranking_channel');
+        rankingChannel.onmessage = (event) => {
+          if (event.data && event.data.type === 'RANKING_UPDATED') {
+            refreshRankingFromStorage();
+          }
+        };
+      }
+    } catch(e) {}
+
+    // CARREGAR SESSÃO PERSISTENTE E RANKING
     window.addEventListener("DOMContentLoaded", () => {
+      refreshRankingFromStorage();
+
       const savedSession = sessionStorage.getItem("honda_active_session");
       if (savedSession) {
         try {
@@ -993,7 +1052,41 @@
           }
         } catch(e){}
       }
+
+      // MONITORAR ALTERAÇÕES NO STORAGE LOCAL DE OUTRAS JANELAS
+      window.addEventListener("storage", (e) => {
+        if (e.key === "honda_ranking") {
+          refreshRankingFromStorage();
+        }
+      });
+
+      // POLLING DE CHECAGEM A CADA 3 SEGUNDOS
+      setInterval(() => {
+        refreshRankingFromStorage();
+      }, 3000);
     });
+
+    function refreshRankingFromStorage() {
+      const stored = localStorage.getItem("honda_ranking");
+      if (stored) {
+        try {
+          localRanking = JSON.parse(stored);
+          sortRanking();
+          renderRankingTable(localRanking);
+        } catch(e){}
+      } else {
+        localRanking = [];
+        renderRankingTable([]);
+      }
+    }
+
+    function sortRanking() {
+      localRanking.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if ((b.completedRounds || 0) !== (a.completedRounds || 0)) return (b.completedRounds || 0) - (a.completedRounds || 0);
+        return (a.updatedAt || 0) - (b.updatedAt || 0);
+      });
+    }
 
     function sanitizeMatricula(str) {
       return String(str).replace(/[^a-zA-Z0-9_\.-]/g, "").trim().toUpperCase();
@@ -1050,6 +1143,7 @@
       currentPlayer.name = name;
       currentPlayer.matricula = matricula;
 
+      refreshRankingFromStorage();
       const saved = localRanking.find(p => p.matricula === matricula);
       if (saved) {
         currentPlayer.score = saved.score || 0;
@@ -1085,7 +1179,7 @@
       document.getElementById("displayPlayerScore").innerText = `${currentPlayer.score} pts`;
 
       renderLevelsGrid();
-      renderRankingTable(localRanking);
+      refreshRankingFromStorage();
     }
 
     function renderLevelsGrid() {
@@ -1093,13 +1187,35 @@
       grid.innerHTML = "";
 
       gameLevels.forEach(lvl => {
+        const unlocked = isLevelUnlocked(lvl.unlockDate);
         const totalRounds = lvl.rounds.length;
         const doneRounds = lvl.rounds.filter(r => currentPlayer.completedRoundIds.includes(r.id)).length;
 
         const card = document.createElement("div");
-        card.className = "glass-card p-5 rounded-2xl border border-red-500/40 hover:border-red-500 transition duration-300 flex flex-col justify-between";
+        card.className = `glass-card p-5 rounded-2xl border transition duration-300 flex flex-col justify-between ${
+          unlocked ? 'border-red-500/40 hover:border-red-500' : 'border-slate-800 opacity-60'
+        }`;
 
-        const statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-500/40 font-bold">Disponível</span>`;
+        let statusTag = '';
+        if (lvl.isTest) {
+          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold">Modo Teste</span>`;
+        } else if (unlocked) {
+          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-500/40 font-bold">Disponível</span>`;
+        } else {
+          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700 font-bold">Libera em ${formatDateBR(lvl.unlockDate)}</span>`;
+        }
+
+        const buttonHTML = unlocked
+          ? `<button onclick="startLevel(${lvl.id})" 
+              class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition honda-red honda-red-hover text-white shadow-md shadow-red-900/40">
+              <span>${lvl.isTest ? 'TREINAR SEM PONTUAR' : 'INICIAR DESAFIO'}</span>
+              <i class="fa-solid fa-play"></i>
+            </button>`
+          : `<button disabled 
+              class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-slate-800/80 text-slate-500 cursor-not-allowed border border-slate-700">
+              <i class="fa-solid fa-lock"></i>
+              <span>BLOQUEADO (${formatDateBR(lvl.unlockDate)})</span>
+            </button>`;
 
         card.innerHTML = `
           <div>
@@ -1107,13 +1223,9 @@
               <h3 class="font-bold text-base text-white">${escapeHTML(lvl.title)}</h3>
               ${statusTag}
             </div>
-            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${totalRounds} rodadas concluídas</p>
+            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${totalRounds} desafios concluídos ${lvl.isTest ? '(Sem pontos)' : ''}</p>
           </div>
-          <button onclick="startLevel(${lvl.id})" 
-            class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition honda-red honda-red-hover text-white shadow-md shadow-red-900/40">
-            <span>INICIAR DESAFIO</span>
-            <i class="fa-solid fa-play"></i>
-          </button>
+          ${buttonHTML}
         `;
         grid.appendChild(card);
       });
@@ -1121,7 +1233,7 @@
 
     window.startLevel = function(levelId) {
       const lvl = gameLevels.find(l => l.id === levelId);
-      if (!lvl) return;
+      if (!lvl || !isLevelUnlocked(lvl.unlockDate)) return;
 
       currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
       setupRoundDisplay();
@@ -1137,7 +1249,7 @@
       currentRoundState.clueIndex = 0;
 
       document.getElementById("gameLevelTitle").innerText = lvl.title;
-      document.getElementById("gameRoundTitle").innerText = `Rodada ${currentRoundState.roundIndex + 1} de ${lvl.rounds.length}`;
+      document.getElementById("gameRoundTitle").innerText = `${round.titleName || ('Desafio ' + (currentRoundState.roundIndex + 1))} de ${lvl.rounds.length}`;
       document.getElementById("gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
 
       const badge = document.getElementById("roundStatusBadge");
@@ -1157,13 +1269,15 @@
       container.innerHTML = "";
 
       const round = currentRoundState.roundData;
+      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
+
       for (let i = 0; i <= currentRoundState.clueIndex; i++) {
         const clue = round.clues[i];
         const clueDiv = document.createElement("div");
         clueDiv.className = "glass-card p-4 rounded-xl border border-red-500/30 flex items-start gap-3";
         clueDiv.innerHTML = `
           <div class="bg-red-600/30 text-yellow-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-red-500/40 whitespace-nowrap">
-            ${clue.points} Pts
+            ${lvl.isTest ? '0 Pts (Teste)' : clue.points + ' Pts'}
           </div>
           <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${escapeHTML(clue.text)}</p>
         `;
@@ -1176,23 +1290,30 @@
       const input = document.getElementById("inputAnswer");
       const userAns = normalizeString(input.value);
       const expectedAns = normalizeString(currentRoundState.roundData.answer);
+      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
 
       if (userAns === expectedAns) {
         const round = currentRoundState.roundData;
-        const pointsEarned = round.clues[currentRoundState.clueIndex].points;
+        const pointsEarned = lvl.isTest ? 0 : round.clues[currentRoundState.clueIndex].points;
 
         if (!currentPlayer.completedRoundIds.includes(round.id)) {
-          currentPlayer.score += pointsEarned;
+          if (!lvl.isTest) {
+            currentPlayer.score += pointsEarned;
+          }
           currentPlayer.completedRoundIds.push(round.id);
           currentPlayer.updatedAt = Date.now();
           savePlayerToRanking();
         }
 
+        const scoreMsg = lvl.isTest 
+          ? `<br><span class="text-cyan-400 font-semibold text-xs">Modo Teste: Nenhum ponto adicionado ao ranking.</span>`
+          : ` e acumulou +${pointsEarned} pontos!`;
+
         showModal(
           `<i class="fa-solid fa-circle-check text-5xl text-green-400"></i>`,
           "Resposta Correta!",
-          `Você acertou e acumulou +${pointsEarned} pontos!<br><br><span class="text-slate-400 text-xs">${round.explanation}</span>`,
-          "PRÓXIMA RODADA",
+          `Você acertou${scoreMsg}<br><br><span class="text-slate-400 text-xs">${round.explanation}</span>`,
+          "PRÓXIMO DESAFIO",
           () => advanceGame()
         );
       } else {
@@ -1220,14 +1341,20 @@
     };
 
     function savePlayerToRanking() {
+      refreshRankingFromStorage();
+
       const index = localRanking.findIndex(p => p.matricula === currentPlayer.matricula);
+
+      // Conta apenas rodadas concluídas de níveis valendo ponto (isTest === false)
+      const validScoredRoundsCount = currentPlayer.completedRoundIds.filter(id => !id.startsWith("1-")).length;
+
       const playerData = {
         name: currentPlayer.name,
         matricula: currentPlayer.matricula,
         score: currentPlayer.score,
-        completedRounds: currentPlayer.completedRoundIds.length,
+        completedRounds: validScoredRoundsCount,
         completedRoundIds: currentPlayer.completedRoundIds,
-        updatedAt: currentPlayer.updatedAt
+        updatedAt: currentPlayer.updatedAt || Date.now()
       };
 
       if (index >= 0) {
@@ -1236,14 +1363,19 @@
         localRanking.push(playerData);
       }
 
-      localRanking.sort((a, b) => {
-        if (b.score !== a.score) return b.score - a.score;
-        if (b.completedRounds !== a.completedRounds) return b.completedRounds - a.completedRounds;
-        return a.updatedAt - b.updatedAt;
-      });
+      sortRanking();
 
       localStorage.setItem("honda_ranking", JSON.stringify(localRanking));
       sessionStorage.setItem("honda_active_session", JSON.stringify(currentPlayer));
+
+      // DISPARAR MENSAGEM BROADCAST
+      if (rankingChannel) {
+        try {
+          rankingChannel.postMessage({ type: 'RANKING_UPDATED' });
+        } catch(e){}
+      }
+
+      renderRankingTable(localRanking);
     }
 
     function advanceGame() {
@@ -1254,8 +1386,8 @@
       } else {
         showModal(
           `<i class="fa-solid fa-trophy text-6xl text-yellow-400"></i>`,
-          "Nível Concluído!",
-          `Parabéns! Você completou todas as rodadas deste nível.<br>Sua pontuação atual é: <strong class="text-yellow-400">${currentPlayer.score} pts</strong>.`,
+          "Módulo Concluído!",
+          `Parabéns! Você completou todas as etapas deste módulo.<br>Sua pontuação total é: <strong class="text-yellow-400">${currentPlayer.score} pts</strong>.`,
           "VOLTAR AO MENU",
           () => showLevelsScreen()
         );
@@ -1305,7 +1437,7 @@
       if (!tbody) return;
       tbody.innerHTML = "";
 
-      if (rankingArray.length === 0) {
+      if (!rankingArray || rankingArray.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum operador registrado ainda. Seja o primeiro!</td></tr>`;
         return;
       }
@@ -1327,7 +1459,7 @@
             ${isCurrent ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">Você</span>' : ""}
           </td>
           <td class="p-3 text-slate-400">${escapeHTML(item.matricula)}</td>
-          <td class="p-3 text-slate-400">${item.completedRounds}/15 rodadas</td>
+          <td class="p-3 text-slate-400">${item.completedRounds || 0}/12 rodadas</td>
           <td class="p-3 text-right font-bold text-yellow-400">${item.score} pts</td>
         `;
         tbody.appendChild(tr);
@@ -1336,3 +1468,7 @@
   </script>
 </body>
 </html>
+
+
+
+Obter o Outlook para Android
