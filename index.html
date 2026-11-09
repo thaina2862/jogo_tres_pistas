@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal de Jogos Corporativos - Bulgarelli Play</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#cc0000',
+              redHover: '#a80000',
+              darkBg: '#090a0f',
+              lightBg: '#f8fafc'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@300;400;600;700;800;900&family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Inter:wght@400;600;800&display=swap');
     
-    @font-face {
-      font-family: 'Ultimatum Heavy Italic';
-      src: local('Ultimatum Heavy Italic'), local('Ultimatum-Heavy-Italic');
-      font-weight: 900;
-      font-style: italic;
-      font-display: swap;
-    }
-
     body {
       font-family: 'Poppins', sans-serif;
-      background: #090a0f;
-      color: #ffffff;
       min-height: 100vh;
       overflow-x: hidden;
       user-select: none;
@@ -29,19 +36,15 @@
     }
 
     .font-game {
-      font-family: 'Ultimatum Heavy Italic', 'Poppins', sans-serif;
-      font-weight: 900;
-      font-style: italic;
-      letter-spacing: 3px;
+      font-family: 'Bungee', 'Poppins', sans-serif;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    .racing-font {
-      font-family: 'Chakra Petch', sans-serif;
-    }
+    .racing-font { font-family: 'Chakra Petch', sans-serif; }
 
     .retro-comic-neon-fire {
-      font-family: 'Bungee', 'Ultimatum Heavy Italic', cursive, sans-serif;
+      font-family: 'Bungee', cursive, sans-serif;
       font-style: italic;
       text-transform: uppercase;
       display: inline-block;
@@ -50,35 +53,67 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: fireGlowPulse 2s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 8px #ff4500) drop-shadow(0 0 18px #ff6c00) drop-shadow(0 0 30px #ff0000);
-      -webkit-text-stroke: 1.8px #ff8c00;
+      filter: drop-shadow(0 0 8px #ff4500) drop-shadow(0 0 18px #ff6c00);
+      -webkit-text-stroke: 1.5px #ff8c00;
     }
 
     @keyframes fireGlowPulse {
-      0% { background-position: 0% 0%; filter: drop-shadow(0 0 6px #ff4500) drop-shadow(0 0 15px #ff6c00) drop-shadow(0 0 25px #ff0000); }
-      100% { background-position: 0% 100%; filter: drop-shadow(0 0 12px #ff6c00) drop-shadow(0 0 25px #ff4500) drop-shadow(0 0 40px #ff2200); }
+      0% { background-position: 0% 0%; }
+      100% { background-position: 0% 100%; }
     }
 
     .glass-card {
       background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .glass-card:hover { border-color: rgba(225, 29, 72, 0.4); }
+    .light body, .light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    .light .glass-card {
+      background: #ffffff !important;
+      backdrop-filter: blur(12px);
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      color: #0f172a !important;
+    }
+    .light aside {
+      background-color: #ffffff !important;
+      border-right: 1px solid #cbd5e1 !important;
+    }
+    .light header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #cbd5e1 !important;
+    }
+    .light input, .light select {
+      background-color: #f1f5f9 !important;
+      border: 1px solid #94a3b8 !important;
+      color: #0f172a !important;
+    }
+    .light .text-slate-400 { color: #475569 !important; }
+    .light .text-slate-300 { color: #334155 !important; }
+    .light .text-slate-200 { color: #1e293b !important; }
 
     .honda-red { background-color: #cc0000; }
     .honda-red-hover:hover { background-color: #a80000; }
 
-    #screenCover { background: #07090e; }
-
-    .stage-wrapper {
-        perspective: 800px;
-        perspective-origin: 50% 55%;
-        transform-style: preserve-3d;
+    .periodic-element {
+      opacity: 0;
+      transform: translateY(20px) scale(0.8);
+      animation: periodicPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    .shake-screen { animation: cameraShake 0.06s infinite alternate; }
+    @keyframes periodicPopIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .stage-wrapper { perspective: 800px; perspective-origin: 50% 55%; transform-style: preserve-3d; }
+    
+    .shake-screen {
+        animation: cameraShake 0.06s infinite alternate;
+    }
 
     @keyframes cameraShake {
         0% { transform: translate(1.5px, 1.5px) rotate(0.1deg); }
@@ -86,46 +121,45 @@
     }
 
     .road-perspective {
-        position: absolute;
-        bottom: 0; left: 50%;
-        width: 120vw; height: 55vh;
-        transform: translateX(-50%) rotateX(75deg);
-        transform-origin: bottom center;
+        position: absolute; bottom: 0; left: 50%; width: 120vw; height: 55vh;
+        transform: translateX(-50%) rotateX(75deg); transform-origin: bottom center;
         background: radial-gradient(circle at 50% 0%, #1c222e 0%, #0d1017 80%, #050608 100%);
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.95);
-        overflow: hidden;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.95); overflow: hidden;
     }
-
     .road-grid {
         position: absolute; inset: 0;
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
         background-size: 80px 40px;
     }
-
     .road-stripes {
-        position: absolute; top: 0; bottom: 0; left: 50%; width: 8px;
-        transform: translateX(-50%);
-        background: repeating-linear-gradient(to bottom, #ffea00, #ffea00 35px, transparent 35px, transparent 70px);
-        opacity: 0.6;
+        position: absolute; top: 0; bottom: 0; left: 50%; width: 8px; transform: translateX(-50%);
+        background: repeating-linear-gradient(to bottom, #ffea00, #ffea00 35px, transparent 35px, transparent 70px); opacity: 0.6;
     }
-
-    .road-stripes.speeding { animation: roadSpeed 0.12s linear infinite; }
-
+    .road-stripes.speeding {
+        animation: roadSpeed 0.12s linear infinite;
+    }
     @keyframes roadSpeed {
         from { background-position-y: 0px; }
         to { background-position-y: 70px; }
     }
 
-    .idle-vibe { animation: engineIdle 0.12s infinite alternate ease-in-out; }
+    .idle-vibe {
+        animation: engineIdle 0.12s infinite alternate ease-in-out;
+    }
 
     @keyframes engineIdle {
         0% { transform: translateY(0px) rotate(0deg); }
         100% { transform: translateY(-2px) rotate(0.08deg); }
     }
 
-    .car-assembly { transform-style: preserve-3d; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .car-assembly {
+        transform-style: preserve-3d;
+        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-    .launching { animation: launchDrive 1.35s cubic-bezier(0.65, 0.02, 0.2, 1) forwards !important; }
+    .launching {
+        animation: launchDrive 1.35s cubic-bezier(0.65, 0.02, 0.2, 1) forwards !important;
+    }
 
     @keyframes launchDrive {
         0% { transform: translate3d(0, 0, 0) scale(1) rotateX(0deg); opacity: 1; }
@@ -135,32 +169,25 @@
         100% { transform: translate3d(0, -50px, 1200px) scale(9.5) rotateX(8deg); opacity: 0; filter: blur(5px); }
     }
 
-    .car-shadow { transition: transform 1.3s cubic-bezier(0.65, 0.02, 0.2, 1), opacity 1.1s ease; }
-    .car-assembly.launching ~ .car-shadow { transform: translateX(-50%) scale(0.1); opacity: 0; }
+    .car-shadow {
+        transition: transform 1.3s cubic-bezier(0.65, 0.02, 0.2, 1), opacity 1.1s ease;
+    }
+    .car-assembly.launching ~ .car-shadow {
+        transform: translateX(-50%) scale(0.1);
+        opacity: 0;
+    }
 
     .drl-glow { filter: drop-shadow(0 0 10px rgba(180, 230, 255, 0.9)) drop-shadow(0 0 25px rgba(0, 160, 255, 0.7)); }
     .fog-glow { box-shadow: 0 0 14px #ffffff, 0 0 25px rgba(255, 255, 255, 0.8); }
 
-    .start-button-ring {
-        background: radial-gradient(circle, #555 0%, #222 60%, #111 100%);
-        border: 3px solid #8e959e;
-        box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.4);
-    }
-    .start-button-core {
-        background: radial-gradient(circle at 35% 35%, #ff3b30 0%, #b80d0d 65%, #7a0000 100%);
-        box-shadow: 0 4px 15px rgba(230, 0, 0, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.5);
-        transition: all 0.15s ease;
-    }
-    .start-button-core:active { transform: scale(0.94); }
-    .start-button-core.running {
-        background: radial-gradient(circle at 35% 35%, #ff2020 0%, #cf0000 70%, #990000 100%);
-        box-shadow: 0 0 25px rgba(255, 30, 30, 0.9), inset 0 2px 5px rgba(255, 255, 255, 0.6);
-    }
-
     .launch-flash {
-        position: absolute; inset: 0;
+        position: absolute;
+        inset: 0;
         background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,0,0,0.3) 45%, transparent 75%);
-        pointer-events: none; opacity: 0; z-index: 50; transition: opacity 0.1s ease;
+        pointer-events: none;
+        opacity: 0;
+        z-index: 50;
+        transition: opacity 0.1s ease;
     }
     .launch-flash.active { opacity: 1; }
 
@@ -170,6 +197,7 @@
       90% { opacity: 1; }
       100% { left: calc(100% + 100px); opacity: 0; }
     }
+
     .animate-bike-custom { animation: bikeDriveCustom 1.8s linear forwards; }
 
     .racetrack-container {
@@ -178,492 +206,847 @@
       border-bottom: 6px solid #e11d48;
       box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
     }
-    .curb-pattern { background: repeating-linear-gradient(90deg, #ffffff, #ffffff 20px, #cc0000 20px, #cc0000 40px); }
+    .curb-pattern {
+      background: repeating-linear-gradient( 90deg, #ffffff, #ffffff 20px, #cc0000 20px, #cc0000 40px );
+    }
     .chequered-flag {
       background-image: repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), 
                         repeating-linear-gradient(45deg, #000 25%, #fff 25%, #fff 75%, #000 75%, #000);
-      background-position: 0 0, 10px 10px; background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
     }
 
+    .start-button-ring { background: radial-gradient(circle, #555 0%, #222 60%, #111 100%); border: 3px solid #8e959e; }
+    .start-button-core { background: radial-gradient(circle at 35% 35%, #ff3b30 0%, #b80d0d 65%, #7a0000 100%); }
     .modal-backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); }
   </style>
 </head>
-<body class="flex min-h-screen text-slate-100">
+<body class="bg-[#090a0f] text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-  <!-- MENU LATERAL (SIDEBAR DO PORTAL) -->
-  <aside id="sidebarNav" class="w-64 bg-[#040508] border-r border-slate-800/80 flex flex-col justify-between hidden md:flex sticky top-0 h-screen z-40">
-    <div class="p-6">
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-900/50">
-          <i class="fa-solid fa-gamepad text-white text-lg"></i>
+  <!-- TELA DE CARREGAMENTO (TABELA PERIÓDICA) -->
+  <div id="preloader" class="fixed inset-0 z-50 bg-[#040508] flex flex-col items-center justify-center p-4">
+    <div class="text-center space-y-6 max-w-4xl">
+      <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Inicializando Sistema Corporativo</p>
+      
+      <div id="periodicTitleContainer" class="flex flex-wrap justify-center gap-2 sm:gap-3 my-8">
+      </div>
+
+      <div class="w-64 mx-auto bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700">
+        <div id="preloaderBar" class="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-400 h-full w-0 transition-all duration-300 ease-out"></div>
+      </div>
+      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Conectando ao Firebase Realtime Engine...</p>
+    </div>
+  </div>
+
+  <div id="appContainer" class="flex-1 flex w-full min-h-screen relative overflow-x-hidden">
+
+    <!-- MENU LATERAL RETRÁTIL -->
+    <aside id="sidebarNav" class="w-64 bg-[#040508] border-r border-slate-800 flex flex-col justify-between fixed md:sticky top-0 h-screen z-40 transition-all duration-300">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-900/50">
+              <i class="fa-solid fa-gamepad text-white text-lg"></i>
+            </div>
+            <div>
+              <span class="font-extrabold text-sm tracking-wide block uppercase">Bulgarelli Play</span>
+              <span class="text-[10px] text-slate-400 font-mono">Hub Operacional</span>
+            </div>
+          </div>
+          <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg" title="Esconder/Recolher Menu">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+        </div>
+
+        <nav class="space-y-2">
+          <a href="#" onclick="switchSidebarTab('overview')" id="navOverview" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-house text-sm"></i> Visão Geral
+          </a>
+          <a href="#" onclick="switchSidebarTab('carteiras')" id="navCarteiras" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-folder-tree text-sm"></i> Carteiras
+          </a>
+          <a href="#" onclick="switchSidebarTab('library')" id="navLibrary" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-layer-group text-sm"></i> Biblioteca de Jogos
+          </a>
+          <a href="#" onclick="switchSidebarTab('admin')" id="navAdmin" class="nav-btn hidden flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-yellow-500 hover:bg-yellow-500/10 transition">
+            <i class="fa-solid fa-user-shield text-sm"></i> Painel Admin
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-4 m-4 rounded-2xl bg-black/40 border border-slate-800 text-xs space-y-3">
+        <div id="sessionStatusIndicator" class="hidden items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <span class="text-slate-300 font-semibold">Sessão Ativa</span>
         </div>
         <div>
-          <span class="font-extrabold text-sm tracking-wide block text-white uppercase">Bulgarelli Play</span>
-          <span class="text-[10px] text-slate-400 font-mono">Hub Operacional</span>
+          <p id="sidebarPlayerName" class="font-bold truncate">Visitante / Não Logado</p>
+          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Perfil: Livre</p>
+        </div>
+        
+        <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between">
+          <span class="text-[10px] uppercase font-bold text-slate-400">Tema Visual</span>
+          <button onclick="toggleThemeManual()" class="px-2.5 py-1 bg-slate-800 text-yellow-400 hover:text-yellow-300 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+            <span id="themeText">Escuro</span>
+          </button>
+        </div>
+
+        <div id="sessionActionContainer">
+          <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
+            Acessar Login
+          </button>
         </div>
       </div>
+    </aside>
 
-      <nav class="space-y-1.5">
-        <a href="#" onclick="switchSidebarTab('overview')" id="navOverview" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-red-600/15 text-red-400 border border-red-500/30 transition">
-          <i class="fa-solid fa-house text-sm"></i> Visão Geral
-        </a>
-        <a href="#" onclick="switchSidebarTab('carteiras')" id="navCarteiras" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition">
-          <i class="fa-solid fa-folder-tree text-sm"></i> Carteiras
-        </a>
-        <a href="#" onclick="switchSidebarTab('library')" id="navLibrary" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition">
-          <i class="fa-solid fa-layer-group text-sm"></i> Biblioteca de Jogos
-        </a>
-        <a href="#" onclick="switchSidebarTab('admin')" id="navAdmin" class="hidden flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-yellow-400 hover:bg-yellow-500/10 transition">
-          <i class="fa-solid fa-user-shield text-sm"></i> Painel Admin
-        </a>
-      </nav>
-    </div>
+    <button id="sidebarToggleFloat" onclick="toggleSidebarManual()" class="fixed top-4 left-4 z-40 bg-red-600 text-white p-2.5 rounded-xl shadow-lg hidden hover:bg-red-700 transition">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-    <div class="p-4 m-4 rounded-2xl bg-black/40 border border-slate-800 text-xs">
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-        <span class="text-slate-300 font-semibold">Sessão Ativa</span>
-      </div>
-      <p id="sidebarPlayerName" class="text-white font-bold truncate">Visitante / Não Logado</p>
-      <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Matrícula: ---</p>
-      <button onclick="logoutSession()" class="mt-3 w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
-        Encerrar Sessão
-      </button>
-    </div>
-  </aside>
+    <div class="flex-1 flex flex-col min-h-screen w-full transition-all">
 
-  <!-- CONTEÚDO PRINCIPAL DO PORTAL -->
-  <div class="flex-1 flex flex-col min-h-screen">
-
-    <header id="appHeader" class="sticky top-0 z-30 glass-card border-b border-red-900/30 px-4 py-3 shadow-xl flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <span class="font-bold text-xs uppercase tracking-wider text-red-500">Bulgarelli Play — Hub de Jogos</span>
-      </div>
-      <div id="userInfoHeader" class="text-xs bg-black/40 px-3 py-1.5 rounded-full border border-red-500/30 flex items-center gap-2">
-        <i class="fa-solid fa-user-check text-green-400"></i>
-        <span id="headerPlayerName" class="font-semibold text-white">Visitante</span>
-      </div>
-    </header>
-
-    <!-- PÁGINA 1: VISÃO GERAL -->
-    <section id="screenOverview" class="flex-1 p-6 max-w-5xl w-full mx-auto space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
-          <p class="text-xs text-slate-400">Acompanhe os atalhos rápidos de navegação e jogos disponíveis.</p>
+      <!-- CABEÇALHO SUPERIOR -->
+      <header id="appHeader" class="sticky top-0 z-30 glass-card border-b border-slate-800 px-4 py-3 shadow-xl flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition" title="Manejar Menu Lateral">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+          <span class="font-bold text-xs uppercase tracking-wider text-red-500">Bulgarelli Play - Hub de Jogos</span>
         </div>
-        <button onclick="openRegistrationModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-red-900/40 flex items-center gap-2">
-          <i class="fa-solid fa-user-gear"></i> Identificar Colaborador
-        </button>
-      </div>
 
-      <!-- SEÇÃO 1: PASTAS RECÉM ACESSADAS -->
-      <div class="space-y-3">
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-          <i class="fa-solid fa-clock-rotate-left text-red-500"></i> <span>Pastas Recém Acessadas</span>
-        </div>
-        <div id="recentFoldersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div onclick="switchSidebarTab('carteiras')" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3 bg-white/5">
-            <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center font-bold">
-              <i class="fa-solid fa-folder"></i>
+        <div class="flex items-center gap-3">
+          <button onclick="openAvatarCustomizerModal()" class="flex items-center gap-2.5 bg-black/40 hover:bg-black/60 px-3.5 py-1.5 rounded-full border border-red-500/40 transition">
+            <div id="headerAvatarContainer" class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-bold overflow-hidden">
+              👨‍💼
             </div>
-            <div>
-              <h4 class="text-sm font-bold text-white">Carteira Honda</h4>
-              <p class="text-[10px] text-slate-400">Acessado recentemente</p>
-            </div>
-          </div>
+            <span id="headerPlayerName" class="font-semibold text-xs">Visitante</span>
+            <i class="fa-solid fa-sliders text-slate-400 text-xs"></i>
+          </button>
         </div>
-      </div>
+      </header>
 
-      <!-- SEÇÃO 2: JOGOS RECÉM ACESSADOS -->
-      <div class="space-y-3 pt-2">
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-          <i class="fa-solid fa-gamepad text-red-500"></i> <span>Jogos Recém Acessados</span>
-        </div>
-        <div id="recentGamesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div onclick="launchHondaGame()" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3 bg-white/5">
-            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold">
-              <i class="fa-solid fa-flag-checkered"></i>
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-white">Jogo das Três Pistas</h4>
-              <p class="text-[10px] text-slate-400">Operação Honda &amp; Bulgarelli</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SEÇÃO 3: SEÇÃO DE JOGOS DISPONÍVEIS -->
-      <div class="space-y-3 pt-2">
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-          <i class="fa-solid fa-list-check text-red-500"></i> <span>Jogos</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl bg-gradient-to-b from-black/60 to-red-950/10">
-            <div>
-              <div class="flex justify-between items-start mb-3">
-                <div class="w-10 h-10 rounded-xl bg-red-950 border border-red-500/50 flex items-center justify-center text-red-500 font-bold">
-                  <i class="fa-solid fa-flag-checkered"></i>
-                </div>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 border border-red-500/40 font-bold">Honda</span>
-              </div>
-              <h4 class="font-bold text-base text-white mb-1">Jogo das Três Pistas</h4>
-              <p class="text-xs text-slate-400 mb-4">Desafios de negociação, refinanciamento e fluxos da operação Honda.</p>
-            </div>
-            <button onclick="launchHondaGame()" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white shadow-md shadow-red-900/40 transition">
-              <span>JOGAR AGORA</span> <i class="fa-solid fa-play"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PÁGINA: CARTEIRAS (NOVA ABA DE PASTAS DIVIDIDA POR CARTEIRAS) -->
-    <section id="screenCarteiras" class="hidden flex-1 p-6 max-w-5xl w-full mx-auto space-y-6">
-      <div>
-        <h1 class="text-2xl font-bold font-game tracking-wider">Pastas de Carteiras</h1>
-        <p class="text-xs text-slate-400">Navegue pelas pastas dos jogos organizadas por cada operação.</p>
-      </div>
-
-      <div class="space-y-6">
-        <!-- PASTA DA CARTEIRA HONDA -->
-        <div class="glass-card p-5 rounded-2xl border border-red-600/30 space-y-4">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-[#cc0000] flex items-center justify-center shadow-md">
-              <svg viewBox="0 0 24 24" class="w-7 h-7 fill-white">
-                <path d="M12.8 2.2C9.4 2.2 6.6 4.9 6.6 8.3c0 1.2.3 2.3.9 3.2L3.2 18.5h3.4l2.1-3.9c1 .5 2.1.8 3.3.8 3.4 0 6.2-2.7 6.2-6.1s-2.8-6.1-6.2-6.1zm0 9.8c-2.1 0-3.7-1.7-3.7-3.7s1.7-3.7 3.7-3.7 3.7 1.7 3.7 3.7-1.6 3.7-3.7 3.7z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold text-white">Carteira Honda</h3>
-              <p class="text-xs text-slate-400">Jogos de treinamento para cobrança e recuperação de crédito Honda.</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
-            <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
-              <div>
-                <h4 class="font-bold text-sm text-white mb-1">Jogo das Três Pistas</h4>
-                <p class="text-[11px] text-slate-400 mb-3">Argumentação, procedimentos e refinanciamento.</p>
-              </div>
-              <button onclick="launchHondaGame()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Acessar Jogo</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PÁGINA: BIBLIOTECA DE JOGOS GERAL -->
-    <section id="screenLibrary" class="hidden flex-1 p-6 max-w-5xl w-full mx-auto space-y-6">
-      <div>
-        <h1 class="text-2xl font-bold font-game tracking-wider">Biblioteca de Jogos</h1>
-        <p class="text-xs text-slate-400">Catálogo geral de treinamentos e simuladores interativos do portal.</p>
-      </div>
-
-      <div id="libraryGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
+      <!-- VISÃO GERAL -->
+      <section id="screenOverview" class="flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
+        <div class="flex justify-between items-center">
           <div>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 font-bold">Carteira Honda</span>
-            <h4 class="font-bold text-base text-white mt-2 mb-1">Jogo das Três Pistas</h4>
-            <p class="text-xs text-slate-400 mb-4">Treinamento de recuperação de crédito e argumentação.</p>
+            <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
+            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais disponíveis.</p>
           </div>
-          <button onclick="launchHondaGame()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">ACESSAR JOGO</button>
         </div>
-      </div>
-    </section>
 
-    <!-- PÁGINA: PAINEL ADMINISTRATIVO PRIVADO (APENAS EQUIPE DE TREINAMENTO) -->
-    <section id="screenAdmin" class="hidden flex-1 p-6 max-w-5xl w-full mx-auto space-y-6">
-      <div>
-        <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-400">Painel Admin — Treinamento &amp; Qualidade</h1>
-        <p class="text-xs text-slate-400">Área restrita à equipe de treinamento para gestão de colaboradores, senhas e jogos.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
-          <h3 class="font-bold text-sm uppercase text-red-400 flex items-center gap-2">
-            <i class="fa-solid fa-users-gear"></i> Gerenciar Colaboradores
-          </h3>
-          <p class="text-xs text-slate-400">Altere o nome de exibição ou resete a senha cadastrada.</p>
-          
-          <div class="space-y-3">
-            <div>
-              <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
-              <select id="adminSelectEmployee" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
-              </select>
-            </div>
-            <div>
-              <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Novo Nome (Opcional)</label>
-              <input type="text" id="adminNewName" placeholder="Novo nome de exibição..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
-            </div>
-            <div class="flex gap-2 pt-2">
-              <button onclick="adminUpdateEmployeeName()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Atualizar Nome</button>
-              <button onclick="adminResetPassword()" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition">Resetar Senha</button>
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <i class="fa-solid fa-clock-rotate-left text-red-500"></i> <span>Pastas Recém Acessadas</span>
+          </div>
+          <div id="recentFoldersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="switchSidebarTab('carteiras')" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-folder"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold">Carteira Honda</h4>
+                <p class="text-[10px] text-slate-400">Acessado recentemente</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
-          <h3 class="font-bold text-sm uppercase text-red-400 flex items-center gap-2">
-            <i class="fa-solid fa-circle-plus"></i> Adicionar Novo Jogo
-          </h3>
-          <p class="text-xs text-slate-400">Cadastre um novo jogo no portal.</p>
-          
-          <form onsubmit="adminAddNewGame(event)" class="space-y-3">
-            <div>
-              <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Título do Jogo</label>
-              <input type="text" id="newGameTitle" required placeholder="Ex: Quiz Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <i class="fa-solid fa-gamepad text-red-500"></i> <span>Jogos Recém Acessados</span>
+          </div>
+          <div id="recentGamesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="launchHondaGameApart()" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-500 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-flag-checkered"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold">Jogo das Três Pistas</h4>
+                <p class="text-[10px] text-slate-400">Operação Honda &amp; Bulgarelli</p>
+              </div>
             </div>
-            <div>
-              <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira</label>
-              <input type="text" id="newGameCategory" required placeholder="Ex: Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
-            </div>
-            <div>
-              <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Descrição Curta</label>
-              <input type="text" id="newGameDesc" required placeholder="Breve resumo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
-            </div>
-            <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Adicionar à Biblioteca</button>
-          </form>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- TELA 1 DO JOGO: CAPA COM HONDA CIVIC TYPE-R 3D -->
-    <section id="screenCover" class="hidden flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden">
-      <div id="flashOverlay" class="launch-flash"></div>
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <i class="fa-solid fa-list-check text-red-500"></i> <span>Jogos em Destaque</span>
+          </div>
 
-      <div class="w-full flex flex-col items-center z-20 pt-6 px-4 gap-6">
-          <div class="w-full max-w-4xl flex flex-wrap items-center justify-between gap-4">
-              <div class="flex items-center gap-3">
-                  <div class="w-10 h-7 bg-[#b20000] border border-gray-200 rounded flex items-center justify-center font-bold text-white shadow-md text-xs tracking-wider">
-                      CIVIC
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl">
+              <div>
+                <div class="flex justify-between items-start mb-3">
+                  <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/50 flex items-center justify-center text-red-500 font-bold">
+                    <i class="fa-solid fa-flag-checkered"></i>
                   </div>
-                  <div>
-                      <h1 class="text-lg md:text-xl font-black italic tracking-wide racing-font flex items-center gap-2 leading-none">
-                          HONDA <span class="text-red-500 font-extrabold">TYPE-R</span>
-                      </h1>
-                      <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-widest uppercase">2.0L VTEC TURBO // 315 HP</p>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 border border-red-500/40 font-bold">Honda</span>
+                </div>
+                <h4 class="font-bold text-base mb-1">Jogo das Três Pistas</h4>
+                <p class="text-xs text-slate-400 mb-4">Desafios de negociação, refinanciamento e procedimentos operacionais.</p>
+              </div>
+              <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white shadow-md shadow-red-900/40 transition">
+                <span>JOGAR</span> <i class="fa-solid fa-play"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARTEIRAS -->
+      <section id="screenCarteiras" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold font-game tracking-wider">Pastas de Carteiras</h1>
+          <p class="text-xs text-slate-400">Navegue pelas operações de atendimento e cobrança.</p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="glass-card p-5 rounded-2xl border border-red-600/30 space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-[#cc0000] flex items-center justify-center shadow-md text-white font-bold text-xl">
+                H
+              </div>
+              <div>
+                <h3 class="text-lg font-bold">Carteira Honda</h3>
+                <p class="text-xs text-slate-400">Simuladores de negociação e renegociação.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+              <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+                <div>
+                  <h4 class="font-bold text-sm mb-1">Jogo das Três Pistas</h4>
+                  <p class="text-[11px] text-slate-400 mb-3">Procedimentos, seguros e acordos.</p>
+                </div>
+                <button onclick="launchHondaGameApart()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Jogar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIBLIOTECA DE JOGOS -->
+      <section id="screenLibrary" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold font-game tracking-wider">Biblioteca de Jogos</h1>
+          <p class="text-xs text-slate-400">Catálogo de módulos de capacitação e treinamentos corporativos.</p>
+        </div>
+
+        <div id="libraryGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 font-bold">Carteira Honda</span>
+              <h4 class="font-bold text-base mt-2 mb-1">Jogo das Três Pistas</h4>
+              <p class="text-xs text-slate-400 mb-4">Treinamento de recuperação de crédito e argumentação.</p>
+            </div>
+            <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">Jogar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAINEL ADMIN -->
+      <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-500">Painel Admin — Treinamento &amp; Qualidade</h1>
+          <p class="text-xs text-slate-400">Métricas operacionais, indicadores dos jogos e gestão da equipe.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Total de Jogadores</span>
+              <h3 id="adminStatPlayers" class="text-2xl font-extrabold">0</h3>
+            </div>
+            <i class="fa-solid fa-users text-red-500/40 text-3xl"></i>
+          </div>
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-yellow-500 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Rodadas Concluídas</span>
+              <h3 id="adminStatRounds" class="text-2xl font-extrabold text-yellow-500">0</h3>
+            </div>
+            <i class="fa-solid fa-trophy text-yellow-500/40 text-3xl"></i>
+          </div>
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Média de Pontos</span>
+              <h3 id="adminStatAvgScore" class="text-2xl font-extrabold text-emerald-500">0</h3>
+            </div>
+            <i class="fa-solid fa-chart-line text-emerald-500/40 text-3xl"></i>
+          </div>
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-500 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Taxa de Conclusão</span>
+              <h3 id="adminStatCompletion" class="text-2xl font-extrabold text-cyan-500">0%</h3>
+            </div>
+            <i class="fa-solid fa-bullseye text-cyan-500/40 text-3xl"></i>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
+            <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
+              <i class="fa-solid fa-users-gear"></i> Gerenciar Colaboradores
+            </h3>
+            <p class="text-xs text-slate-400">Altere nome de exibição ou resete senha de acesso.</p>
+            
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
+                <select id="adminSelectEmployee" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Novo Nome (Opcional)</label>
+                <input type="text" id="adminNewName" placeholder="Novo nome de exibição..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+              </div>
+              <div class="flex gap-2 pt-2">
+                <button onclick="adminUpdateEmployeeName()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Atualizar Nome</button>
+                <button onclick="adminResetPassword()" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition">Resetar Senha</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
+            <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
+              <i class="fa-solid fa-circle-plus"></i> Adicionar Novo Jogo
+            </h3>
+            <p class="text-xs text-slate-400">Cadastre um novo módulo na biblioteca.</p>
+            
+            <form onsubmit="adminAddNewGame(event)" class="space-y-3">
+              <div>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Título do Jogo</label>
+                <input type="text" id="newGameTitle" required placeholder="Ex: Quiz Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira</label>
+                <input type="text" id="newGameCategory" required placeholder="Ex: Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Descrição Curta</label>
+                <input type="text" id="newGameDesc" required placeholder="Breve resumo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+              </div>
+              <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Adicionar à Biblioteca</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ABA APARTADA DO JOGO ================= -->
+      <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative">
+        <div id="subScreenCover" class="flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden p-4">
+          <div id="flashOverlay" class="launch-flash"></div>
+
+          <div class="w-full flex flex-col items-center z-20 pt-2 px-4 gap-4">
+              <div class="w-full max-w-4xl flex flex-wrap items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                      <div class="w-10 h-7 bg-[#b20000] border border-gray-200 rounded flex items-center justify-center font-bold text-white shadow-md text-xs tracking-wider">
+                          CIVIC
+                      </div>
+                      <div>
+                          <h1 class="text-lg md:text-xl font-black italic tracking-wide racing-font flex items-center gap-2 leading-none">
+                              HONDA <span class="text-red-500 font-extrabold">TYPE-R</span>
+                          </h1>
+                          <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-widest uppercase">2.0L VTEC TURBO // 315 HP</p>
+                      </div>
+                  </div>
+
+                  <div class="flex items-center gap-4 bg-gray-900/80 backdrop-blur border border-gray-800 rounded-full px-4 py-1.5 text-xs font-mono text-white">
+                      <div class="flex items-center gap-1.5">
+                          <span id="engineStatusDot" class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+                          <span id="engineStatusText" class="text-gray-300 font-semibold tracking-wider">ENGINE IDLE</span>
+                      </div>
+                      <div class="h-3 w-px bg-gray-700"></div>
+                      <div class="text-red-400 font-bold w-16 text-right" id="rpmGauge">850 RPM</div>
                   </div>
               </div>
 
-              <div class="flex items-center gap-4 bg-gray-900/80 backdrop-blur border border-gray-800 rounded-full px-4 py-1.5 text-xs font-mono">
-                  <div class="flex items-center gap-1.5">
-                      <span id="engineStatusDot" class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                      <span id="engineStatusText" class="text-gray-300 font-semibold tracking-wider">ENGINE IDLE</span>
-                  </div>
-                  <div class="h-3 w-px bg-gray-700"></div>
-                  <div class="text-red-400 font-bold w-16 text-right" id="rpmGauge">850 RPM</div>
+              <div class="text-center mt-2">
+                  <h1 class="text-4xl sm:text-5xl md:text-6xl font-black mb-2 tracking-wider leading-tight">
+                      <span class="retro-comic-neon-fire">JOGO DAS TRÊS PISTAS</span>
+                  </h1>
+                  <p class="text-xs sm:text-sm bg-black/40 inline-block px-4 py-1.5 rounded-full border border-slate-700/50">
+                      Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-500 font-semibold">Honda &amp; Bulgarelli</span>
+                  </p>
               </div>
           </div>
 
-          <div class="text-center mt-2">
-              <h1 class="text-4xl sm:text-6xl md:text-7xl font-black mb-3 tracking-wider leading-tight">
-                  <span class="retro-comic-neon-fire">JOGO DAS TRÊS PISTAS</span>
-              </h1>
-              <p class="text-slate-300 text-sm sm:text-base bg-black/40 inline-block px-4 py-1.5 rounded-full border border-slate-700/50">
-                  Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-400 font-semibold">Honda &amp; Bulgarelli</span>
-              </p>
-          </div>
-      </div>
+          <!-- HONDA CIVIC TYPE-R 3D COMPLETO INTEGRADO -->
+          <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
+              <div class="road-perspective pointer-events-none">
+                  <div class="road-grid"></div>
+                  <div id="roadStripes" class="road-stripes"></div>
+              </div>
 
-      <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
-          <div class="road-perspective pointer-events-none">
-              <div class="road-grid"></div>
-              <div id="roadStripes" class="road-stripes"></div>
-          </div>
+              <div id="lightBeams" class="absolute bottom-28 w-[420px] h-48 pointer-events-none opacity-40 transition-opacity duration-300 flex justify-between px-6 z-0">
+                  <div class="w-36 h-full bg-gradient-to-t from-transparent via-cyan-400/20 to-blue-200/50 rounded-full blur-xl transform -rotate-6"></div>
+                  <div class="w-36 h-full bg-gradient-to-t from-transparent via-cyan-400/20 to-blue-200/50 rounded-full blur-xl transform rotate-6"></div>
+              </div>
 
-          <div id="carShadow" class="car-shadow absolute bottom-24 w-[380px] h-6 bg-black/85 rounded-full blur-md z-0"></div>
+              <div id="carShadow" class="car-shadow absolute bottom-24 w-[380px] h-6 bg-black/85 rounded-full blur-md z-0"></div>
 
-          <div id="carRoot" class="car-assembly idle-vibe relative w-[390px] h-[210px] z-10 flex flex-col items-center justify-end">
-              <div class="relative w-[360px] z-20 flex flex-col items-center -mt-1">
-                  <div class="relative w-full h-[62px] bg-gradient-to-b from-[#b80000] via-[#c70000] to-[#990000] rounded-t-2xl shadow-xl border-t border-red-400/50 flex flex-col items-center">
-                      <div class="absolute bottom-0 w-full h-[32px] bg-gradient-to-b from-[#181818] via-[#101010] to-[#080808] border-t-2 border-zinc-700 flex items-center justify-between px-3 z-30 shadow-md">
-                          <div class="flex-1 h-full flex items-center justify-center px-2">
-                              <div class="relative w-full h-[26px] bg-[#0d0d0d] rounded flex items-center justify-center border-b border-red-700/60">
-                                  <div class="relative w-8 h-6 bg-[#b00000] border-2 border-[#e6e6e6] rounded-[4px] flex items-center justify-center z-20">
-                                      <span class="text-[10px] font-black text-white">H</span>
+              <div id="carRoot" class="car-assembly idle-vibe relative w-[390px] h-[210px] z-10 flex flex-col items-center justify-end">
+                  
+                  <div class="absolute -top-3 w-[310px] flex flex-col items-center z-0">
+                      <div class="w-full h-4 bg-gradient-to-r from-[#181818] via-[#2a2a2a] to-[#181818] rounded-t-md shadow-lg border-b border-black flex justify-between px-1 items-center">
+                          <div class="w-2.5 h-6 bg-[#0e0e0e] rounded-sm transform -rotate-6 border border-zinc-700"></div>
+                          <div class="w-48 h-1.5 bg-[#141414] rounded-full mx-auto"></div>
+                          <div class="w-2.5 h-6 bg-[#0e0e0e] rounded-sm transform rotate-6 border border-zinc-700"></div>
+                      </div>
+                      <div class="w-[210px] flex justify-between px-6">
+                          <div class="w-3 h-8 bg-gradient-to-b from-[#1c1c1c] to-[#0c0c0c] rounded-b-sm border-x border-zinc-800"></div>
+                          <div class="w-3 h-8 bg-gradient-to-b from-[#1c1c1c] to-[#0c0c0c] rounded-b-sm border-x border-zinc-800"></div>
+                      </div>
+                  </div>
+
+                  <div class="relative w-[280px] h-[82px] flex items-center justify-center z-10">
+                      <div class="absolute -left-6 top-10 flex items-center">
+                          <div class="w-8 h-5 bg-[#111] rounded-l-full border border-zinc-800 shadow-md transform -rotate-3 relative overflow-hidden flex items-center justify-end pr-1">
+                              <div class="w-1.5 h-3.5 bg-sky-200/40 rounded-sm"></div>
+                              <div class="absolute top-0 left-0 w-full h-1.5 bg-[#c70000]"></div>
+                          </div>
+                          <div class="w-3 h-1.5 bg-[#0a0a0a]"></div>
+                      </div>
+                      <div class="absolute -right-6 top-10 flex items-center">
+                          <div class="w-3 h-1.5 bg-[#0a0a0a]"></div>
+                          <div class="w-8 h-5 bg-[#111] rounded-r-full border border-zinc-800 shadow-md transform rotate-3 relative overflow-hidden flex items-center justify-start pl-1">
+                              <div class="w-1.5 h-3.5 bg-sky-200/40 rounded-sm"></div>
+                              <div class="absolute top-0 right-0 w-full h-1.5 bg-[#c70000]"></div>
+                          </div>
+                      </div>
+                      <div class="w-[220px] h-[78px] bg-gradient-to-b from-[#1a1a1a] via-[#101318] to-[#08090c] rounded-t-[55px] p-2 border-t-2 border-zinc-600/30 relative shadow-2xl flex flex-col items-center">
+                          <div class="w-[196px] h-[64px] bg-gradient-to-b from-[#16212e] via-[#0c131c] to-[#05080c] rounded-t-[44px] relative overflow-hidden border border-white/10 shadow-inner">
+                              <div class="absolute bottom-1 w-full flex justify-between px-9 opacity-40">
+                                  <div class="w-6 h-7 bg-red-700 rounded-t-md border border-red-500"></div>
+                                  <div class="w-6 h-7 bg-red-700 rounded-t-md border border-red-500"></div>
+                              </div>
+                              <div class="absolute top-1 left-1/2 -translate-x-1/2 w-6 h-2 bg-neutral-900 border border-zinc-700 rounded-sm"></div>
+                              <div class="absolute -top-4 left-4 w-10 h-28 bg-white/15 transform rotate-35 pointer-events-none blur-[0.5px]"></div>
+                              <div class="absolute -top-4 right-10 w-4 h-28 bg-white/10 transform rotate-35 pointer-events-none"></div>
+                              <div class="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/80 to-transparent"></div>
+                              <div class="absolute inset-y-0 right-0 w-3 bg-gradient-to-l from-black/80 to-transparent"></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="relative w-[360px] z-20 flex flex-col items-center -mt-1">
+                      <div class="relative w-full h-[62px] bg-gradient-to-b from-[#b80000] via-[#c70000] to-[#990000] rounded-t-2xl shadow-xl border-t border-red-400/50 flex flex-col items-center">
+                          <div class="w-[260px] h-full flex justify-between items-center px-4 relative">
+                              <div class="w-1.5 h-10 bg-black/20 rounded-full blur-[0.5px] transform -rotate-12"></div>
+                              <div class="w-20 h-3.5 bg-[#121212] border border-zinc-800 rounded-t-sm shadow-inner flex items-center justify-center -mt-3">
+                                  <div class="w-16 h-1 bg-[#222] rounded-sm"></div>
+                              </div>
+                              <div class="w-1.5 h-10 bg-black/20 rounded-full blur-[0.5px] transform rotate-12"></div>
+                          </div>
+                          <div class="absolute bottom-0 w-full h-[32px] bg-gradient-to-b from-[#181818] via-[#101010] to-[#080808] border-t-2 border-zinc-700 flex items-center justify-between px-3 z-30 shadow-md">
+                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-bl-lg overflow-hidden border-t border-l border-zinc-500 transform -rotate-3 flex items-center px-1 shadow-[0_0_12px_rgba(0,180,255,0.4)]">
+                                  <div class="absolute top-0.5 right-0 w-full h-[3px] bg-white drl-glow"></div>
+                                  <div class="flex items-center gap-1.5 z-10 pl-1">
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-cyan-200 rounded-sm shadow-[0_0_8px_#38bdf8]"></div>
                                   </div>
+                                  <div class="absolute bottom-0 left-0 w-3 h-1 bg-amber-400"></div>
+                              </div>
+                              <div class="flex-1 h-full flex items-center justify-center px-2">
+                                  <div class="relative w-full h-[26px] bg-[#0d0d0d] rounded flex items-center justify-center border-b border-red-700/60">
+                                      <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:4px_4px]"></div>
+                                      <div class="relative w-8 h-6 bg-[#b00000] border-2 border-[#e6e6e6] rounded-[4px] flex items-center justify-center shadow-[0_0_8px_rgba(200,0,0,0.8)] z-20">
+                                          <svg viewBox="0 0 24 20" class="w-5 h-4 fill-white drop-shadow">
+                                              <path d="M3 2h3.2l2.3 12.5h1.2L12 9.5l2.3 5h1.2L17.8 2H21l-3 16h-4.2l-1.8-4.5-1.8 4.5H6.2L3 2z"/>
+                                          </svg>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-br-lg overflow-hidden border-t border-r border-zinc-500 transform rotate-3 flex items-center justify-end px-1 shadow-[0_0_12px_rgba(0,180,255,0.4)]">
+                                  <div class="absolute top-0.5 left-0 w-full h-[3px] bg-white drl-glow"></div>
+                                  <div class="flex items-center gap-1.5 z-10 pr-1">
+                                      <div class="w-3.5 h-3 bg-cyan-200 rounded-sm shadow-[0_0_8px_#38bdf8]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                  </div>
+                                  <div class="absolute bottom-0 right-0 w-3 h-1 bg-amber-400"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="w-full h-[62px] bg-gradient-to-b from-[#8f0000] via-[#750000] to-[#590000] rounded-b-xl border-t border-black/40 relative flex items-center justify-between px-3 shadow-2xl">
+                          <div class="w-14 h-11 bg-[#101010] rounded-md border border-zinc-800 relative overflow-hidden flex flex-col justify-end p-1 shadow-inner">
+                              <div class="w-3 h-3 bg-white rounded-full fog-glow mb-0.5 ml-1"></div>
+                              <div class="w-full h-1.5 bg-red-600/80 rounded-sm"></div>
+                          </div>
+                          <div class="w-[188px] h-11 bg-[#0b0c0e] rounded-md border border-zinc-800 relative flex flex-col justify-between p-1 shadow-inner">
+                              <div class="w-full h-1.5 bg-[#1f242d] rounded-sm opacity-60"></div>
+                              <div class="w-full h-4 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-800 opacity-25 rounded-xs"></div>
+                              <div class="w-full h-[3px] bg-[#ff1a1a] rounded-full shadow-[0_0_6px_#ff0000]"></div>
+                          </div>
+                          <div class="w-14 h-11 bg-[#101010] rounded-md border border-zinc-800 relative overflow-hidden flex flex-col justify-end items-end p-1 shadow-inner">
+                              <div class="w-3 h-3 bg-white rounded-full fog-glow mb-0.5 mr-1"></div>
+                              <div class="w-full h-1.5 bg-red-600/80 rounded-sm"></div>
+                          </div>
+                          <div class="absolute -bottom-2 inset-x-0 h-3 bg-[#0a0a0a] rounded-b-md border-t border-zinc-700 flex justify-between px-1">
+                              <div class="w-5 h-4 bg-black rounded-tl-sm border-l border-zinc-600 -mt-1"></div>
+                              <div class="w-5 h-4 bg-black rounded-tr-sm border-r border-zinc-600 -mt-1"></div>
+                          </div>
+                      </div>
+                      <div class="absolute -bottom-4 w-[372px] flex justify-between px-1 -z-10">
+                          <div class="w-10 h-16 bg-[#121316] rounded-md border-2 border-zinc-800 shadow-2xl flex flex-col items-center justify-center transform -rotate-1">
+                              <div class="w-5 h-8 border border-zinc-600/50 rounded-sm bg-gradient-to-b from-[#222] to-[#111] flex items-center justify-center">
+                                  <div class="w-2.5 h-2.5 bg-red-600 rounded-full"></div>
+                              </div>
+                          </div>
+                          <div class="w-10 h-16 bg-[#121316] rounded-md border-2 border-zinc-800 shadow-2xl flex flex-col items-center justify-center transform rotate-1">
+                              <div class="w-5 h-8 border border-zinc-600/50 rounded-sm bg-gradient-to-b from-[#222] to-[#111] flex items-center justify-center">
+                                  <div class="w-2.5 h-2.5 bg-red-600 rounded-full"></div>
                               </div>
                           </div>
                       </div>
                   </div>
               </div>
-          </div>
-      </main>
+          </main>
 
-      <footer class="w-full max-w-xl flex flex-col items-center gap-3 z-30 pb-10 mt-auto">
-          <div class="flex items-center gap-6">
-              <div class="start-button-ring p-1.5 rounded-full shadow-2xl">
-                  <button id="engineStartBtn" onclick="startCarAccelerationTransition()" class="start-button-core w-24 h-24 rounded-full flex flex-col items-center justify-center text-center cursor-pointer select-none active:scale-95 transition-transform" title="Iniciar Arrancada">
-                      <span class="text-[10px] tracking-widest text-red-200 font-extrabold uppercase">Engine</span>
-                      <span class="text-base font-black tracking-tight text-white uppercase drop-shadow leading-tight">START</span>
-                      <span class="text-[9px] tracking-wider text-red-200 font-bold uppercase">STOP</span>
-                      <span id="buttonLed" class="w-3 h-1 bg-white rounded-full mt-1 shadow-[0_0_6px_#ffffff]"></span>
-                  </button>
+          <footer class="w-full max-w-xl flex flex-col items-center gap-3 z-30 pb-6 mt-auto">
+              <div class="flex items-center gap-6">
+                  <div class="start-button-ring p-1.5 rounded-full shadow-2xl">
+                      <button id="engineStartBtn" onclick="startCarAccelerationTransition()" class="start-button-core w-24 h-24 rounded-full flex flex-col items-center justify-center text-center cursor-pointer select-none active:scale-95 transition-transform">
+                          <span class="text-[10px] tracking-widest text-red-200 font-extrabold uppercase">Engine</span>
+                          <span class="text-base font-black tracking-tight text-white uppercase leading-tight">START</span>
+                          <span class="text-[9px] tracking-wider text-red-200 font-bold uppercase">STOP</span>
+                          <span id="buttonLed" class="w-3 h-1 bg-white rounded-full mt-1"></span>
+                      </button>
+                  </div>
               </div>
+              <button onclick="closeGameApart()" class="text-xs text-red-500 hover:text-red-400 underline font-bold mt-1">
+                  <i class="fa-solid fa-arrow-left"></i> Sair do Jogo e Voltar ao Portal
+              </button>
+          </footer>
+        </div>
+
+        <!-- TRANSIÇÃO COM A PISTA DE CORRIDA E A MOTO 3D IMPORTADAS -->
+        <div id="subScreenTransition" class="hidden absolute inset-0 z-50 bg-[#090203] flex flex-col justify-center items-center text-center overflow-hidden">
+          <div class="relative z-10 px-4 mb-12">
+            <h2 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-widest uppercase retro-comic-neon-fire">
+              VAMOS JOGAR!
+            </h2>
           </div>
-          <button onclick="returnToOverview()" class="text-xs text-slate-400 hover:text-white underline mt-2">
-              <i class="fa-solid fa-arrow-left"></i> Voltar à Visão Geral do Portal
-          </button>
+
+          <div class="absolute bottom-16 w-full h-28 racetrack-container flex flex-col justify-between overflow-hidden">
+            <div class="w-full h-3 curb-pattern"></div>
+            <div class="relative flex-1 flex items-center overflow-hidden">
+              <div class="w-full border-b-2 border-dashed border-slate-400/60"></div>
+              <div class="absolute right-24 top-0 bottom-0 w-8 chequered-flag opacity-80 border-x border-white"></div>
+              
+              <div class="absolute top-1/2 -translate-y-1/2 animate-bike-custom flex items-center">
+                <svg class="w-44 h-28 sm:w-56 sm:h-36 drop-shadow-[0_10px_12px_rgba(0,0,0,0.95)]" viewBox="0 0 550 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="120" cy="200" r="54" fill="#111" stroke="#222" stroke-width="12"/>
+                  <circle cx="120" cy="200" r="38" fill="#d1d5db" stroke="#6b7280" stroke-width="4"/>
+                  <circle cx="120" cy="200" r="22" fill="#ef4444"/>
+                  <circle cx="410" cy="200" r="54" fill="#111" stroke="#222" stroke-width="12"/>
+                  <circle cx="410" cy="200" r="38" fill="#d1d5db" stroke="#6b7280" stroke-width="4"/>
+                  <circle cx="410" cy="200" r="22" fill="#ef4444"/>
+                  <path d="M400 170 L420 230" stroke="#000" stroke-width="8"/>
+                  <path d="M160 215 L240 215 L280 185" stroke="#4b5563" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M220 210 L285 180" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M140 170 L220 120 L300 110 L370 140 L350 190 L240 190 Z" fill="#dc2626"/>
+                  <path d="M220 120 L320 110 L270 160 Z" fill="#ffffff"/>
+                  <path d="M120 140 L210 110 L160 160 Z" fill="#111827"/>
+                  <path d="M340 130 C360 100, 420 120, 430 160 C400 170, 360 170, 340 130 Z" fill="#b91c1c"/>
+                  <polygon points="360,115 410,125 390,145" fill="#38bdf8" opacity="0.8"/>
+                  <polygon points="410,145 435,150 420,165" fill="#ffffff"/>
+                  <circle cx="310" cy="65" r="22" fill="#111827" stroke="#dc2626" stroke-width="4"/>
+                  <path d="M315 55 Q330 65 325 75" stroke="#f59e0b" stroke-width="6" fill="none"/>
+                  <path d="M230 130 C240 80, 290 85, 310 90 L270 135 Z" fill="#1f2937"/>
+                  <path d="M290 90 L350 110 L330 130" stroke="#dc2626" stroke-width="12" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <div class="w-full h-3 curb-pattern"></div>
+          </div>
+        </div>
+
+        <div id="subScreenLevels" class="hidden flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6 overflow-y-auto">
+          <div class="glass-card p-4 rounded-2xl border-red-500/30 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+              <div id="levelAvatarPreview" class="w-12 h-12 rounded-full bg-slate-800 border-2 border-red-500 flex items-center justify-center text-2xl overflow-hidden shadow-lg">
+                👨‍💼
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 uppercase font-semibold block">Operador Conectado</span>
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                  <span id="displayPlayerName">---</span> 
+                  <span class="text-xs font-normal text-slate-400">(Matrícula: <span id="displayPlayerMatricula">---</span>)</span>
+                </h3>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right bg-black/40 px-4 py-1.5 rounded-xl border border-yellow-500/30">
+                <span class="text-[10px] text-slate-400 uppercase block">Pontuação Total</span>
+                <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
+              </div>
+              <button onclick="closeGameApart()" class="px-3 py-2 bg-red-900/60 hover:bg-red-800 text-xs font-semibold rounded-xl border border-red-500/40 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-house"></i> Sair do Jogo
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-bold font-game flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio — Honda
+              </h2>
+            </div>
+            <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6">
+            <h2 class="text-lg font-bold font-game text-yellow-500 flex items-center gap-2 mb-4">
+              <i class="fa-solid fa-ranking-star"></i> Ranking Interno do Jogo
+            </h2>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
+                    <th class="p-3">Posição</th>
+                    <th class="p-3">Operador</th>
+                    <th class="p-3">Matrícula</th>
+                    <th class="p-3">Progresso</th>
+                    <th class="p-3 text-right">Pontos</th>
+                  </tr>
+                </thead>
+                <tbody id="internalRankingTableBody">
+                  <tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando ranking do jogo...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="subScreenGame" class="hidden flex-1 max-w-3xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center overflow-y-auto">
+          <div class="glass-card p-6 sm:p-8 rounded-3xl border-red-500/30 space-y-6 relative">
+            <div class="flex justify-between items-center border-b border-slate-700/60 pb-4">
+              <div>
+                <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block font-game">Módulo 1</span>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <h2 id="gameRoundTitle" class="text-lg font-bold font-game">Desafio 1 de 3</h2>
+                  <span id="roundStatusBadge" class="hidden text-[10px] bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 px-2 py-0.5 rounded-full font-semibold">Concluído</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-slate-400 block">Sua Pontuação</span>
+                <span id="gameScoreDisplay" class="text-2xl font-black text-yellow-400">0 pts</span>
+              </div>
+            </div>
+
+            <div id="cluesContainer" class="space-y-3"></div>
+
+            <form id="formAnswer" onsubmit="handleAnswerSubmit(event)" class="space-y-3 pt-2">
+              <label class="block text-xs font-semibold uppercase text-slate-300">Sua Resposta para a Pista Ativa:</label>
+              <div class="flex gap-2">
+                <input type="text" id="inputAnswer" autocomplete="off" required placeholder="Digite a resposta..." class="flex-1 px-4 py-3 bg-black/60 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+                <button type="submit" class="px-6 py-3 honda-red honda-red-hover text-white font-bold rounded-xl transition flex items-center gap-2">
+                  <span>ENVIAR</span> <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+            </form>
+
+            <div class="pt-2 text-center">
+              <button onclick="showLevelsScreenApart()" class="text-xs text-slate-400 hover:text-white transition underline">
+                <i class="fa-solid fa-arrow-left"></i> Voltar à Seleção de Níveis
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto">
+        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS - 2026</p>
       </footer>
-    </section>
+    </div>
+  </div>
 
-    <!-- TELA DE TRANSIÇÃO "VAMOS JOGAR!" -->
-    <section id="screenTransitionMoto" class="hidden fixed inset-0 z-50 bg-[#090203] flex flex-col justify-center items-center text-center overflow-hidden">
-      <div class="relative z-10 px-4 mb-12">
-        <h2 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-widest uppercase retro-comic-neon-fire">
-          VAMOS JOGAR!
+  <!-- MODAL AVATAR -->
+  <div id="modalAvatarCustomizer" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
+    <div class="max-w-4xl w-full glass-card p-6 sm:p-8 rounded-3xl border-red-500/40 shadow-2xl relative max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+        <h2 class="text-xl font-bold font-game flex items-center gap-2">
+          <i class="fa-solid fa-user-gear text-red-500"></i> Personalização de Avatar Corporativo
         </h2>
-      </div>
-
-      <div class="absolute bottom-16 w-full h-28 racetrack-container flex flex-col justify-between overflow-hidden">
-        <div class="w-full h-3 curb-pattern"></div>
-        <div class="relative flex-1 flex items-center overflow-hidden">
-          <div class="w-full border-b-2 border-dashed border-slate-400/60"></div>
-          <div class="absolute right-24 top-0 bottom-0 w-8 chequered-flag opacity-80 border-x border-white"></div>
-        </div>
-        <div class="w-full h-3 curb-pattern"></div>
-      </div>
-    </section>
-
-    <!-- TELA 2 DO JOGO: SELEÇÃO DE NÍVEIS -->
-    <section id="screenLevels" class="hidden flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-8">
-      <div class="glass-card p-4 rounded-2xl border-red-500/30 flex flex-wrap justify-between items-center gap-4">
-        <div>
-          <span class="text-xs text-slate-400 uppercase font-semibold block">Operador Conectado</span>
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-user-circle text-red-500"></i>
-            <span id="displayPlayerName">---</span> 
-            <span class="text-xs font-normal text-slate-400">(Matrícula: <span id="displayPlayerMatricula">---</span>)</span>
-          </h3>
-        </div>
-        <div class="flex items-center gap-3">
-          <div class="text-right bg-black/40 px-4 py-1.5 rounded-xl border border-yellow-500/30">
-            <span class="text-[10px] text-slate-400 uppercase block">Pontuação Total</span>
-            <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
-          </div>
-          <button onclick="returnToOverview()" class="px-3 py-2 bg-red-900/60 hover:bg-red-800 text-xs font-semibold rounded-xl border border-red-500/40 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-house"></i> Visão Geral
-          </button>
-        </div>
-      </div>
-
-      <!-- PAINEL ADMIN DE TESTES -->
-      <div id="adminPanelGame" class="hidden glass-card p-3 rounded-xl border border-yellow-500/50 flex flex-wrap items-center justify-between gap-3 bg-yellow-950/20">
-        <div class="flex items-center gap-2 text-xs text-yellow-300 font-semibold">
-          <i class="fa-solid fa-user-shield text-yellow-400 text-base"></i>
-          <span>Modo Admin: Desbloqueio Antecipado (Bypass de Datas)</span>
-        </div>
-        <button onclick="toggleAdminUnlock()" id="adminUnlockBtn" class="px-3 py-1.5 bg-yellow-600 hover:bg-yellow-500 text-black text-xs font-bold rounded-lg transition shadow">
-          🔓 [ADMIN] Desbloquear Todos os Níveis
+        <button onclick="closeAvatarCustomizerModal()" class="text-slate-400 hover:text-white p-2">
+          <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <div>
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold font-game flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio — Honda
-          </h2>
-        </div>
-        <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </div>
-
-      <!-- RANKING INTERNO DO JOGO -->
-      <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6">
-        <h2 class="text-lg font-bold font-game text-yellow-400 flex items-center gap-2 mb-4">
-          <i class="fa-solid fa-ranking-star"></i> Ranking Interno do Jogo
-        </h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead>
-              <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
-                <th class="p-3">Posição</th>
-                <th class="p-3">Operador</th>
-                <th class="p-3">Matrícula</th>
-                <th class="p-3">Progresso</th>
-                <th class="p-3 text-right">Pontos</th>
-              </tr>
-            </thead>
-            <tbody id="internalRankingTableBody">
-              <tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando ranking do jogo...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELA 3 DO JOGO: EXECUÇÃO DO QUIZ -->
-    <section id="screenGame" class="hidden flex-1 max-w-3xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
-      <div class="glass-card p-6 sm:p-8 rounded-3xl border-red-500/30 space-y-6 relative">
-        <div class="absolute inset-0 bg-red-900/5 blur-xl -z-10 rounded-3xl"></div>
-        <div class="flex justify-between items-center border-b border-slate-700/60 pb-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-4 overflow-y-auto flex-1">
+        <div class="glass-card p-6 rounded-2xl border-slate-700 flex flex-col items-center justify-center text-center space-y-4 bg-slate-900/50">
+          <div id="avatar3DPreview" class="w-36 h-36 rounded-full bg-gradient-to-tr from-slate-900 via-red-950 to-slate-800 border-4 border-red-500 flex items-center justify-center text-6xl shadow-2xl relative overflow-hidden">
+            👨‍💼
+          </div>
           <div>
-            <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block font-game">Módulo 1</span>
-            <div class="flex items-center gap-2 mt-0.5">
-              <h2 id="gameRoundTitle" class="text-lg font-bold font-game">Desafio 1 de 3</h2>
-              <span id="roundStatusBadge" class="hidden text-[10px] bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 px-2 py-0.5 rounded-full font-semibold">Já Concluída</span>
+            <h4 id="previewAvatarTitle" class="font-bold text-sm">Avatar Pixar 3D</h4>
+            <p class="text-[10px] text-slate-400">Estilo Corporativo Premium</p>
+          </div>
+          <div class="text-[10px] bg-black/60 p-3 rounded-xl border border-slate-800 text-left space-y-1 w-full text-slate-300">
+            <p><strong>Cena:</strong> <span id="summaryCenario">Escritório</span></p>
+            <p><strong>Estilo:</strong> <span id="summaryEstilo">Pixar 3D</span></p>
+            <p><strong>Roupa:</strong> <span id="summaryRoupa">Camisa Social</span></p>
+          </div>
+        </div>
+
+        <div class="md:col-span-2 space-y-4 text-xs pr-2">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Sexo</label>
+              <select id="avSexo" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Idade (18 a 60)</label>
+              <input type="number" id="avIdade" min="18" max="60" value="28" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
             </div>
           </div>
-          <div class="text-right">
-            <span class="text-xs text-slate-400 block">Sua Pontuação</span>
-            <span id="gameScoreDisplay" class="text-2xl font-black text-yellow-400">0 pts</span>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Tom de Pele</label>
+              <select id="avPele" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="morena clara">Morena Clara</option>
+                <option value="clara">Clara</option>
+                <option value="morena">Morena</option>
+                <option value="negra">Negra</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Formato do Rosto</label>
+              <select id="avRosto" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="oval">Oval</option>
+                <option value="redondo">Redondo</option>
+                <option value="quadrado">Quadrado</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div id="cluesContainer" class="space-y-3"></div>
-
-        <form id="formAnswer" onsubmit="handleAnswerSubmit(event)" class="space-y-3 pt-2">
-          <label class="block text-xs font-semibold uppercase text-slate-300">Sua Resposta para a Pista Ativa:</label>
-          <div class="flex gap-2">
-            <input type="text" id="inputAnswer" autocomplete="off" required placeholder="Digite a resposta..." class="flex-1 px-4 py-3 bg-black/60 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
-            <button type="submit" class="px-6 py-3 honda-red honda-red-hover text-white font-bold rounded-xl transition flex items-center gap-2">
-              <span>ENVIAR</span> <i class="fa-solid fa-paper-plane"></i>
-            </button>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Cabelo &amp; Cor</label>
+              <select id="avCabelo" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="curto degradê preto">Preto Curto Degradê</option>
+                <option value="medio castanho">Médio Castanho</option>
+                <option value="longo loiro">Longo Loiro</option>
+                <option value="cacheado crespo">Cacheado / Crespo</option>
+                <option value="grisalho executivo">Grisalho Executivo</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Vestimenta</label>
+              <select id="avVestimenta" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="Camisa Social Azul Marinho">Camisa Social Azul Marinho</option>
+                <option value="Uniforme Corporativo">Uniforme Corporativo</option>
+                <option value="Polo Empresarial">Polo Empresarial</option>
+                <option value="Blazer Executivo">Blazer Executivo</option>
+                <option value="Roupa Casual">Roupa Casual</option>
+              </select>
+            </div>
           </div>
-        </form>
 
-        <div class="pt-2 text-center">
-          <button onclick="showLevelsScreen()" class="text-xs text-slate-400 hover:text-white transition underline">
-            <i class="fa-solid fa-arrow-left"></i> Voltar à Seleção de Níveis
-          </button>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Acessórios</label>
+              <select id="avAcessorio" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="Nenhum">Nenhum</option>
+                <option value="Crachá Corporativo">Crachá Corporativo</option>
+                <option value="Óculos Modernos">Óculos Modernos</option>
+                <option value="Headset Atendimento">Headset</option>
+                <option value="Relógio Executivo">Relógio Executivo</option>
+                <option value="Tablet / Notebook">Tablet</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Estilo Visual 3D</label>
+              <select id="avEstiloVisual" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="Pixar 3D">Pixar 3D</option>
+                <option value="DreamWorks">DreamWorks</option>
+                <option value="Disney 3D">Disney 3D</option>
+                <option value="Semi-Realista">Semi-Realista</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Emoção / Expressão</label>
+              <select id="avEmocao" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="Sorridente / Confiante">Sorridente &amp; Confiante</option>
+                <option value="Motivado / Inspirador">Motivado</option>
+                <option value="Empático / Explicando">Empático</option>
+                <option value="Celebrando">Celebrando Resultados</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-300">Cenário de Fundo</label>
+              <select id="avCenario" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/60 border border-slate-700 rounded-lg text-white">
+                <option value="Escritório Corporativo">Escritório Corporativo</option>
+                <option value="Sala de Treinamento">Sala de Treinamento</option>
+                <option value="Identidade Visual Empresa">Identidade Bulgarelli</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
 
+      <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+        <button onclick="closeAvatarCustomizerModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl transition">Cancelar</button>
+        <button onclick="saveAvatarConfig()" class="px-6 py-2 honda-red honda-red-hover text-white text-xs font-bold rounded-xl shadow-lg shadow-red-900/40 transition">Salvar Avatar</button>
+      </div>
+    </div>
   </div>
 
-  <!-- MODAL DE IDENTIFICAÇÃO E SENHA DE ACESSO -->
+  <!-- MODAL AUTENTICAÇÃO -->
   <div id="modalRegistration" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/30 shadow-2xl relative">
-      <div class="absolute inset-0 bg-red-900/10 blur-xl -z-10 rounded-3xl"></div>
       <div class="text-center mb-6">
         <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
-        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game">Identificação</h2>
-        <p id="modalAuthSub" class="text-xs text-slate-400">Insira seus dados para autenticar no portal</p>
+        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game">Identificação Obrigatória</h2>
+        <p id="modalAuthSubtitle" class="text-xs text-slate-400">Insira seu Nome, Sobrenome e Matrícula para continuar</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome e Sobrenome</label>
-          <input type="text" id="inputName" required placeholder="Ex: Ana Caroline ou Illichs Soto" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+        <div id="step1Fields" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome e Sobrenome</label>
+            <input type="text" id="inputName" placeholder="Fulano Silva" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Matrícula</label>
+            <input type="text" id="inputMatricula" placeholder="1234" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          </div>
         </div>
-        <div id="matriculaFieldContainer">
-          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Matrícula</label>
-          <input type="text" id="inputMatricula" placeholder="Ex: 1304" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+
+        <div id="step2Fields" class="hidden space-y-4">
+          <div class="p-3 bg-red-950/40 border border-red-500/40 rounded-xl text-xs text-red-200 text-center">
+            Primeiro acesso detectado! Por favor, crie uma senha de acesso.
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Criar Senha de Acesso</label>
+            <input type="password" id="inputPassword" placeholder="Digite sua nova senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          </div>
         </div>
-        <div id="passwordFieldContainer" class="hidden">
-          <label class="block text-xs font-semibold uppercase text-slate-300 mb-1" id="passwordLabelText">Criar Senha de Acesso</label>
-          <input type="password" id="inputPassword" placeholder="Digite sua senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+
+        <div id="loginPasswordFields" class="hidden space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Insira sua Senha</label>
+            <input type="password" id="inputLoginPassword" placeholder="Sua senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          </div>
         </div>
+
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="closeRegistrationModal()" class="w-1/3 py-3 bg-black/50 hover:bg-black/80 text-slate-300 font-bold rounded-xl border border-slate-700 transition">CANCELAR</button>
-          <button type="submit" class="w-2/3 py-3 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg shadow-red-900/50 transition">CONTINUAR</button>
+          <button type="submit" id="authSubmitBtn" class="w-2/3 py-3 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg shadow-red-900/50 transition">CONTINUAR</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL DE FEEDBACK -->
+  <!-- MODAL FEEDBACK -->
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
       <div id="modalIconContainer" class="mb-4"></div>
@@ -673,79 +1056,281 @@
     </div>
   </div>
 
-  <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto hidden md:block">
-    <p>Portal Operacional Bulgarelli Advogados — © 2026</p>
-  </footer>
+  <!-- FIREBASE REALTIME ENGINE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    window.db = null;
+    try {
+      const firebaseConfig = { databaseURL: "https://bulgarelli-play-default-rtdb.firebaseio.com" };
+      const app = initializeApp(firebaseConfig);
+      window.db = getDatabase(app);
+    } catch(e) {}
+
+    window.syncFirebaseRanking = function() {
+      if (!window.db) return;
+      const rankingRef = ref(window.db, 'rankings/honda');
+      onValue(rankingRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const rankingArray = Object.values(data);
+          rankingArray.sort((a, b) => b.score - a.score);
+          window.renderInternalRankingTable(rankingArray);
+          window.updateAdminMetrics(rankingArray);
+        }
+      });
+    };
+
+    window.savePlayerToFirebase = async function(playerData) {
+      if (!window.db) return false;
+      const playerRef = ref(window.db, 'rankings/honda/' + playerData.matricula);
+      try {
+        await runTransaction(playerRef, (currentData) => {
+          if (currentData === null) {
+            return playerData;
+          } else {
+            return {
+              ...currentData,
+              score: Math.max(currentData.score || 0, playerData.score),
+              completedRoundsCount: Math.max(currentData.completedRoundsCount || 0, playerData.completedRoundsCount),
+              updatedAt: Date.now()
+            };
+          }
+        });
+        return true;
+      } catch(e) {
+        return false;
+      }
+    };
+
+    window.fetchUserFromFirebase = async function(matricula) {
+      if (!window.db) return null;
+      try {
+        const snapshot = await get(ref(window.db, 'users/' + matricula));
+        if (snapshot.exists()) {
+          return snapshot.val();
+        }
+      } catch(e) {}
+      return null;
+    };
+
+    window.saveUserToFirebase = async function(userData) {
+      if (!window.db) return false;
+      try {
+        await set(ref(window.db, 'users/' + userData.matricula), userData);
+        return true;
+      } catch(e) {
+        return false;
+      }
+    };
+  </script>
 
   <script>
-    // LISTA DE ADMINISTRADORES (EQUIPE DE TREINAMENTO)
-    const adminTeamList = [
-      { name: "LUCAS VIOTTI", matricula: "9001", password: "", isAdmin: true, noMatricula: false },
-      { name: "ILLICHS SOTO", matricula: "NO_MATRICULA", password: "", isAdmin: true, noMatricula: true },
-      { name: "DENNIS PAIVA", matricula: "9003", password: "", isAdmin: true, noMatricula: false },
-      { name: "KARLA ISABELA", matricula: "9004", password: "", isAdmin: true, noMatricula: false },
-      { name: "JESSICA DIAS", matricula: "9005", password: "", isAdmin: true, noMatricula: false },
-      { name: "FABIANE CARDOSO", matricula: "9006", password: "", isAdmin: true, noMatricula: false },
-      { name: "THAINA SANTOS", matricula: "9007", password: "", isAdmin: true, noMatricula: false }
+    let audioCtx = null;
+    function initAudio() {
+        try {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        } catch (e) {}
+    }
+
+    function playEngineLaunchAudio() {
+        if (!audioCtx) return;
+        try {
+            const now = audioCtx.currentTime;
+            const oscFundamental = audioCtx.createOscillator();
+            const oscHarmonic = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filterNode = audioCtx.createBiquadFilter();
+
+            oscFundamental.type = 'sawtooth';
+            oscHarmonic.type = 'triangle';
+
+            filterNode.type = 'lowpass';
+            filterNode.frequency.setValueAtTime(450, now);
+            filterNode.frequency.exponentialRampToValueAtTime(3200, now + 0.8);
+            filterNode.Q.setValueAtTime(4, now);
+
+            oscFundamental.frequency.setValueAtTime(75, now);
+            oscFundamental.frequency.linearRampToValueAtTime(140, now + 0.25);
+            oscFundamental.frequency.exponentialRampToValueAtTime(560, now + 1.05);
+
+            oscHarmonic.frequency.setValueAtTime(150, now);
+            oscHarmonic.frequency.linearRampToValueAtTime(280, now + 0.25);
+            oscHarmonic.frequency.exponentialRampToValueAtTime(1120, now + 1.05);
+
+            gainNode.gain.setValueAtTime(0.08, now);
+            gainNode.gain.linearRampToValueAtTime(0.35, now + 0.3);
+            gainNode.gain.linearRampToValueAtTime(0.6, now + 0.9);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+
+            oscFundamental.connect(filterNode);
+            oscHarmonic.connect(filterNode);
+            filterNode.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscFundamental.start(now);
+            oscHarmonic.start(now);
+            oscFundamental.stop(now + 1.45);
+            oscHarmonic.stop(now + 1.45);
+        } catch(e){}
+    }
+
+    const periodicElements = [
+      { sym: "B", name: "Boro", color: "bg-red-600 border-red-400" },
+      { sym: "U", name: "Urânio", color: "bg-amber-600 border-amber-400" },
+      { sym: "Li", name: "Lítio", color: "bg-yellow-600 border-yellow-400" },
+      { sym: "Ga", name: "Gálio", color: "bg-emerald-600 border-emerald-400" },
+      { sym: "Re", name: "Rênio", color: "bg-cyan-600 border-cyan-400" },
+      { sym: "Li", name: "Lítio", color: "bg-blue-600 border-blue-400" },
+      { sym: "P", name: "Fósforo", color: "bg-indigo-600 border-indigo-400" },
+      { sym: "La", name: "Lantânio", color: "bg-purple-600 border-purple-400" },
+      { sym: "Y", name: "Ítrio", color: "bg-pink-600 border-pink-400" }
     ];
 
+    function initPreloader() {
+      const container = document.getElementById("periodicTitleContainer");
+      container.innerHTML = "";
+
+      periodicElements.forEach((el, i) => {
+        const box = document.createElement("div");
+        box.className = `periodic-element w-12 h-14 sm:w-14 sm:h-16 rounded-xl border-2 ${el.color} flex flex-col justify-between p-1 shadow-lg text-white font-bold`;
+        box.style.animationDelay = `${i * 0.12}s`;
+        box.innerHTML = `
+          <span class="text-[8px] opacity-75 leading-none">${i + 1}</span>
+          <span class="text-lg sm:text-xl text-center leading-none tracking-tighter">${el.sym}</span>
+          <span class="text-[7px] text-center opacity-80 leading-none truncate">${el.name}</span>
+        `;
+        container.appendChild(box);
+      });
+
+      const bar = document.getElementById("preloaderBar");
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 4;
+        bar.style.width = `${progress}%`;
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            const preloader = document.getElementById("preloader");
+            preloader.classList.add("transition-opacity", "duration-500", "opacity-0");
+            setTimeout(() => preloader.classList.add("hidden"), 500);
+          }, 300);
+        }
+      }, 40);
+    }
+
+    function toggleThemeManual() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const icon = document.getElementById("themeIcon");
+      const text = document.getElementById("themeText");
+
+      if (isDark) {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        icon.className = "fa-solid fa-sun";
+        text.innerText = "Claro";
+        localStorage.setItem("theme_preference", "light");
+      } else {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+        icon.className = "fa-solid fa-moon";
+        text.innerText = "Escuro";
+        localStorage.setItem("theme_preference", "dark");
+      }
+    }
+
+    let sidebarHidden = false;
+    function toggleSidebarManual() {
+      const sidebar = document.getElementById("sidebarNav");
+      const floatBtn = document.getElementById("sidebarToggleFloat");
+      if (!sidebarHidden) {
+        sidebar.style.transform = "translateX(-100%)";
+        sidebar.style.width = "0";
+        sidebar.style.padding = "0";
+        sidebar.style.overflow = "hidden";
+        floatBtn.classList.remove("hidden");
+        sidebarHidden = true;
+      } else {
+        sidebar.style.transform = "translateX(0)";
+        sidebar.style.width = "16rem";
+        sidebar.style.padding = "";
+        sidebar.style.overflow = "";
+        floatBtn.classList.add("hidden");
+        sidebarHidden = false;
+      }
+    }
+
     let authorizedEmployees = [
-      ...adminTeamList,
-      { name: "ANA CAROLINE SOUZA SANTOS", matricula: "1304", password: "" },
-      { name: "ANA LUIZA BATISTA DE OLIVEIRA SANTOS", matricula: "2275", password: "" },
-      { name: "ANA LUIZA DA SILVA", matricula: "2271", password: "" },
-      { name: "ANA LUIZA MEDEIROS DOS SANTOS", matricula: "3016", password: "" },
-      { name: "ANA LUIZA SILVA DE CARVALHO", matricula: "2274", password: "" },
-      { name: "BEATRIZ AGNOLETTO SANTOS", matricula: "1260", password: "" },
-      { name: "BEATRIZ MATIOLI SENA", matricula: "2937", password: "" },
-      { name: "BRENDA VITORIA DOS SANTOS SILVA", matricula: "1601", password: "" },
-      { name: "CARLOS ALBERTO MONTIN JUNIOR", matricula: "2651", password: "" },
-      { name: "CAROLINA DA LUZ", matricula: "1060", password: "" },
-      { name: "CELSO ALEXANDRE RIBEIRO MESSIAS", matricula: "1700", password: "" },
-      { name: "CHRISTAN GUILHERME DA SILVA ARAUJO", matricula: "2560", password: "" },
-      { name: "DANIELE CARVALHO ARAUJO", matricula: "3148", password: "" },
-      { name: "DANIELY RAMOS DE SOUZA SILVA", matricula: "2530", password: "" },
-      { name: "DAVI ACBAS DE LIMA", matricula: "3092", password: "" },
-      { name: "DAYANE DOS SANTOS DUARTE", matricula: "3050", password: "" },
-      { name: "DENZEL FEITOSA DE OLIVEIRA JULIO", matricula: "2785", password: "" },
-      { name: "EDSON SAMUEL DAMASCENO ARCANJO", matricula: "1616", password: "" },
-      { name: "EDUARDO ANTONY SILVA NASCIMENTO", matricula: "1985", password: "" },
-      { name: "ELIAS COSTA FIRMINO DA SILVA", matricula: "2003", password: "" },
-      { name: "EVERSON XAVIER DE ALMEIDA", matricula: "2396", password: "" },
-      { name: "FABRICIO PEREIRA E SILVA", matricula: "3113", password: "" },
-      { name: "FELIPE CORREA AMARAL", matricula: "2736", password: "" },
-      { name: "GABRIEL LUCAS SAMPAIO DOS SANTOS", matricula: "1372", password: "" },
-      { name: "GISELLE CRISTINA RIBEIRO MESSIAS", matricula: "2375", password: "" },
-      { name: "GUILHERME FEIJO DE OLIVEIRA", matricula: "1757", password: "" },
-      { name: "GUSTAVO HENRIQUE TAVARES DOS SANTOS", matricula: "2135", password: "" },
-      { name: "HEBER GONCALVES NUNES", matricula: "2939", password: "" },
-      { name: "IARA APARECIDA DA SILVA", matricula: "2924", password: "" },
-      { name: "ILAINA SUELE SANTANA NASCIMENTO", matricula: "1264", password: "" },
-      { name: "ISABELLA ALCANTARA SOARES", matricula: "3104", password: "" },
-      { name: "ISABELLA LUZIA AMORIM DE CARVALHO", matricula: "2566", password: "" },
-      { name: "JESSICA CRISTINA CAPELOTTO DA SILVA", matricula: "2590", password: "" },
-      { name: "JOAO VITOR APARECIDO DE ANDRADE DE OLIVEIRA", matricula: "2991", password: "" },
-      { name: "JOHNNY JEFFERSON RAMOS DO CARMO", matricula: "1947", password: "" },
-      { name: "JOSE YURI BENEVIDES LIMA", matricula: "1600", password: "" },
-      { name: "JULIA DE MORAIS MARIANO", matricula: "2270", password: "" },
-      { name: "KAMILLY ARAUJO DE FREITAS", matricula: "1854", password: "" },
-      { name: "KAUAN SANTOS DA SILVA", matricula: "2002", password: "" },
-      { name: "LAIS VITORIA BRAZ DOS SANTOS", matricula: "1371", password: "" },
-      { name: "LUCAS BARCELLOS CINTRA", matricula: "2996", password: "" },
-      { name: "MAKU MIGUEL NDOMBE", matricula: "3067", password: "" },
-      { name: "MARIA EDUARDA LEÃO CARDOSO BATISTA", matricula: "2373", password: "" },
-      { name: "MARILZA PEREIRA SANT ANA", matricula: "1287", password: "" },
-      { name: "MARINEIDE ODILON AZEVEDO", matricula: "1112", password: "" },
-      { name: "MAYARA DO NASCIMENTO SOARES", matricula: "3017", password: "" },
-      { name: "MIGUEL FERNANDES DE JESUS", matricula: "1350", password: "" },
-      { name: "NATHALIA PRADO ALVES NASCIMENTO", matricula: "1202", password: "" },
-      { name: "RAFAELA SILVEIRA MARSOLLA", matricula: "3098", password: "" },
-      { name: "RAYLA MONALIZA DE MELO SANTOS", matricula: "2227", password: "" },
-      { name: "RENATA CRISTINA CAMARGO DO PRADO", matricula: "1980", password: "" },
-      { name: "RHAUA DA SILVA CALADO", matricula: "3057", password: "" },
-      { name: "ROSELI LOPES DA SILVA", matricula: "1890", password: "" },
-      { name: "SIMONE DE SOUZA PEREIRA", matricula: "1336", password: "" },
-      { name: "VITORIA KETLYN PEIXOTO MARTINS", matricula: "1377", password: "" }
+      { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", password: "", isAdmin: true },
+      { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", password: "", isAdmin: true },
+      { name: "THAINA DA SILVA SANTOS", matricula: "2679", password: "", isAdmin: true },
+      { name: "FABIANE CARDOSO G.FERREIRA", matricula: "2865", password: "", isAdmin: true },
+      { name: "LUCAS VIOTTI GOMES", matricula: "3004", password: "", isAdmin: true },
+      { name: "JESSICA RENATA DIAS", matricula: "3079", password: "", isAdmin: true },
+      { name: "ILLICHS SOTO", matricula: "0000", password: "", isAdmin: true },
+
+      { name: "ANA CAROLINE SOUZA SANTOS", matricula: "1304", password: "", isAdmin: false },
+      { name: "ANA LUIZA BATISTA DE OLIVEIRA SANTOS", matricula: "2275", password: "", isAdmin: false },
+      { name: "ANA LUIZA DA SILVA", matricula: "2271", password: "", isAdmin: false },
+      { name: "ANA LUIZA MEDEIROS DOS SANTOS", matricula: "3016", password: "", isAdmin: false },
+      { name: "ANA LUIZA SILVA DE CARVALHO", matricula: "2274", password: "", isAdmin: false },
+      { name: "BEATRIZ AGNOLETTO SANTOS", matricula: "1260", password: "", isAdmin: false },
+      { name: "BEATRIZ MATIOLI SENA", matricula: "2937", password: "", isAdmin: false },
+      { name: "BRENDA VITORIA DOS SANTOS SILVA", matricula: "1601", password: "", isAdmin: false },
+      { name: "CARLOS ALBERTO MONTIN JUNIOR", matricula: "2651", password: "", isAdmin: false },
+      { name: "CAROLINA DA LUZ", matricula: "1060", password: "", isAdmin: false },
+      { name: "CELSO ALEXANDRE RIBEIRO MESSIAS", matricula: "1700", password: "", isAdmin: false },
+      { name: "CHRISTAN GUILHERME DA SILVA ARAUJO", matricula: "2560", password: "", isAdmin: false },
+      { name: "DANIELE CARVALHO ARAUJO", matricula: "3148", password: "", isAdmin: false },
+      { name: "DANIELY RAMOS DE SOUZA SILVA", matricula: "2530", password: "", isAdmin: false },
+      { name: "DAVI ACBAS DE LIMA", matricula: "3092", password: "", isAdmin: false },
+      { name: "DAYANE DOS SANTOS DUARTE", matricula: "3050", password: "", isAdmin: false },
+      { name: "DENZEL FEITOSA DE OLIVEIRA JULIO", matricula: "2785", password: "", isAdmin: false },
+      { name: "EDSON SAMUEL DAMASCENO ARCANJO", matricula: "1616", password: "", isAdmin: false },
+      { name: "EDUARDO ANTONY SILVA NASCIMENTO", matricula: "1985", password: "", isAdmin: false },
+      { name: "ELIAS COSTA FIRMINO DA SILVA", matricula: "2003", password: "", isAdmin: false },
+      { name: "EVERSON XAVIER DE ALMEIDA", matricula: "2396", password: "", isAdmin: false },
+      { name: "FABRICIO PEREIRA E SILVA", matricula: "3113", password: "", isAdmin: false },
+      { name: "FELIPE CORREA AMARAL", matricula: "2736", password: "", isAdmin: false },
+      { name: "GABRIEL LUCAS SAMPAIO DOS SANTOS", matricula: "1372", password: "", isAdmin: false },
+      { name: "GISELLE CRISTINA RIBEIRO MESSIAS", matricula: "2375", password: "", isAdmin: false },
+      { name: "GUILHERME FEIJO DE OLIVEIRA", matricula: "1757", password: "", isAdmin: false },
+      { name: "GUSTAVO HENRIQUE TAVARES DOS SANTOS", matricula: "2135", password: "", isAdmin: false },
+      { name: "HEBER GONCALVES NUNES", matricula: "2939", password: "", isAdmin: false },
+      { name: "IARA APARECIDA DA SILVA", matricula: "2924", password: "", isAdmin: false },
+      { name: "ILAINA SUELE SANTANA NASCIMENTO", matricula: "1264", password: "", isAdmin: false },
+      { name: "ISABELLA ALCANTARA SOARES", matricula: "3104", password: "", isAdmin: false },
+      { name: "ISABELLA LUZIA AMORIM DE CARVALHO", matricula: "2566", password: "", isAdmin: false },
+      { name: "JESSICA CRISTINA CAPELOTTO DA SILVA", matricula: "2590", password: "", isAdmin: false },
+      { name: "JOAO VITOR APARECIDO DE ANDRADE DE OLIVEIRA", matricula: "2991", password: "", isAdmin: false },
+      { name: "JOHNNY JEFFERSON RAMOS DO CARMO", matricula: "1947", password: "", isAdmin: false },
+      { name: "JOSE YURI BENEVIDES LIMA", matricula: "1600", password: "", isAdmin: false },
+      { name: "JULIA DE MORAIS MARIANO", matricula: "2270", password: "", isAdmin: false },
+      { name: "KAMILLY ARAUJO DE FREITAS", matricula: "1854", password: "", isAdmin: false },
+      { name: "KAUAN SANTOS DA SILVA", matricula: "2002", password: "", isAdmin: false },
+      { name: "LAIS VITORIA BRAZ DOS SANTOS", matricula: "1371", password: "", isAdmin: false },
+      { name: "LUCAS BARCELLOS CINTRA", matricula: "2996", password: "", isAdmin: false },
+      { name: "MAKU MIGUEL NDOMBE", matricula: "3067", password: "", isAdmin: false },
+      { name: "MARIA EDUARDA LEÃO CARDOSO BATISTA", matricula: "2373", password: "", isAdmin: false },
+      { name: "MARILZA PEREIRA SANT ANA", matricula: "1287", password: "", isAdmin: false },
+      { name: "MARINEIDE ODILON AZEVEDO", matricula: "1112", password: "", isAdmin: false },
+      { name: "MAYARA DO NASCIMENTO SOARES", matricula: "3017", password: "", isAdmin: false },
+      { name: "MIGUEL FERNANDES DE JESUS", matricula: "1350", password: "", isAdmin: false },
+      { name: "NATHALIA PRADO ALVES NASCIMENTO", matricula: "1202", password: "", isAdmin: false },
+      { name: "RAFAELA SILVEIRA MARSOLLA", matricula: "3098", password: "", isAdmin: false },
+      { name: "RAYLA MONALIZA DE MELO SANTOS", matricula: "2227", password: "", isAdmin: false },
+      { name: "RENATA CRISTINA CAMARGO DO PRADO", matricula: "1980", password: "", isAdmin: false },
+      { name: "RHAUA DA SILVA CALADO", matricula: "3057", password: "", isAdmin: false },
+      { name: "ROSELI LOPES DA SILVA", matricula: "1890", password: "", isAdmin: false },
+      { name: "SIMONE DE SOUZA PEREIRA", matricula: "1336", password: "", isAdmin: false },
+      { name: "VITORIA KETLYN PEIXOTO MARTINS", matricula: "1377", password: "", isAdmin: false }
     ];
 
     let portalGames = [
@@ -754,68 +1339,246 @@
 
     const gameLevels = [
       {
-        id: 1, title: "Módulo 1: Treinamento & Aquecimento", unlockDate: null, isTest: true,
+        id: 1,
+        title: "Nível 1: Fase de Teste (Treinamento Livre)",
         rounds: [
-          { id: "1-1", titleName: "Desafio 1.1", answer: "SAFRA DIARIA", clues: [{ points: 10, text: "Dica 1: Segmento focado em inadimplência recente." }, { points: 9, text: "Dica 2: Atrasos de 11 a 15 dias." }, { points: 8, text: "Dica 3: Reabilitação de acesso digital." }], explanation: "Safra Diária é a faixa inicial de cobrança." },
-          { id: "1-2", titleName: "Desafio 1.2", answer: "CONFIRMACAO POSITIVA", clues: [{ points: 10, text: "Dica 1: Procedimento obrigatório de monitoria." }, { points: 9, text: "Dica 2: Nome completo + 3 dígitos do CPF." }, { points: 8, text: "Dica 3: Validação de dados do veículo." }], explanation: "Garante a segurança de informações do cliente." },
-          { id: "1-3", titleName: "Desafio 1.3", answer: "ATENDIMENTO HUMANIZADO", clues: [{ points: 10, text: "Dica 1: Foco na escuta ativa e empatia." }, { points: 9, text: "Dica 2: Entender o imprevisto financeiro." }, { points: 8, text: "Dica 3: Relacionamento humanizado." }], explanation: "Busca resolver a inadimplência com empatia." }
+          {
+            id: "1-1",
+            titleName: "Desafio 1.1",
+            answer: "SAFRA DIARIA",
+            clues: [
+              { points: 10, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
+              { points: 9, text: "Dica 2: Atende clientes com atrasos iniciais de 11 a 15 dias (e atualizados de 16 a 30 dias)." },
+              { points: 8, text: "Dica 3: Foco em reabilitar o acesso do cliente às plataformas digitais de pagamento." }
+            ],
+            explanation: "Safra Diária é a faixa inicial de cobrança operacional para atrasos recentes."
+          },
+          {
+            id: "1-2",
+            titleName: "Desafio 1.2",
+            answer: "CONFIRMACAO POSITIVA",
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
+              { points: 9, text: "Dica 2: Exige solicitar o nome completo mais os 3 primeiros dígitos do CPF do cliente." },
+              { points: 8, text: "Dica 3: Pode ser feita também confirmando marca, modelo e ano do veículo se houver recusa do CPF." }
+            ],
+            explanation: "A confirmação positiva garante a segurança das informações e evita quebra de sigilo."
+          },
+          {
+            id: "1-3",
+            titleName: "Desafio 1.3",
+            answer: "ATENDIMENTO HUMANIZADO",
+            clues: [
+              { points: 10, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
+              { points: 9, text: "Dica 2: Saber se colocar no lugar do cliente, entendendo o imprevisto financeiro." },
+              { points: 8, text: "Dica 3: Cativa o cliente para um atendimento diferenciado em vez de apenas impor cobrança." }
+            ],
+            explanation: "Atendimento Humanizado busca criar relacionamento e resolver a inadimplência com empatia."
+          }
         ]
       },
       {
-        id: 2, title: "Módulo 2: Procedimentos & Fluxos", unlockDate: "2026-11-06", isTest: false,
+        id: 2,
+        title: "Nível 2: Procedimentos & Validação",
         rounds: [
-          { id: "2-1", titleName: "Desafio 2.1", answer: "OCORRENCIA 2600", clues: [{ points: 10, text: "Dica 1: Parcela paga por engano no futuro." }, { points: 9, text: "Dica 2: Texto de solicitação de realocação." }, { points: 8, text: "Dica 3: Envio diário às 17h ao banco." }], explanation: "Usada para solicitar realocação de parcela." },
-          { id: "2-2", titleName: "Desafio 2.2", answer: "BOLETO COMPLEMENTAR", clues: [{ points: 10, text: "Dica 1: Valor pago na parcela menor que o devido." }, { points: 9, text: "Dica 2: Cobre a diferença financeira." }, { points: 8, text: "Dica 3: Atualiza juros até novo vencimento." }], explanation: "Boleto gerado quando há diferença no valor." },
-          { id: "2-3", titleName: "Desafio 2.3", answer: "OCORRENCIA 2601", clues: [{ points: 10, text: "Dica 1: Direcionada ao setor Jurídico." }, { points: 9, text: "Dica 2: Contratos em fase ajuizada." }, { points: 8, text: "Dica 3: Autorização de acordos judiciais." }], explanation: "Indispensável para acordos ajuizados." }
+          {
+            id: "2-1",
+            titleName: "Desafio 2.1",
+            answer: "OCORRENCIA 2600",
+            clues: [
+              { points: 10, text: "Dica 1: Status acionado em sistema quando o cliente pagou por engano uma parcela futura." },
+              { points: 9, text: "Dica 2: Exige do operador a inclusão do texto 'Cliente solicita realocação da parcela nº...'." },
+              { points: 8, text: "Dica 3: É puxada diariamente às 17h pelo Backoffice para envio ao banco via planilha." }
+            ],
+            explanation: "A ocorrência 2600 é utilizada para solicitar o processo de realocação de parcela paga incorretamente."
+          },
+          {
+            id: "2-2",
+            titleName: "Desafio 2.2",
+            answer: "BOLETO COMPLEMENTAR",
+            clues: [
+              { points: 10, text: "Dica 1: Emitido pela Honda quando o valor pago na parcela errada é menor que o valor correto." },
+              { points: 9, text: "Dica 2: Necessário para cobrir a diferença financeira no processo de realocação." },
+              { points: 8, text: "Dica 3: É gerado atualizando os juros até a sua nova data de vencimento." }
+            ],
+            explanation: "Se o valor pago na parcela de destino for insuficiente, a Honda gera um boleto complementar."
+          },
+          {
+            id: "2-3",
+            titleName: "Desafio 2.3",
+            answer: "OCORRENCIA 2601",
+            clues: [
+              { points: 10, text: "Dica 1: Solicitação obrigatória direcionada ao setor Jurídico em contratos ajuizados." },
+              { points: 9, text: "Dica 2: Exige informar Tipo de Acordo (Atualização ou Quitação), Parcelas, Vencimento e UF." },
+              { points: 8, text: "Dica 3: Usada para obter autorização e formalização de propostas em ações judiciais." }
+            ],
+            explanation: "A Ocorrência 2601 é indispensável para solicitar autorização do Jurídico antes de fechar acordo ajuizado."
+          }
         ]
       },
       {
-        id: 3, title: "Módulo 3: Reestruturação Financeira", unlockDate: "2026-11-11", isTest: false,
+        id: 3,
+        title: "Nível 3: Argumentação & Objeções",
         rounds: [
-          { id: "3-1", titleName: "Desafio 3.1", answer: "REFINANCIAMENTO", clues: [{ points: 10, text: "Dica 1: Reduz a parcela mensal." }, { points: 9, text: "Dica 2: Extensão em até 12x." }, { points: 8, text: "Dica 3: Exige pagamento de 1 parcela." }], explanation: "Reduz a parcela estendendo o prazo." },
-          { id: "3-2", titleName: "Desafio 3.2", answer: "ACEITE EM LINHA", clues: [{ points: 10, text: "Dica 1: Formalização gravada da proposta." }, { points: 9, text: "Dica 2: Confirmação clara do cliente." }, { points: 8, text: "Dica 3: Termos do Banco Honda." }], explanation: "Garante a segurança jurídica da negociação." },
-          { id: "3-3", titleName: "Desafio 3.3", answer: "PRIMEIRA PARCELA", clues: [{ points: 10, text: "Dica 1: Vencimento inicial pós-acordo." }, { points: 9, text: "Dica 2: Concede fôlego ao cliente." }, { points: 8, text: "Dica 3: Prazo de até 1 mês para pagar." }], explanation: "Primeiro vencimento da renegociação." }
+          {
+            id: "3-1",
+            titleName: "Desafio 3.1",
+            answer: "BOLETIM DE OCORRENCIA",
+            clues: [
+              { points: 10, text: "Dica 1: Documento indispensável a ser solicitado ao cliente em casos de veículo roubado ou furtado." },
+              { points: 9, text: "Dica 2: Encaminhado ao banco para análise de tentativa de concessão de desconto." },
+              { points: 8, text: "Dica 3: Não isenta o cliente do débito, mantendo os juros diários até a regularização." }
+            ],
+            explanation: "Em casos de roubo do veículo, solicita-se o B.O. para tentar condições especiais com o Banco."
+          },
+          {
+            id: "3-2",
+            titleName: "Desafio 3.2",
+            answer: "EXECUCAO DE BENS",
+            clues: [
+              { points: 10, text: "Dica 1: Medida judicial cabível quando a garantia (veículo) é perdida, roubada ou não localizada." },
+              { points: 9, text: "Dica 2: O Banco pode ingressar contra o titular do contrato para reaver o prejuízo." },
+              { points: 8, text: "Dica 3: Pode resultar na penhora de patrimônio ou bloqueio de contas bancárias do cliente." }
+            ],
+            explanation: "Quando a garantia se perde, o Banco pode mover ação de execução de bens e bloqueio de contas."
+          },
+          {
+            id: "3-3",
+            titleName: "Desafio 3.3",
+            answer: "CESSAO DE DIREITOS",
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento indicado quando o titular falece ou transfere o financiamento a terceiros." },
+              { points: 9, text: "Dica 2: Realizado diretamente na Honda para alterar formalmente a titularidade do contrato." },
+              { points: 8, text: "Dica 3: Exige a prévia regularização do débito em atraso pelo herdeiro ou interessado." }
+            ],
+            explanation: "A Cessão de Direitos transfere o contrato para o nome do herdeiro/terceiro após quitar os débitos."
+          }
         ]
       },
       {
-        id: 4, title: "Módulo 4: Gestão de Inadimplência", unlockDate: "2026-11-18", isTest: false,
+        id: 4,
+        title: "Nível 4: Negociação & Jurídico",
         rounds: [
-          { id: "4-1", titleName: "Desafio 4.1", answer: "PRORROGACAO", clues: [{ points: 10, text: "Dica 1: Parcela em atraso ou esquecida." }, { points: 9, text: "Dica 2: Diluição nas parcelas futuras." }, { points: 8, text: "Dica 3: Reajusta o fluxo mensal." }], explanation: "Dilui a parcela atrasada no fluxo futuro." },
-          { id: "4-2", titleName: "Desafio 4.2", answer: "DILUICAO DE PARCELAS", clues: [{ points: 10, text: "Dica 1: Mecanismo de absorção do débito." }, { points: 9, text: "Dica 2: Espalha o valor pendente." }, { points: 8, text: "Dica 3: Ajusta as mensalidades correntes." }], explanation: "Absorve o débito ao longo das parcelas." },
-          { id: "4-3", titleName: "Desafio 4.3", answer: "PRAZO DE PAGAMENTO", clues: [{ points: 10, text: "Dica 1: Regra de vencimento concedida." }, { points: 9, text: "Dica 2: Fôlego financeiro." }, { points: 8, text: "Dica 3: Pagamento em até 1 mês pós-aceite." }], explanation: "Prazo concedido para o novo ajuste." }
+          {
+            id: "4-1",
+            titleName: "Desafio 4.1",
+            answer: "ENTREGA AMIGAVEL",
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento obrigatório de oferta para contratos que possuem mais de 50% em aberto." },
+              { points: 9, text: "Dica 2: Devolução voluntária do veículo quando o cliente não tem mais condições de pagar." },
+              { points: 8, text: "Dica 3: Evita a inclusão de custas extras de busca e apreensão como guincho e pátio." }
+            ],
+            explanation: "A Entrega Amigável deve ser oferecida a clientes sem condições financeiras de manter as parcelas."
+          },
+          {
+            id: "4-2",
+            titleName: "Desafio 4.2",
+            answer: "BANCO HONDA",
+            clues: [
+              { points: 10, text: "Dica 1: Razão Social obrigatória a ser informada no script antifraude do fechamento." },
+              { points: 9, text: "Dica 2: Deve constar como beneficiário do boleto sob o CNPJ 03.634.220/0001-65." },
+              { points: 8, text: "Dica 3: O código de barras emitido para este credor sempre se inicia com os dígitos 237." }
+            ],
+            explanation: "No Fechamento Antifraude, confirma-se o beneficiário Banco Honda, CNPJ e início de código 237."
+          },
+          {
+            id: "4-3",
+            titleName: "Desafio 4.3",
+            answer: "CUSTAS PROCESSUAIS",
+            clues: [
+              { points: 10, text: "Dica 1: Valores incorporados à dívida quando o contrato entra em vias de ajuizamento." },
+              { points: 9, text: "Dica 2: Inclui a cobrança do valor mínimo de 1% do valor da causa no agravamento." },
+              { points: 8, text: "Dica 3: Seu pagamento juntamente com o atraso é obrigatório para paralisar a ação." }
+            ],
+            explanation: "Ao ser ajuizado, somam-se custas processuais ao débito que devem ser pagas para suspender a ação."
+          }
         ]
       },
       {
-        id: 5, title: "Módulo 5: Casos Especiais & Proteções", unlockDate: "2026-11-25", isTest: false,
+        id: 5,
+        title: "Nível 5: Casos Especiais & Regras SPF",
         rounds: [
-          { id: "5-1", titleName: "Desafio 5.1", answer: "SEGURO PROTECAO FINANCEIRA", clues: [{ points: 10, text: "Dica 1: Verificado na tela F1." }, { points: 9, text: "Dica 2: Cobertura de até 6 parcelas." }, { points: 8, text: "Dica 3: Cobertura em demissão ou óbito." }], explanation: "Garante quitação em imprevistos." },
-          { id: "5-2", titleName: "Desafio 5.2", answer: "QUEBRA DE SIGILO", clues: [{ points: 10, text: "Dica 1: Não Conformidade Grave (NCG)." }, { points: 9, text: "Dica 2: Passar dados sem confirmação." }, { points: 8, text: "Dica 3: Informações a terceiros." }], explanation: "Divulgar dados sem confirmação positiva." },
-          { id: "5-3", titleName: "Desafio 5.3", answer: "RESTRICAO SPC SERASA", clues: [{ points: 10, text: "Dica 1: Consequência de inadimplência." }, { points: 9, text: "Dica 2: SPC aos 21 dias." }, { points: 8, text: "Dica 3: SERASA aos 31 dias." }], explanation: "Negativação nos órgãos de proteção ao crédito." }
+          {
+            id: "5-1",
+            titleName: "Desafio 5.1",
+            answer: "SEGURO PROTECAO FINANCEIRA",
+            clues: [
+              { points: 10, text: "Dica 1: Benefício verificado na tela de início (F1) em casos de desemprego ou óbito." },
+              { points: 9, text: "Dica 2: Pode cobrir até 6 parcelas do contrato no caso de demissão involuntária." },
+              { points: 8, text: "Dica 3: Em caso de falecimento do titular, a seguradora pode quitar o saldo devedor." }
+            ],
+            explanation: "O Seguro Proteção Financeira (SPF) garante a quitação de parcelas ou do saldo em imprevistos."
+          },
+          {
+            id: "5-2",
+            titleName: "Desafio 5.2",
+            answer: "QUEBRA DE SIGILO",
+            clues: [
+              { points: 10, text: "Dica 1: Considerada uma Não Conformidade Grave (NCG) na monitoria de qualidade." },
+              { points: 9, text: "Dica 2: Ocorre ao informar dados da dívida antes de validar a confirmação positiva." },
+              { points: 8, text: "Dica 3: Passar informações do contrato para terceiros não autorizados sem validação de dados." }
+            ],
+            explanation: "Passar dados do contrato sem a confirmação positiva do cliente caracteriza Quebra de Sigilo."
+          },
+          {
+            id: "5-3",
+            titleName: "Desafio 5.3",
+            answer: "RESTRICAO SPC SERASA",
+            clues: [
+              { points: 10, text: "Dica 1: Consequência de inadimplência informada na argumentação de cobrança." },
+              { points: 9, text: "Dica 2: O envio para a negativação no SPC ocorre aos 21 dias de atraso." },
+              { points: 8, text: "Dica 3: Ao atingir 31 dias de atraso, o CPF do cliente é encaminhado ao SERASA." }
+            ],
+            explanation: "A inclusão de restrição de crédito é direcionada ao SPC com 21 dias e ao SERASA aos 31 dias."
+          }
         ]
       }
     ];
 
+    let playerAvatar = {
+      sexo: "masculino", idade: 28, pele: "morena clara", rosto: "oval",
+      olhos: "castanho", cabelo: "curto degradê preto", vestimenta: "Camisa Social Azul Marinho",
+      acessorio: "Nenhum", emocao: "Sorridente / Confiante", estiloVisual: "Pixar 3D", cenario: "Escritório Corporativo"
+    };
+
     let currentPlayer = { name: "", matricula: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
     let internalRanking = [];
-    let adminForceUnlocked = false;
 
-    if (localStorage.getItem("bulgarelli_employees")) {
-      try { authorizedEmployees = JSON.parse(localStorage.getItem("bulgarelli_employees")); } catch(e){}
-    }
+    window.addEventListener("DOMContentLoaded", () => {
+      initPreloader();
+      refreshInternalRanking();
+
+      if (window.syncFirebaseRanking) {
+        window.syncFirebaseRanking();
+      }
+
+      const savedTheme = localStorage.getItem("theme_preference");
+      if (savedTheme === "light") {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        document.getElementById("themeIcon").className = "fa-solid fa-sun";
+        document.getElementById("themeText").innerText = "Claro";
+      }
+
+      const savedSession = sessionStorage.getItem("honda_active_session");
+      if (savedSession) {
+        try {
+          const parsed = JSON.parse(savedSession);
+          if (parsed.name) {
+            currentPlayer = parsed;
+            const savedAv = localStorage.getItem("user_avatar_3d");
+            if (savedAv) playerAvatar = JSON.parse(savedAv);
+            updateSessionUI();
+          }
+        } catch(e){}
+      }
+    });
 
     function isLevelUnlocked(unlockDateStr) {
-      if (currentPlayer.isAdmin || adminForceUnlocked) return true;
+      if (currentPlayer.isAdmin) return true;
       if (!unlockDateStr) return true; 
-      
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const [year, month, day] = unlockDateStr.split('-').map(Number);
-      const unlockDate = new Date(year, month - 1, day);
-      unlockDate.setHours(0, 0, 0, 0);
-
-      return today >= unlockDate;
+      return true;
     }
 
     function formatDateBR(dateStr) {
@@ -824,53 +1587,58 @@
       return `${day}/${month}`;
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      refreshInternalRanking();
+    function openAvatarCustomizerModal() {
+      document.getElementById("modalAvatarCustomizer").classList.remove("hidden");
+      updateAvatarConfig();
+    }
+    function closeAvatarCustomizerModal() {
+      document.getElementById("modalAvatarCustomizer").classList.add("hidden");
+    }
 
-      const savedSession = sessionStorage.getItem("honda_active_session");
-      if (savedSession) {
-        try {
-          const parsed = JSON.parse(savedSession);
-          if (parsed.name) {
-            currentPlayer = parsed;
-            updateSessionUI();
-          }
-        } catch(e){}
-      }
-    });
+    function updateAvatarConfig() {
+      playerAvatar.sexo = document.getElementById("avSexo").value;
+      playerAvatar.idade = document.getElementById("avIdade").value;
+      playerAvatar.pele = document.getElementById("avPele").value;
+      playerAvatar.rosto = document.getElementById("avRosto").value;
+      playerAvatar.cabelo = document.getElementById("avCabelo").value;
+      playerAvatar.vestimenta = document.getElementById("avVestimenta").value;
+      playerAvatar.acessorio = document.getElementById("avAcessorio").value;
+      playerAvatar.estiloVisual = document.getElementById("avEstiloVisual").value;
+      playerAvatar.emocao = document.getElementById("avEmocao").value;
+      playerAvatar.cenario = document.getElementById("avCenario").value;
 
-    function refreshInternalRanking() {
-      const stored = localStorage.getItem("honda_ranking_internal");
-      if (stored) {
-        try {
-          internalRanking = JSON.parse(stored);
-          sortInternalRanking();
-          renderInternalRankingTable(internalRanking);
-        } catch(e){}
+      document.getElementById("summaryCenario").innerText = playerAvatar.cenario;
+      document.getElementById("summaryEstilo").innerText = playerAvatar.estiloVisual;
+      document.getElementById("summaryRoupa").innerText = playerAvatar.vestimenta;
+
+      const preview = document.getElementById("avatar3DPreview");
+      preview.innerText = getAvatarEmoji(playerAvatar);
+    }
+
+    function getAvatarEmoji(av) {
+      if (av.sexo === "feminino") {
+        if (av.acessorio === "Óculos Modernos") return "👩‍💻";
+        if (av.acessorio === "Headset Atendimento") return "🎧";
+        return "👩‍💼";
       } else {
-        internalRanking = [];
-        renderInternalRankingTable([]);
+        if (av.acessorio === "Óculos Modernos") return "👨‍💻";
+        if (av.acessorio === "Headset Atendimento") return "🎧";
+        return "👨‍💼";
       }
     }
 
-    function sortInternalRanking() {
-      internalRanking.sort((a, b) => {
-        if (b.score !== a.score) return b.score - a.score;
-        if ((b.completedRoundsCount || 0) !== (a.completedRoundsCount || 0)) return (b.completedRoundsCount || 0) - (a.completedRoundsCount || 0);
-        return (a.updatedAt || 0) - (b.updatedAt || 0);
-      });
+    function saveAvatarConfig() {
+      localStorage.setItem("user_avatar_3d", JSON.stringify(playerAvatar));
+      closeAvatarCustomizerModal();
+      updateHeaderAvatarDisplay();
+      alert("Avatar corporativo atualizado com sucesso!");
     }
 
-    function sanitizeMatricula(str) {
-      return String(str || "").replace(/[^a-zA-Z0-9_\.-]/g, "").trim().toUpperCase();
-    }
-
-    function escapeHTML(str) {
-      return String(str || "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-    }
-
-    function normalizeString(str) {
-      return String(str || "").toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    function updateHeaderAvatarDisplay() {
+      const headerContainer = document.getElementById("headerAvatarContainer");
+      if (headerContainer) {
+        headerContainer.innerText = getAvatarEmoji(playerAvatar);
+      }
     }
 
     window.switchSidebarTab = function(tab) {
@@ -878,39 +1646,89 @@
       document.getElementById("screenCarteiras").classList.add("hidden");
       document.getElementById("screenLibrary").classList.add("hidden");
       document.getElementById("screenAdmin").classList.add("hidden");
-      document.getElementById("screenCover").classList.add("hidden");
-      document.getElementById("screenLevels").classList.add("hidden");
-      document.getElementById("screenGame").classList.add("hidden");
+      document.getElementById("screenGameStandalone").classList.add("hidden");
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+      });
 
       if (tab === 'overview') {
         document.getElementById("screenOverview").classList.remove("hidden");
+        document.getElementById("navOverview").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
       } else if (tab === 'carteiras') {
         document.getElementById("screenCarteiras").classList.remove("hidden");
+        document.getElementById("navCarteiras").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
       } else if (tab === 'library') {
         document.getElementById("screenLibrary").classList.remove("hidden");
+        document.getElementById("navLibrary").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
       } else if (tab === 'admin') {
         if (!currentPlayer.isAdmin) {
-          alert("Acesso Restrito: Esta área é exclusiva para a equipe de Treinamento.");
-          document.getElementById("screenOverview").classList.remove("hidden");
+          alert("Acesso Restrito: Exclusivo para a Equipe de Treinamento.");
+          switchSidebarTab('overview');
           return;
         }
         document.getElementById("screenAdmin").classList.remove("hidden");
-        populateAdminSelect();
+        document.getElementById("navAdmin").classList.add('bg-yellow-500/20', 'text-yellow-500', 'border', 'border-yellow-500/40');
+        populateAdminDashboard();
       }
     };
 
     window.returnToOverview = function() { switchSidebarTab('overview'); };
 
-    window.openRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.remove("hidden");
-      document.getElementById("inputName").value = "";
-      document.getElementById("inputMatricula").value = "";
-      document.getElementById("matriculaFieldContainer").classList.remove("hidden");
-      document.getElementById("passwordFieldContainer").classList.add("hidden");
+    window.launchHondaGameApart = function() {
+      if (!currentPlayer.name) {
+        openRegistrationModal();
+        return;
+      }
+      document.getElementById("screenOverview").classList.add("hidden");
+      document.getElementById("screenCarteiras").classList.add("hidden");
+      document.getElementById("screenLibrary").classList.add("hidden");
+      document.getElementById("screenAdmin").classList.add("hidden");
+      document.getElementById("screenGameStandalone").classList.remove("hidden");
+
+      document.getElementById("subScreenCover").classList.remove("hidden");
+      document.getElementById("subScreenLevels").classList.add("hidden");
+      document.getElementById("subScreenGame").classList.add("hidden");
     };
 
-    window.closeRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.add("hidden");
+    window.closeGameApart = function() {
+      document.getElementById("screenGameStandalone").classList.add("hidden");
+      switchSidebarTab('overview');
+    };
+
+    function populateAdminDashboard() {
+      const select = document.getElementById("adminSelectEmployee");
+      if (select) {
+        select.innerHTML = "";
+        authorizedEmployees.forEach(emp => {
+          const opt = document.createElement("option");
+          opt.value = emp.matricula || emp.name;
+          opt.innerText = `${emp.name} (Matrícula: ${emp.matricula})`;
+          select.appendChild(opt);
+        });
+      }
+      window.updateAdminMetrics(internalRanking);
+    }
+
+    window.updateAdminMetrics = function(rankingData) {
+      const totalPlayers = rankingData.length;
+      let totalRounds = 0;
+      let totalScore = 0;
+
+      rankingData.forEach(p => {
+        totalRounds += (p.completedRoundsCount || 0);
+        totalScore += (p.score || 0);
+      });
+
+      const elPlayers = document.getElementById("adminStatPlayers");
+      const elRounds = document.getElementById("adminStatRounds");
+      const elAvg = document.getElementById("adminStatAvgScore");
+      const elComp = document.getElementById("adminStatCompletion");
+
+      if (elPlayers) elPlayers.innerText = totalPlayers;
+      if (elRounds) elRounds.innerText = totalRounds;
+      if (elAvg) elAvg.innerText = totalPlayers ? Math.round(totalScore / totalPlayers) : 0;
+      if (elComp) elComp.innerText = totalPlayers ? `${Math.round((totalRounds / (totalPlayers * 15)) * 100)}%` : "0%";
     };
 
     window.logoutSession = function() {
@@ -925,258 +1743,280 @@
       const sidebarMat = document.getElementById("sidebarPlayerMat");
       const headerName = document.getElementById("headerPlayerName");
       const navAdmin = document.getElementById("navAdmin");
+      const sessionAction = document.getElementById("sessionActionContainer");
+      const sessionStatus = document.getElementById("sessionStatusIndicator");
 
       if (currentPlayer.name) {
         sidebarName.innerText = currentPlayer.name;
-        sidebarMat.innerText = currentPlayer.matricula ? `Matrícula: ${currentPlayer.matricula}` : "Treinamento (Sem Matrícula)";
+        sidebarMat.innerText = `Matrícula: ${currentPlayer.matricula}`;
         headerName.innerText = currentPlayer.name;
-        
-        if (currentPlayer.isAdmin) {
-          navAdmin.classList.remove("hidden");
-        } else {
-          navAdmin.classList.add("hidden");
-        }
+        sessionStatus.classList.remove("hidden");
+        sessionStatus.classList.add("flex");
+        if (currentPlayer.isAdmin) navAdmin.classList.remove("hidden");
+        else navAdmin.classList.add("hidden");
+
+        sessionAction.innerHTML = `
+          <button onclick="logoutSession()" class="w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
+            Encerrar Sessão
+          </button>
+        `;
+        updateHeaderAvatarDisplay();
       } else {
         sidebarName.innerText = "Visitante / Não Logado";
-        sidebarMat.innerText = "Matrícula: ---";
+        sidebarMat.innerText = "Perfil: Visitante";
         headerName.innerText = "Visitante";
+        sessionStatus.classList.remove("flex");
+        sessionStatus.classList.add("hidden");
         navAdmin.classList.add("hidden");
+
+        sessionAction.innerHTML = `
+          <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
+            Acessar Login
+          </button>
+        `;
       }
     }
 
-    // LÓGICA DE AUTENTICAÇÃO COM TRATAMENTO ESPECIAL PARA O ILLICHS SOTO
-    window.handleAuthSubmit = function(e) {
+    window.openRegistrationModal = function() {
+      document.getElementById("modalRegistration").classList.remove("hidden");
+      document.getElementById("inputName").value = "";
+      document.getElementById("inputMatricula").value = "";
+      document.getElementById("inputPassword").value = "";
+      document.getElementById("inputLoginPassword").value = "";
+      
+      document.getElementById("step1Fields").classList.remove("hidden");
+      document.getElementById("step2Fields").classList.add("hidden");
+      document.getElementById("loginPasswordFields").classList.add("hidden");
+      document.getElementById("modalAuthSubtitle").innerText = "Insira seu Nome, Sobrenome e Matrícula para continuar";
+      document.getElementById("authSubmitBtn").innerText = "AVANÇAR";
+
+      isPasswordCreationStep = false;
+      isPasswordLoginStep = false;
+      tempPendingEmp = null;
+    };
+
+    window.closeRegistrationModal = function() {
+      document.getElementById("modalRegistration").classList.add("hidden");
+    };
+
+    let tempPendingEmp = null;
+    let isPasswordCreationStep = false;
+    let isPasswordLoginStep = false;
+
+    function normalizeStr(str) {
+      return str ? str.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : "";
+    }
+
+    window.handleAuthSubmit = async function(e) {
       e.preventDefault();
-      const inputNameRaw = document.getElementById("inputName").value;
-      const inputMatriculaRaw = document.getElementById("inputMatricula").value;
-      const inputPasswordElem = document.getElementById("inputPassword");
-      const passwordContainer = document.getElementById("passwordFieldContainer");
 
-      const normName = normalizeString(inputNameRaw);
-      const normMatricula = sanitizeMatricula(inputMatriculaRaw);
+      if (!isPasswordCreationStep && !isPasswordLoginStep) {
+        const nameInput = document.getElementById("inputName").value.trim();
+        const matInput = document.getElementById("inputMatricula").value.trim();
+        const normName = normalizeStr(nameInput);
 
-      let foundEmp = null;
+        if (normName !== "ILLICHS SOTO" && !nameInput.includes(" ")) {
+          alert("Por favor, insira Nome e Sobrenome.");
+          return;
+        }
 
-      // Illichs Soto: Busca por Nome e Sobrenome sem exigir matrícula
-      if (normName.includes("ILLICHS") && normName.includes("SOTO")) {
-        foundEmp = authorizedEmployees.find(emp => emp.noMatricula || emp.name === "ILLICHS SOTO");
-      } else {
-        foundEmp = authorizedEmployees.find(emp => {
-          if (emp.noMatricula) return false;
-          return sanitizeMatricula(emp.matricula) === normMatricula;
+        let found = authorizedEmployees.find(emp => {
+          const empNormName = normalizeStr(emp.name);
+          const empMat = emp.matricula.trim();
+          
+          if (empNormName === "ILLICHS SOTO" && normName === "ILLICHS SOTO") return true;
+          if (empMat && matInput && empMat === matInput) return true;
+          if (empNormName === normName) return true;
+          return false;
         });
 
-        if (foundEmp) {
-          const empNameNorm = normalizeString(foundEmp.name);
-          if (!empNameNorm.includes(normName)) {
-            alert("O nome informado não confere com a matrícula.");
-            return;
+        if (!found && matInput && window.fetchUserFromFirebase) {
+          const fbUser = await window.fetchUserFromFirebase(matInput);
+          if (fbUser) {
+            found = fbUser;
+            authorizedEmployees.push(found);
           }
         }
-      }
 
-      if (!foundEmp) {
-        alert("Colaborador não encontrado na base de dados oficial.");
-        return;
-      }
-
-      // Primeiro acesso: Criação de Senha
-      if (!foundEmp.password || foundEmp.password === "") {
-        if (passwordContainer.classList.contains("hidden")) {
-          passwordContainer.classList.remove("hidden");
-          document.getElementById("passwordLabelText").innerText = "Crie sua Senha de Primeiro Acesso";
-          inputPasswordElem.required = true;
-          inputPasswordElem.value = "";
-          alert("Colaborador reconhecido! Crie sua senha de acesso.");
-          return;
+        if (found) {
+          tempPendingEmp = found;
+          if (!found.password) {
+            isPasswordCreationStep = true;
+            document.getElementById("step1Fields").classList.add("hidden");
+            document.getElementById("step2Fields").classList.remove("hidden");
+            document.getElementById("modalAuthSubtitle").innerText = "Crie sua senha de acesso para continuar";
+            document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
+          } else {
+            isPasswordLoginStep = true;
+            document.getElementById("step1Fields").classList.add("hidden");
+            document.getElementById("loginPasswordFields").classList.remove("hidden");
+            document.getElementById("modalAuthSubtitle").innerText = "Insira sua senha cadastrada";
+            document.getElementById("authSubmitBtn").innerText = "ENTRAR";
+          }
         } else {
-          const newPass = inputPasswordElem.value.trim();
-          if (!newPass) {
-            alert("Insira uma senha válida.");
-            return;
-          }
-          foundEmp.password = newPass;
-          localStorage.setItem("bulgarelli_employees", JSON.stringify(authorizedEmployees));
+          tempPendingEmp = { name: nameInput.toUpperCase(), matricula: matInput || "0000", password: "", isAdmin: false };
+          isPasswordCreationStep = true;
+          document.getElementById("step1Fields").classList.add("hidden");
+          document.getElementById("step2Fields").classList.remove("hidden");
+          document.getElementById("modalAuthSubtitle").innerText = "Crie sua senha de acesso para continuar";
+          document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
         }
-      } else {
-        // Acessos subsequentes
-        if (passwordContainer.classList.contains("hidden")) {
-          passwordContainer.classList.remove("hidden");
-          document.getElementById("passwordLabelText").innerText = "Insira sua Senha de Acesso";
-          inputPasswordElem.required = true;
-          inputPasswordElem.value = "";
+      } else if (isPasswordCreationStep) {
+        const pass = document.getElementById("inputPassword").value.trim();
+        if (!pass) {
+          alert("Insira uma senha válida.");
           return;
-        } else {
-          const enteredPass = inputPasswordElem.value.trim();
-          if (enteredPass !== foundEmp.password) {
-            alert("Senha incorreta.");
-            return;
-          }
         }
+        tempPendingEmp.password = pass;
+        
+        let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
+        if (existingIndex >= 0) {
+          authorizedEmployees[existingIndex] = tempPendingEmp;
+        } else {
+          authorizedEmployees.push(tempPendingEmp);
+        }
+        
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        if (window.saveUserToFirebase) {
+          await window.saveUserToFirebase(tempPendingEmp);
+        }
+        
+        currentPlayer.name = tempPendingEmp.name;
+        currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
+
+        finalizeLoginSession();
+      } else if (isPasswordLoginStep) {
+        const pass = document.getElementById("inputLoginPassword").value.trim();
+        if (tempPendingEmp.password !== pass) {
+          alert("Senha incorreta!");
+          return;
+        }
+
+        currentPlayer.name = tempPendingEmp.name;
+        currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
+
+        finalizeLoginSession();
       }
+    };
 
-      currentPlayer.name = foundEmp.name;
-      currentPlayer.matricula = foundEmp.matricula || "S/M";
-      currentPlayer.isAdmin = !!foundEmp.isAdmin;
-
-      refreshInternalRanking();
-      const saved = internalRanking.find(p => p.matricula === currentPlayer.matricula);
-      if (saved) {
-        currentPlayer.score = saved.score || 0;
-        currentPlayer.completedRounds = saved.completedRounds || [];
-        currentPlayer.completedLevels = saved.completedLevels || [];
-      }
-
+    function finalizeLoginSession() {
       sessionStorage.setItem("honda_active_session", JSON.stringify(currentPlayer));
       updateSessionUI();
       closeRegistrationModal();
+      
+      isPasswordCreationStep = false;
+      isPasswordLoginStep = false;
+      tempPendingEmp = null;
 
-      launchHondaGame();
-    };
-
-    window.launchHondaGame = function() {
-      if (!currentPlayer.name) {
-        openRegistrationModal();
-        return;
-      }
-      document.getElementById("screenOverview").classList.add("hidden");
-      document.getElementById("screenCarteiras").classList.add("hidden");
-      document.getElementById("screenLibrary").classList.add("hidden");
-      document.getElementById("screenAdmin").classList.add("hidden");
-      document.getElementById("screenCover").classList.remove("hidden");
-    };
+      launchHondaGameApart();
+    }
 
     let isLaunching = false;
     window.startCarAccelerationTransition = function() {
-        if (isLaunching) return;
-        isLaunching = true;
+      if (isLaunching) return;
+      isLaunching = true;
 
-        const carRoot = document.getElementById('carRoot');
-        const startBtn = document.getElementById('engineStartBtn');
-        const buttonLed = document.getElementById('buttonLed');
-        const engineStatusText = document.getElementById('engineStatusText');
-        const engineStatusDot = document.getElementById('engineStatusDot');
-        const rpmGauge = document.getElementById('rpmGauge');
-        const flashOverlay = document.getElementById('flashOverlay');
+      const carRoot = document.getElementById('carRoot');
+      const startBtn = document.getElementById('engineStartBtn');
+      const buttonLed = document.getElementById('buttonLed');
+      const engineStatusText = document.getElementById('engineStatusText');
+      const engineStatusDot = document.getElementById('engineStatusDot');
+      const rpmGauge = document.getElementById('rpmGauge');
+      const sceneWrapper = document.getElementById('sceneWrapper');
+      const roadStripes = document.getElementById('roadStripes');
+      const flashOverlay = document.getElementById('flashOverlay');
 
-        startBtn.classList.add('running');
-        buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
-        engineStatusText.innerText = 'VTEC ENGAGED';
-        engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+      initAudio();
+      playEngineLaunchAudio();
 
-        let currentRpm = 850;
-        const rpmInterval = setInterval(() => {
-            if (currentRpm < 7800) {
-                currentRpm += 380;
-                rpmGauge.innerText = `${currentRpm} RPM`;
-            }
-        }, 40);
+      startBtn.classList.add('running');
+      buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
+      engineStatusText.innerText = 'VTEC ENGAGED';
+      engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
 
-        carRoot.classList.add('launching');
+      let currentRpm = 850;
+      const rpmInterval = setInterval(() => {
+          if (currentRpm < 7800) {
+              currentRpm += 380;
+              rpmGauge.innerText = `${currentRpm} RPM`;
+          }
+      }, 40);
 
-        setTimeout(() => { flashOverlay.classList.add('active'); }, 900);
-        setTimeout(() => { flashOverlay.classList.remove('active'); }, 1250);
+      roadStripes.classList.add('speeding');
+      sceneWrapper.classList.add('shake-screen');
+      carRoot.classList.remove('idle-vibe');
+      carRoot.classList.add('launching');
+
+      setTimeout(() => { flashOverlay.classList.add('active'); }, 900);
+      setTimeout(() => { flashOverlay.classList.remove('active'); }, 1250);
+
+      setTimeout(() => {
+        clearInterval(rpmInterval);
+        document.getElementById("subScreenCover").classList.add("hidden");
+        const transMoto = document.getElementById("subScreenTransition");
+        transMoto.classList.remove("hidden");
 
         setTimeout(() => {
-            clearInterval(rpmInterval);
-            document.getElementById("screenCover").classList.add("hidden");
-            
-            const transMoto = document.getElementById("screenTransitionMoto");
-            transMoto.classList.remove("hidden");
-
-            setTimeout(() => {
-              transMoto.classList.add("hidden");
-              showLevelsScreen();
-            }, 1800);
-
-            carRoot.classList.remove('launching');
-            startBtn.classList.remove('running');
-            buttonLed.className = 'w-3 h-1 bg-white rounded-full mt-1 shadow-[0_0_6px_#ffffff]';
-            engineStatusText.innerText = 'ENGINE IDLE';
-            engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse';
-            rpmGauge.innerText = '850 RPM';
-            isLaunching = false;
-        }, 1350); 
+          transMoto.classList.add("hidden");
+          showLevelsScreenApart();
+          carRoot.classList.remove('launching');
+          sceneWrapper.classList.remove('shake-screen');
+          roadStripes.classList.remove('speeding');
+          carRoot.classList.add('idle-vibe');
+          startBtn.classList.remove('running');
+          buttonLed.className = 'w-3 h-1 bg-white rounded-full mt-1';
+          engineStatusText.innerText = 'ENGINE IDLE';
+          engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse';
+          rpmGauge.innerText = '850 RPM';
+          isLaunching = false;
+        }, 1800);
+      }, 1350);
     };
 
-    window.toggleAdminUnlock = function() {
-      adminForceUnlocked = !adminForceUnlocked;
-      const btn = document.getElementById("adminUnlockBtn");
-      if (adminForceUnlocked) {
-        btn.innerText = "🔒 [ADMIN] Bloqueio por Data Ativado";
-        btn.className = "px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-lg transition shadow";
-      } else {
-        btn.innerText = "🔓 [ADMIN] Desbloquear Todos os Níveis";
-        btn.className = "px-3 py-1.5 bg-yellow-600 hover:bg-yellow-500 text-black text-xs font-bold rounded-lg transition shadow";
-      }
-      renderLevelsGrid();
-    };
+    function showLevelsScreenApart() {
+      document.getElementById("subScreenCover").classList.add("hidden");
+      document.getElementById("subScreenGame").classList.add("hidden");
+      document.getElementById("subScreenLevels").classList.remove("hidden");
 
-    function showLevelsScreen() {
-      document.getElementById("screenCover").classList.add("hidden");
-      document.getElementById("screenTransitionMoto").classList.add("hidden");
-      document.getElementById("screenGame").classList.add("hidden");
-      document.getElementById("screenLevels").classList.remove("hidden");
-
-      if (currentPlayer.isAdmin) {
-        document.getElementById("adminPanelGame").classList.remove("hidden");
-      } else {
-        document.getElementById("adminPanelGame").classList.add("hidden");
+      document.querySelectorAll('#subScreenLevels #displayPlayerName').forEach(el => el.innerText = currentPlayer.name);
+      document.querySelectorAll('#subScreenLevels #displayPlayerMatricula').forEach(el => el.innerText = currentPlayer.matricula);
+      document.querySelectorAll('#subScreenLevels #displayPlayerScore').forEach(el => el.innerText = `${currentPlayer.score} pts`);
+      
+      const levelAvatarPreview = document.getElementById("levelAvatarPreview");
+      if (levelAvatarPreview) {
+        levelAvatarPreview.innerText = getAvatarEmoji(playerAvatar);
       }
 
-      document.getElementById("displayPlayerName").innerText = currentPlayer.name;
-      document.getElementById("displayPlayerMatricula").innerText = currentPlayer.matricula;
-      document.getElementById("displayPlayerScore").innerText = `${currentPlayer.score} pts`;
-
-      renderLevelsGrid();
+      renderLevelsGridApart();
       refreshInternalRanking();
     }
 
-    function renderLevelsGrid() {
-      const grid = document.getElementById("levelsGrid");
+    function renderLevelsGridApart() {
+      const grid = document.querySelector("#subScreenLevels #levelsGrid");
       grid.innerHTML = "";
 
       gameLevels.forEach(lvl => {
         const unlocked = isLevelUnlocked(lvl.unlockDate);
-        const totalRounds = lvl.rounds.length;
         const doneRounds = lvl.rounds.filter(r => currentPlayer.completedRounds.includes(r.id)).length;
-        const levelCompleted = currentPlayer.completedLevels && currentPlayer.completedLevels.includes(lvl.id);
 
         const card = document.createElement("div");
         card.className = `glass-card p-5 rounded-2xl border transition duration-300 flex flex-col justify-between ${
           unlocked ? 'border-red-500/40 hover:border-red-500' : 'border-slate-800 opacity-60'
         }`;
 
-        let statusTag = '';
-        if (lvl.isTest) {
-          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold">Modo Teste</span>`;
-        } else if (levelCompleted) {
-          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold">Nível Concluído (1x)</span>`;
-        } else if (unlocked) {
-          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-500/40 font-bold">Disponível</span>`;
-        } else {
-          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700 font-bold">Libera em ${formatDateBR(lvl.unlockDate)}</span>`;
-        }
+        let statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 font-bold">Disponível</span>`;
 
-        const buttonHTML = unlocked
-          ? `<button onclick="startLevel(${lvl.id})" 
-              class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition honda-red honda-red-hover text-white shadow-md shadow-red-900/40">
-              <span>${lvl.isTest ? 'TREINAR SEM PONTUAR' : (levelCompleted ? 'JOGAR NOVAMENTE (Sem Pontos)' : 'INICIAR DESAFIO')}</span>
-              <i class="fa-solid fa-play"></i>
-            </button>`
-          : `<button disabled 
-              class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-slate-800/80 text-slate-500 cursor-not-allowed border border-slate-700">
-              <i class="fa-solid fa-lock"></i>
-              <span>BLOQUEADO (${formatDateBR(lvl.unlockDate)})</span>
-            </button>`;
+        const buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition">INICIAR DESAFIO <i class="fa-solid fa-play"></i></button>`;
 
         card.innerHTML = `
           <div>
             <div class="flex justify-between items-start mb-2">
-              <h3 class="font-bold text-base text-white">${escapeHTML(lvl.title)}</h3>
+              <h3 class="font-bold text-base">${lvl.title}</h3>
               ${statusTag}
             </div>
-            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${totalRounds} desafios concluídos ${lvl.isTest ? '(Sem pontos)' : ''}</p>
+            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${lvl.rounds.length} desafios concluídos</p>
           </div>
           ${buttonHTML}
         `;
@@ -1184,58 +2024,54 @@
       });
     }
 
-    window.startLevel = function(levelId) {
+    window.startLevelApart = function(levelId) {
       const lvl = gameLevels.find(l => l.id === levelId);
-      if (!lvl || !isLevelUnlocked(lvl.unlockDate)) return;
+      if (!lvl) return;
 
       currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
-      setupRoundDisplay();
+      setupRoundDisplayApart();
 
-      document.getElementById("screenLevels").classList.add("hidden");
-      document.getElementById("screenGame").classList.remove("hidden");
+      document.getElementById("subScreenLevels").classList.add("hidden");
+      document.getElementById("subScreenGame").classList.remove("hidden");
     };
 
-    function setupRoundDisplay() {
+    function setupRoundDisplayApart() {
       const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
       const round = lvl.rounds[currentRoundState.roundIndex];
       currentRoundState.roundData = round;
       currentRoundState.clueIndex = 0;
 
-      document.getElementById("gameLevelTitle").innerText = lvl.title;
-      document.getElementById("gameRoundTitle").innerText = `${round.titleName || ('Desafio ' + (currentRoundState.roundIndex + 1))} de ${lvl.rounds.length}`;
-      document.getElementById("gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
-
-      const badge = document.getElementById("roundStatusBadge");
-      if (currentPlayer.completedRounds && currentPlayer.completedRounds.includes(round.id)) {
-        badge.classList.remove("hidden");
-      } else {
-        badge.classList.add("hidden");
-      }
+      document.querySelector("#subScreenGame #gameLevelTitle").innerText = lvl.title;
+      document.querySelector("#subScreenGame #gameRoundTitle").innerText = `${round.titleName} de ${lvl.rounds.length}`;
+      document.querySelector("#subScreenGame #gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
 
       document.getElementById("inputAnswer").value = "";
-      renderClues();
-      setTimeout(() => document.getElementById("inputAnswer").focus(), 100);
+      renderCluesApart();
     }
 
-    function renderClues() {
-      const container = document.getElementById("cluesContainer");
+    function renderCluesApart() {
+      const container = document.querySelector("#subScreenGame #cluesContainer");
       container.innerHTML = "";
-
       const round = currentRoundState.roundData;
-      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
 
       for (let i = 0; i <= currentRoundState.clueIndex; i++) {
         const clue = round.clues[i];
         const clueDiv = document.createElement("div");
         clueDiv.className = "glass-card p-4 rounded-xl border border-red-500/30 flex items-start gap-3";
         clueDiv.innerHTML = `
-          <div class="bg-red-600/30 text-yellow-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-red-500/40 whitespace-nowrap">
-            ${lvl.isTest ? '0 Pts (Teste)' : clue.points + ' Pts'}
-          </div>
-          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${escapeHTML(clue.text)}</p>
+          <div class="bg-red-600/30 text-yellow-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-red-500/40">${clue.points} Pts</div>
+          <p class="text-xs sm:text-sm text-slate-200">${clue.text}</p>
         `;
         container.appendChild(clueDiv);
       }
+    }
+
+    function normalizeString(str) {
+      return String(str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "");
     }
 
     window.handleAnswerSubmit = function(e) {
@@ -1243,153 +2079,112 @@
       const input = document.getElementById("inputAnswer");
       const userAns = normalizeString(input.value);
       const expectedAns = normalizeString(currentRoundState.roundData.answer);
-      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
 
       if (userAns === expectedAns) {
         const round = currentRoundState.roundData;
-        const pointsEarned = lvl.isTest ? 0 : round.clues[currentRoundState.clueIndex].points;
-
-        if (!currentPlayer.completedRounds) currentPlayer.completedRounds = [];
-        if (!currentPlayer.completedLevels) currentPlayer.completedLevels = [];
-
-        let scoreAddedThisRound = 0;
-        let alreadyCompletedLevel = currentPlayer.completedLevels.includes(lvl.id);
-
+        const points = round.clues[currentRoundState.clueIndex].points;
         if (!currentPlayer.completedRounds.includes(round.id)) {
           currentPlayer.completedRounds.push(round.id);
-          
-          if (!lvl.isTest && !alreadyCompletedLevel) {
-            scoreAddedThisRound = pointsEarned;
-            currentPlayer.score += scoreAddedThisRound;
-          }
-          currentPlayer.updatedAt = Date.now();
+          currentPlayer.score += points;
           savePlayerToInternalRanking();
         }
-
-        let scoreMsg = "";
-        if (lvl.isTest) {
-          scoreMsg = `<br><span class="text-cyan-400 font-semibold text-xs">Modo Teste: Nenhum ponto adicionado ao ranking.</span>`;
-        } else if (alreadyCompletedLevel) {
-          scoreMsg = `<br><span class="text-yellow-400 font-semibold text-xs">Atenção: Você já havia pontuado neste nível anteriormente. Nenhuma nova pontuação foi computada.</span>`;
-        } else {
-          scoreMsg = ` e acumulou +${scoreAddedThisRound} pontos!`;
-        }
-
-        showModal(
-          `<i class="fa-solid fa-circle-check text-5xl text-green-400"></i>`,
-          "Resposta Correta!",
-          `Você acertou${scoreMsg}<br><br><span class="text-slate-400 text-xs">${round.explanation}</span>`,
-          "PRÓXIMO DESAFIO",
-          () => advanceGame()
-        );
+        showModal("<i class='fa-solid fa-circle-check text-5xl text-green-400'></i>", "Resposta Correta!", round.explanation, "PRÓXIMO DESAFIO", () => advanceGameApart());
       } else {
         if (currentRoundState.clueIndex < 2) {
           currentRoundState.clueIndex++;
-          renderClues();
+          renderCluesApart();
           input.value = "";
-          showModal(
-            `<i class="fa-solid fa-circle-xmark text-5xl text-yellow-400"></i>`,
-            "Ainda não é isso!",
-            "Sua resposta está incorreta. Liberamos a próxima pista valendo menos pontos para você tentar novamente!",
-            "TENTAR NOVAMENTE",
-            () => setTimeout(() => document.getElementById("inputAnswer").focus(), 100)
-          );
+          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Ainda não é isso!", "Próxima pista liberada!", "TENTAR NOVAMENTE", null);
         } else {
-          showModal(
-            `<i class="fa-solid fa-face-frown text-5xl text-red-500"></i>`,
-            "Fim das Pistas!",
-            `Não foi desta vez. A resposta correta era: <strong class="text-yellow-400">${currentRoundState.roundData.answer}</strong>.<br><br><span class="text-slate-400 text-xs">${currentRoundState.roundData.explanation}</span>`,
-            "CONTINUAR",
-            () => advanceGame()
-          );
+          showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
         }
       }
     };
 
-    function savePlayerToInternalRanking() {
-      refreshInternalRanking();
-
-      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
-      if (lvl && !lvl.isTest) {
-        const currentLvlRounds = lvl.rounds.map(r => r.id);
-        const allDone = currentLvlRounds.every(id => currentPlayer.completedRounds.includes(id));
-        if (allDone && !currentPlayer.completedLevels.includes(lvl.id)) {
-          currentPlayer.completedLevels.push(lvl.id);
-        }
-      }
-
-      const index = internalRanking.findIndex(p => p.matricula === currentPlayer.matricula);
-      const validScoredRoundsCount = (currentPlayer.completedRounds || []).filter(id => !id.startsWith("1-")).length;
-
-      const playerData = {
-        name: currentPlayer.name,
-        matricula: currentPlayer.matricula,
-        score: currentPlayer.score,
-        completedRoundsCount: validScoredRoundsCount,
-        completedRounds: currentPlayer.completedRounds,
-        completedLevels: currentPlayer.completedLevels,
-        updatedAt: currentPlayer.updatedAt || Date.now()
-      };
-
-      if (index >= 0) {
-        internalRanking[index] = playerData;
-      } else {
-        internalRanking.push(playerData);
-      }
-
-      sortInternalRanking();
-
-      localStorage.setItem("honda_ranking_internal", JSON.stringify(internalRanking));
-      sessionStorage.setItem("honda_active_session", JSON.stringify(currentPlayer));
-
-      renderInternalRankingTable(internalRanking);
-      updateSessionUI();
-    }
-
-    function advanceGame() {
+    function advanceGameApart() {
       const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
       if (currentRoundState.roundIndex < lvl.rounds.length - 1) {
         currentRoundState.roundIndex++;
-        setupRoundDisplay();
+        setupRoundDisplayApart();
       } else {
-        showModal(
-          `<i class="fa-solid fa-trophy text-6xl text-yellow-400"></i>`,
-          "Módulo Concluído!",
-          `Parabéns! Você completou todas as etapas deste módulo.<br>Sua pontuação total é: <strong class="text-yellow-400">${currentPlayer.score} pts</strong>.`,
-          "VOLTAR AO MENU",
-          () => showLevelsScreen()
-        );
+        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts`, "VOLTAR AO MENU", () => showLevelsScreenApart());
       }
     }
+
+    function refreshInternalRanking() {
+      const stored = localStorage.getItem("honda_ranking_internal");
+      if (stored) {
+        try { internalRanking = JSON.parse(stored); } catch(e){}
+      }
+      renderInternalRankingTable(internalRanking);
+    }
+
+    async function savePlayerToInternalRanking() {
+      const data = { 
+        name: currentPlayer.name, 
+        matricula: currentPlayer.matricula, 
+        score: currentPlayer.score, 
+        completedRoundsCount: currentPlayer.completedRounds.length,
+        updatedAt: Date.now()
+      };
+
+      if (window.savePlayerToFirebase) {
+        await window.savePlayerToFirebase(data);
+      }
+
+      const idx = internalRanking.findIndex(p => p.matricula === currentPlayer.matricula);
+      if (idx >= 0) internalRanking[idx] = data;
+      else internalRanking.push(data);
+
+      internalRanking.sort((a, b) => b.score - a.score);
+      localStorage.setItem("honda_ranking_internal", JSON.stringify(internalRanking));
+      renderInternalRankingTable(internalRanking);
+    }
+
+    window.renderInternalRankingTable = function(ranking) {
+      const tbody = document.getElementById("internalRankingTableBody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      if (!ranking || ranking.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum operador pontuou ainda.</td></tr>`;
+        return;
+      }
+
+      ranking.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-slate-800/80 hover:bg-white/5";
+        tr.innerHTML = `
+          <td class="p-3">#${idx + 1}</td>
+          <td class="p-3 font-semibold">${item.name}</td>
+          <td class="p-3 text-slate-400">${item.matricula}</td>
+          <td class="p-3 text-slate-400">${item.completedRoundsCount || 0} rodadas</td>
+          <td class="p-3 text-right font-bold text-yellow-400">${item.score} pts</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    };
 
     function showModal(iconHTML, title, message, btnText, callback) {
       document.getElementById("modalIconContainer").innerHTML = iconHTML;
       document.getElementById("modalTitle").innerHTML = title;
       document.getElementById("modalMessage").innerHTML = message;
-
       const btn = document.getElementById("modalButton");
-      btn.innerHTML = btnText || "CONTINUAR";
-      btn.className = "w-full py-3 font-bold rounded-xl text-white transition honda-red honda-red-hover shadow-lg shadow-red-900/50";
-
+      btn.innerText = btnText || "CONTINUAR";
+      btn.className = "w-full py-3 font-bold rounded-xl text-white transition honda-red honda-red-hover";
       window.modalCallback = callback;
 
       const overlay = document.getElementById("modalOverlay");
       const card = document.getElementById("modalCard");
-
       overlay.classList.remove("hidden");
-      setTimeout(() => {
-        card.classList.remove("scale-95", "opacity-0");
-        card.classList.add("scale-100", "opacity-100");
-      }, 10);
+      setTimeout(() => { card.classList.remove("scale-95", "opacity-0"); card.classList.add("scale-100", "opacity-100"); }, 10);
     }
 
     window.closeModal = function() {
       const overlay = document.getElementById("modalOverlay");
       const card = document.getElementById("modalCard");
-
       card.classList.remove("scale-100", "opacity-100");
       card.classList.add("scale-95", "opacity-0");
-
       setTimeout(() => {
         overlay.classList.add("hidden");
         if (window.modalCallback) {
@@ -1400,95 +2195,32 @@
       }, 200);
     };
 
-    function renderInternalRankingTable(rankingArray) {
-      const tbody = document.getElementById("internalRankingTableBody");
-      if (!tbody) return;
-      tbody.innerHTML = "";
-
-      if (!rankingArray || rankingArray.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum operador pontuou no jogo ainda.</td></tr>`;
-        return;
-      }
-
-      rankingArray.forEach((item, idx) => {
-        const isCurrent = item.matricula === currentPlayer.matricula;
-        let medal = `<span class="text-slate-400 font-semibold">#${idx + 1}</span>`;
-        if (idx === 0) medal = `🥇 <span class="text-yellow-400 font-bold">1º</span>`;
-        if (idx === 1) medal = `🥈 <span class="text-slate-300 font-bold">2º</span>`;
-        if (idx === 2) medal = `🥉 <span class="text-amber-600 font-bold">3º</span>`;
-
-        const tr = document.createElement("tr");
-        tr.className = `border-b border-slate-800/80 transition ${isCurrent ? "bg-red-950/40 font-semibold text-white" : "hover:bg-white/5 text-slate-300"}`;
-        tr.innerHTML = `
-          <td class="p-3">${medal}</td>
-          <td class="p-3 flex items-center gap-2">
-            <i class="fa-solid fa-user text-xs ${isCurrent ? "text-red-400" : "text-slate-500"}"></i>
-            <span>${escapeHTML(item.name)}</span>
-            ${isCurrent ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">Você</span>' : ""}
-          </td>
-          <td class="p-3 text-slate-400">${escapeHTML(item.matricula)}</td>
-          <td class="p-3 text-slate-400">${item.completedRoundsCount || 0}/12 rodadas</td>
-          <td class="p-3 text-right font-bold text-yellow-400">${item.score} pts</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function populateAdminSelect() {
-      const select = document.getElementById("adminSelectEmployee");
-      if (!select) return;
-      select.innerHTML = "";
-      authorizedEmployees.forEach(emp => {
-        const opt = document.createElement("option");
-        opt.value = emp.matricula || emp.name;
-        opt.innerText = `${emp.name} ${emp.matricula ? '(Mat: ' + emp.matricula + ')' : '(Sem Matrícula)'}`;
-        select.appendChild(opt);
-      });
-    }
-
     window.adminUpdateEmployeeName = function() {
       const key = document.getElementById("adminSelectEmployee").value;
       const newName = document.getElementById("adminNewName").value.trim();
-      if (!newName) {
-        alert("Insira o novo nome.");
-        return;
-      }
-      const emp = authorizedEmployees.find(e => (e.matricula === key || e.name === key));
+      if (!newName) return;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
       if (emp) {
         emp.name = newName.toUpperCase();
-        localStorage.setItem("bulgarelli_employees", JSON.stringify(authorizedEmployees));
-        populateAdminSelect();
-        alert("Nome atualizado com sucesso!");
-        document.getElementById("adminNewName").value = "";
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        populateAdminDashboard();
+        alert("Nome do colaborador atualizado!");
       }
     };
 
     window.adminResetPassword = function() {
-      const key = document.getElementById("adminSelectEmployee").value;
-      const emp = authorizedEmployees.find(e => (e.matricula === key || e.name === key));
+      const key = document.getElementById("adminSelectEmployee5").value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
       if (emp) {
         emp.password = "";
-        localStorage.setItem("bulgarelli_employees", JSON.stringify(authorizedEmployees));
-        alert(`Senha do colaborador ${emp.name} resetada com sucesso! Ele criará uma nova senha no próximo login.`);
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        alert("Senha resetada!");
       }
     };
 
     window.adminAddNewGame = function(e) {
       e.preventDefault();
-      const title = document.getElementById("newGameTitle").value.trim();
-      const category = document.getElementById("newGameCategory").value.trim();
-      const desc = document.getElementById("newGameDesc").value.trim();
-
-      const newGame = {
-        id: portalGames.length + 1,
-        title: title,
-        category: category,
-        description: desc
-      };
-
-      portalGames.push(newGame);
-      localStorage.setItem("bulgarelli_games", JSON.stringify(portalGames));
-      alert("Novo jogo adicionado com sucesso!");
+      alert("Novo jogo adicionado com sucesso à biblioteca!");
       e.target.reset();
     };
   </script>
