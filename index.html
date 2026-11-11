@@ -218,7 +218,7 @@
 
     .start-button-ring { background: radial-gradient(circle, #555 0%, #222 60%, #111 100%); border: 3px solid #8e959e; }
     .start-button-core { background: radial-gradient(circle at 35% 35%, #ff3b30 0%, #b80d0d 65%, #7a0000 100%); }
-    .modal-backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); }
+    .modal-backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); z-index: 99999; }
   </style>
 </head>
 <body class="bg-[#090a0f] text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -228,8 +228,7 @@
     <div class="text-center space-y-6 max-w-4xl">
       <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Inicializando Sistema Corporativo</p>
       
-      <div id="periodicTitleContainer" class="flex flex-wrap justify-center gap-2 sm:gap-3 my-8">
-      </div>
+      <div id="periodicTitleContainer" class="flex flex-wrap justify-center gap-2 sm:gap-3 my-8"></div>
 
       <div class="w-64 mx-auto bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700">
         <div id="preloaderBar" class="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-400 h-full w-0 transition-all duration-300 ease-out"></div>
@@ -493,8 +492,7 @@
             <div class="space-y-3">
               <div>
                 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
-                <select id="adminSelectEmployee" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
-                </select>
+                <select id="adminSelectEmployee" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white"></select>
               </div>
               <div>
                 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Novo Nome (Opcional)</label>
@@ -721,7 +719,7 @@
           </footer>
         </div>
 
-        <!-- TRANSIÇÃO COM A PISTA DE CORRIDA E A MOTO 3D IMPORTADAS -->
+        <!-- TRANSIÇÃO COM A PISTA DE CORRIDA E A MOTO 3D -->
         <div id="subScreenTransition" class="hidden absolute inset-0 z-50 bg-[#090203] flex flex-col justify-center items-center text-center overflow-hidden">
           <div class="relative z-10 px-4 mb-12">
             <h2 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-widest uppercase retro-comic-neon-fire">
@@ -799,7 +797,7 @@
 
           <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6">
             <h2 class="text-lg font-bold font-game text-yellow-500 flex items-center gap-2 mb-4">
-              <i class="fa-solid fa-ranking-star"></i> Ranking Interno do Jogo
+              <i class="fa-solid fa-ranking-star"></i> Ranking Interno do Jogo (Online)
             </h2>
             <div class="overflow-x-auto">
               <table class="w-full text-left text-sm">
@@ -813,7 +811,7 @@
                   </tr>
                 </thead>
                 <tbody id="internalRankingTableBody">
-                  <tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando ranking do jogo...</td></tr>
+                  <tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando ranking online do Firebase...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1010,6 +1008,7 @@
         <p id="modalAuthSubtitle" class="text-xs text-slate-400">Insira seu Nome, Sobrenome e Matrícula para continuar</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <!-- ETAPA 1: NOME E MATRÍCULA -->
         <div id="step1Fields" class="space-y-4">
           <div>
             <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome e Sobrenome</label>
@@ -1021,20 +1020,26 @@
           </div>
         </div>
 
+        <!-- ETAPA 2: PRIMEIRO ACESSO (CRIAÇÃO + CONFIRMAÇÃO DE SENHA) -->
         <div id="step2Fields" class="hidden space-y-4">
           <div class="p-3 bg-red-950/40 border border-red-500/40 rounded-xl text-xs text-red-200 text-center">
-            Primeiro acesso detectado! Por favor, crie uma senha de acesso.
+            Primeiro acesso detectado! Defina sua senha de acesso e confirme abaixo.
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Criar Senha de Acesso</label>
             <input type="password" id="inputPassword" placeholder="Digite sua nova senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
           </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Confirmar Senha de Acesso</label>
+            <input type="password" id="inputPasswordConfirm" placeholder="Repita a senha criada..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+          </div>
         </div>
 
+        <!-- ETAPA 3: LOGIN REGULAR (SENHA JÁ CADASTRADA) -->
         <div id="loginPasswordFields" class="hidden space-y-4">
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Insira sua Senha</label>
-            <input type="password" id="inputLoginPassword" placeholder="Sua senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Insira sua Senha de Acesso</label>
+            <input type="password" id="inputLoginPassword" placeholder="Digite sua senha cadastrada..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
           </div>
         </div>
 
@@ -1046,7 +1051,7 @@
     </div>
   </div>
 
-  <!-- MODAL FEEDBACK -->
+  <!-- MODAL FEEDBACK / CORREÇÃO -->
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
       <div id="modalIconContainer" class="mb-4"></div>
@@ -1056,7 +1061,8 @@
     </div>
   </div>
 
-  <!-- FIREBASE REALTIME ENGINE -->
+Bloco 2 de 2:
+  <!-- FIREBASE REALTIME ENGINE & LIVE RANKING -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -1078,6 +1084,8 @@
           rankingArray.sort((a, b) => b.score - a.score);
           window.renderInternalRankingTable(rankingArray);
           window.updateAdminMetrics(rankingArray);
+        } else {
+          window.renderInternalRankingTable([]);
         }
       });
     };
@@ -1115,14 +1123,11 @@
       return null;
     };
 
-    window.saveUserToFirebase = async function(userData) {
-      if (!window.db) return false;
+    window.saveUserToFirebase = function(userData) {
+      if (!window.db) return;
       try {
-        await set(ref(window.db, 'users/' + userData.matricula), userData);
-        return true;
-      } catch(e) {
-        return false;
-      }
+        set(ref(window.db, 'users/' + userData.matricula), userData);
+      } catch(e) {}
     };
   </script>
 
@@ -1138,48 +1143,6 @@
                 audioCtx.resume();
             }
         } catch (e) {}
-    }
-
-    function playEngineLaunchAudio() {
-        if (!audioCtx) return;
-        try {
-            const now = audioCtx.currentTime;
-            const oscFundamental = audioCtx.createOscillator();
-            const oscHarmonic = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            const filterNode = audioCtx.createBiquadFilter();
-
-            oscFundamental.type = 'sawtooth';
-            oscHarmonic.type = 'triangle';
-
-            filterNode.type = 'lowpass';
-            filterNode.frequency.setValueAtTime(450, now);
-            filterNode.frequency.exponentialRampToValueAtTime(3200, now + 0.8);
-            filterNode.Q.setValueAtTime(4, now);
-
-            oscFundamental.frequency.setValueAtTime(75, now);
-            oscFundamental.frequency.linearRampToValueAtTime(140, now + 0.25);
-            oscFundamental.frequency.exponentialRampToValueAtTime(560, now + 1.05);
-
-            oscHarmonic.frequency.setValueAtTime(150, now);
-            oscHarmonic.frequency.linearRampToValueAtTime(280, now + 0.25);
-            oscHarmonic.frequency.exponentialRampToValueAtTime(1120, now + 1.05);
-
-            gainNode.gain.setValueAtTime(0.08, now);
-            gainNode.gain.linearRampToValueAtTime(0.35, now + 0.3);
-            gainNode.gain.linearRampToValueAtTime(0.6, now + 0.9);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
-
-            oscFundamental.connect(filterNode);
-            oscHarmonic.connect(filterNode);
-            filterNode.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscFundamental.start(now);
-            oscHarmonic.start(now);
-            oscFundamental.stop(now + 1.45);
-            oscHarmonic.stop(now + 1.45);
-        } catch(e){}
     }
 
     const periodicElements = [
@@ -1333,10 +1296,6 @@
       { name: "VITORIA KETLYN PEIXOTO MARTINS", matricula: "1377", password: "", isAdmin: false }
     ];
 
-    let portalGames = [
-      { id: 1, title: "Jogo das Três Pistas", category: "Honda", description: "Treinamento de recuperação de crédito e argumentação." }
-    ];
-
     const gameLevels = [
       {
         id: 1,
@@ -1344,7 +1303,6 @@
         rounds: [
           {
             id: "1-1",
-            titleName: "Desafio 1.1",
             answer: "SAFRA DIARIA",
             clues: [
               { points: 10, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
@@ -1355,7 +1313,6 @@
           },
           {
             id: "1-2",
-            titleName: "Desafio 1.2",
             answer: "CONFIRMACAO POSITIVA",
             clues: [
               { points: 10, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
@@ -1366,7 +1323,6 @@
           },
           {
             id: "1-3",
-            titleName: "Desafio 1.3",
             answer: "ATENDIMENTO HUMANIZADO",
             clues: [
               { points: 10, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
@@ -1383,18 +1339,16 @@
         rounds: [
           {
             id: "2-1",
-            titleName: "Desafio 2.1",
-            answer: "OCORRENCIA 2600",
+            answer: "REALOCACAO",
             clues: [
-              { points: 10, text: "Dica 1: Status acionado em sistema quando o cliente pagou por engano uma parcela futura." },
-              { points: 9, text: "Dica 2: Exige do operador a inclusão do texto 'Cliente solicita realocação da parcela nº...'." },
-              { points: 8, text: "Dica 3: É puxada diariamente às 17h pelo Backoffice para envio ao banco via planilha." }
+              { points: 10, text: "Dica 1: Procedimento acionado em sistema quando o cliente pagou por engano uma parcela futura." },
+              { points: 9, text: "Dica 2: Exige do operador a inclusão do texto solicitando o ajuste da parcela informada." },
+              { points: 8, text: "Dica 3: Ocorrência 2600 enviada para a planilha do Backoffice puxada diariamente às 17h." }
             ],
-            explanation: "A ocorrência 2600 é utilizada para solicitar o processo de realocação de parcela paga incorretamente."
+            explanation: "A realocação de parcela ajusta pagamentos efetuados em vencimentos ou parcelas incorretas."
           },
           {
             id: "2-2",
-            titleName: "Desafio 2.2",
             answer: "BOLETO COMPLEMENTAR",
             clues: [
               { points: 10, text: "Dica 1: Emitido pela Honda quando o valor pago na parcela errada é menor que o valor correto." },
@@ -1405,85 +1359,82 @@
           },
           {
             id: "2-3",
-            titleName: "Desafio 2.3",
-            answer: "OCORRENCIA 2601",
+            answer: "SOLICITACAO AO JURIDICO",
+            acceptedAnswers: ["SOLICITACAO AO JURIDICO", "SOLICITACAO JURIDICO"],
             clues: [
-              { points: 10, text: "Dica 1: Solicitação obrigatória direcionada ao setor Jurídico em contratos ajuizados." },
+              { points: 10, text: "Dica 1: Procedimento via ocorrência 2601 direcionado ao setor de contencioso em contratos ajuizados." },
               { points: 9, text: "Dica 2: Exige informar Tipo de Acordo (Atualização ou Quitação), Parcelas, Vencimento e UF." },
-              { points: 8, text: "Dica 3: Usada para obter autorização e formalização de propostas em ações judiciais." }
+              { points: 8, text: "Dica 3: Indispensável para validar formalmente minutas e propostas sob ação judicial." }
             ],
-            explanation: "A Ocorrência 2601 é indispensável para solicitar autorização do Jurídico antes de fechar acordo ajuizado."
+            explanation: "A solicitação ao Jurídico (Ocorrência 2601) é obrigatória para liberar tratativas em contratos ajuizados."
           }
         ]
       },
       {
         id: 3,
         title: "Nível 3: Argumentação & Objeções",
+        unlockDate: "2026-11-27T00:00:00",
         rounds: [
           {
             id: "3-1",
-            titleName: "Desafio 3.1",
-            answer: "BOLETIM DE OCORRENCIA",
+            answer: "RENEGOCIACAO",
             clues: [
-              { points: 10, text: "Dica 1: Documento indispensável a ser solicitado ao cliente em casos de veículo roubado ou furtado." },
-              { points: 9, text: "Dica 2: Encaminhado ao banco para análise de tentativa de concessão de desconto." },
-              { points: 8, text: "Dica 3: Não isenta o cliente do débito, mantendo os juros diários até a regularização." }
+              { points: 10, text: "Dica 1: Processo de repactuação do débito em atraso com alteração das condições originais." },
+              { points: 9, text: "Dica 2: Permite o parcelamento do saldo devedor ajustando ao orçamento do cliente." },
+              { points: 8, text: "Dica 3: É obrigatório o pagamento da 1ª parcela para efetivar a contratação e formalizar o acordo." }
             ],
-            explanation: "Em casos de roubo do veículo, solicita-se o B.O. para tentar condições especiais com o Banco."
+            explanation: "A renegociação exige o pagamento pontual da 1ª parcela para efetivar e validar a proposta."
           },
           {
             id: "3-2",
-            titleName: "Desafio 3.2",
-            answer: "EXECUCAO DE BENS",
+            answer: "CONFIRMACAO EM LINHA",
             clues: [
-              { points: 10, text: "Dica 1: Medida judicial cabível quando a garantia (veículo) é perdida, roubada ou não localizada." },
-              { points: 9, text: "Dica 2: O Banco pode ingressar contra o titular do contrato para reaver o prejuízo." },
-              { points: 8, text: "Dica 3: Pode resultar na penhora de patrimônio ou bloqueio de contas bancárias do cliente." }
+              { points: 10, text: "Dica 1: Validação de segurança em tempo real realizada pelo operador durante o atendimento." },
+              { points: 9, text: "Dica 2: Garante que os dados bancários e os valores negociados foram conferidos perfeitamente." },
+              { points: 8, text: "Dica 3: Procedimento obrigatório executado na própria chamada antes da emissão do documento de quitação." }
             ],
-            explanation: "Quando a garantia se perde, o Banco pode mover ação de execução de bens e bloqueio de contas."
+            explanation: "A confirmação em linha previne erros e fraude, checando todas as informações durante a ligação."
           },
           {
             id: "3-3",
-            titleName: "Desafio 3.3",
-            answer: "CESSAO DE DIREITOS",
+            answer: "PRIMEIRA PARCELA",
+            acceptedAnswers: ["PRIMEIRA PARCELA", "PRIMEIRA PARCELA DE ACORDO"],
             clues: [
-              { points: 10, text: "Dica 1: Procedimento indicado quando o titular falece ou transfere o financiamento a terceiros." },
-              { points: 9, text: "Dica 2: Realizado diretamente na Honda para alterar formalmente a titularidade do contrato." },
-              { points: 8, text: "Dica 3: Exige a prévia regularização do débito em atraso pelo herdeiro ou interessado." }
+              { points: 10, text: "Dica 1: Valor inicial que deve ser quitado para formalizar uma repactuação ou acordo financeiro." },
+              { points: 9, text: "Dica 2: Sem a sua compensação bancária, a proposta é cancelada automaticamente no sistema." },
+              { points: 8, text: "Dica 3: É o compromisso de entrada exigido para suspender temporariamente as cobranças operacionais." }
             ],
-            explanation: "A Cessão de Direitos transfere o contrato para o nome do herdeiro/terceiro após quitar os débitos."
+            explanation: "O pagamento da primeira parcela (ou primeira parcela de acordo) é a condição necessária para validar o acordo."
           }
         ]
       },
       {
         id: 4,
         title: "Nível 4: Negociação & Jurídico",
+        unlockDate: "2026-12-11T00:00:00",
         rounds: [
           {
             id: "4-1",
-            titleName: "Desafio 4.1",
-            answer: "ENTREGA AMIGAVEL",
+            answer: "PRORROGACAO",
             clues: [
-              { points: 10, text: "Dica 1: Procedimento obrigatório de oferta para contratos que possuem mais de 50% em aberto." },
-              { points: 9, text: "Dica 2: Devolução voluntária do veículo quando o cliente não tem mais condições de pagar." },
-              { points: 8, text: "Dica 3: Evita a inclusão de custas extras de busca e apreensão como guincho e pátio." }
+              { points: 10, text: "Dica 1: Alteração da data de vencimento de uma parcela sem alterar o valor original do contrato." },
+              { points: 9, text: "Dica 2: Concedida em situações específicas para dar fôlego financeiro de curto prazo ao cliente." },
+              { points: 8, text: "Dica 3: Evita a incidência imediata de novos encargos se quitada na nova data pactuada." }
             ],
-            explanation: "A Entrega Amigável deve ser oferecida a clientes sem condições financeiras de manter as parcelas."
+            explanation: "A prorrogação estende a data limite de pagamento conforme as regras permitidas pela política comercial."
           },
           {
             id: "4-2",
-            titleName: "Desafio 4.2",
             answer: "BANCO HONDA",
             clues: [
-              { points: 10, text: "Dica 1: Razão Social obrigatória a ser informada no script antifraude do fechamento." },
-              { points: 9, text: "Dica 2: Deve constar como beneficiário do boleto sob o CNPJ 03.634.220/0001-65." },
-              { points: 8, text: "Dica 3: O código de barras emitido para este credor sempre se inicia com os dígitos 237." }
+              { points: 10, text: "Dica 1: Razão Social oficial do credor e beneficiário obrigatório de todos os boletos emitidos na operação." },
+              { points: 9, text: "Dica 2: Deve ser obrigatoriamente confirmado no script antifraude juntamente ao CNPJ 03.634.220/0001-65." },
+              { points: 8, text: "Dica 3: A linha digitável oficial deste beneficiário inicia-se com o código de banco 237 (Bradesco)." }
             ],
-            explanation: "No Fechamento Antifraude, confirma-se o beneficiário Banco Honda, CNPJ e início de código 237."
+            explanation: "No Fechamento Antifraude, o operador deve citar a Razão Social BANCO HONDA, o CNPJ oficial e os primeiros dígitos do boleto."
           },
           {
             id: "4-3",
-            titleName: "Desafio 4.3",
             answer: "CUSTAS PROCESSUAIS",
             clues: [
               { points: 10, text: "Dica 1: Valores incorporados à dívida quando o contrato entra em vias de ajuizamento." },
@@ -1497,32 +1448,31 @@
       {
         id: 5,
         title: "Nível 5: Casos Especiais & Regras SPF",
+        unlockDate: "2026-12-18T00:00:00",
         rounds: [
           {
             id: "5-1",
-            titleName: "Desafio 5.1",
             answer: "SEGURO PROTECAO FINANCEIRA",
+            acceptedAnswers: ["SEGURO PROTECAO FINANCEIRA", "SEGURO PROTECAO", "SEGURO"],
             clues: [
-              { points: 10, text: "Dica 1: Benefício verificado na tela de início (F1) em casos de desemprego ou óbito." },
-              { points: 9, text: "Dica 2: Pode cobrir até 6 parcelas do contrato no caso de demissão involuntária." },
-              { points: 8, text: "Dica 3: Em caso de falecimento do titular, a seguradora pode quitar o saldo devedor." }
+              { points: 10, text: "Dica 1: Benefício verificado na tela de início (F1) em casos de desemprego ou óbito do titular." },
+              { points: 9, text: "Dica 2: Pode cobrir até 6 parcelas do financiamento no caso de demissão involuntária." },
+              { points: 8, text: "Dica 3: Proteção contratada junto ao financiamento que garante a amortização da dívida em imprevistos." }
             ],
-            explanation: "O Seguro Proteção Financeira (SPF) garante a quitação de parcelas ou do saldo em imprevistos."
+            explanation: "O Seguro Proteção Financeira (SPF) é acionado para cobrir imprevistos como desemprego ou falecimento."
           },
           {
             id: "5-2",
-            titleName: "Desafio 5.2",
             answer: "QUEBRA DE SIGILO",
             clues: [
-              { points: 10, text: "Dica 1: Considerada uma Não Conformidade Grave (NCG) na monitoria de qualidade." },
-              { points: 9, text: "Dica 2: Ocorre ao informar dados da dívida antes de validar a confirmação positiva." },
-              { points: 8, text: "Dica 3: Passar informações do contrato para terceiros não autorizados sem validação de dados." }
+              { points: 10, text: "Dica 1: Considerada uma Não Conformidade Grave (NCG) no processo de monitoria de qualidade." },
+              { points: 9, text: "Dica 2: Ocorre ao passar informações financeiras ou contratuais antes da confirmação positiva." },
+              { points: 8, text: "Dica 3: Violação das normas de privacidade LGPD ao divulgar débitos para terceiros não autorizados." }
             ],
-            explanation: "Passar dados do contrato sem a confirmação positiva do cliente caracteriza Quebra de Sigilo."
+            explanation: "A quebra de sigilo ocorre quando o operador fornece detalhes da dívida sem confirmar os dados do titular."
           },
           {
             id: "5-3",
-            titleName: "Desafio 5.3",
             answer: "RESTRICAO SPC SERASA",
             clues: [
               { points: 10, text: "Dica 1: Consequência de inadimplência informada na argumentação de cobrança." },
@@ -1544,6 +1494,37 @@
     let currentPlayer = { name: "", matricula: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
     let internalRanking = [];
+    let countdownTimerInterval = null;
+
+    // EMBARALHAMENTO EXCLUSIVO POR JOGADOR (SEEDED SHUFFLE BASEADO NA MATRÍCULA)
+    function getShuffledRounds(roundsArray, levelId, matricula) {
+      let seed = 0;
+      const strKey = `${matricula || "1234"}_level_${levelId}`;
+      for (let i = 0; i < strKey.length; i++) {
+        seed = (seed << 5) - seed + strKey.charCodeAt(i);
+        seed |= 0;
+      }
+
+      let arr = [...roundsArray];
+      for (let i = arr.length - 1; i > 0; i--) {
+        seed = (seed * 9301 + 49297) % 233280;
+        let rnd = Math.abs(seed) / 233280;
+        let j = Math.floor(rnd * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr.map((r, idx) => ({
+        ...r,
+        titleName: `Desafio ${levelId}.${idx + 1}`
+      }));
+    }
+
+    function getPlayerLevels() {
+      return gameLevels.map(lvl => ({
+        ...lvl,
+        rounds: getShuffledRounds(lvl.rounds, lvl.id, currentPlayer.matricula || "1234")
+      }));
+    }
 
     window.addEventListener("DOMContentLoaded", () => {
       initPreloader();
@@ -1575,16 +1556,21 @@
       }
     });
 
-    function isLevelUnlocked(unlockDateStr) {
-      if (currentPlayer.isAdmin) return true;
-      if (!unlockDateStr) return true; 
-      return true;
+    function isLevelUnlocked(lvl) {
+      if (!lvl.unlockDate) return true;
+      const now = new Date();
+      const unlockTime = new Date(lvl.unlockDate);
+      return now >= unlockTime;
     }
 
-    function formatDateBR(dateStr) {
-      if (!dateStr) return "";
-      const [year, month, day] = dateStr.split('-');
-      return `${day}/${month}`;
+    function getTimeRemaining(unlockDateStr) {
+      const total = Date.parse(new Date(unlockDateStr)) - Date.parse(new Date());
+      if (total <= 0) return { total: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+      const seconds = Math.floor((total / 1000) % 60);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(total / (1000 * 60 * 60 * 24));
+      return { total, days, hours, minutes, seconds };
     }
 
     function openAvatarCustomizerModal() {
@@ -1777,11 +1763,16 @@
       }
     }
 
+    let tempPendingEmp = null;
+    let isPasswordCreationStep = false;
+    let isPasswordLoginStep = false;
+
     window.openRegistrationModal = function() {
       document.getElementById("modalRegistration").classList.remove("hidden");
       document.getElementById("inputName").value = "";
       document.getElementById("inputMatricula").value = "";
       document.getElementById("inputPassword").value = "";
+      document.getElementById("inputPasswordConfirm").value = "";
       document.getElementById("inputLoginPassword").value = "";
       
       document.getElementById("step1Fields").classList.remove("hidden");
@@ -1799,16 +1790,12 @@
       document.getElementById("modalRegistration").classList.add("hidden");
     };
 
-    let tempPendingEmp = null;
-    let isPasswordCreationStep = false;
-    let isPasswordLoginStep = false;
-
     function normalizeStr(str) {
       return str ? str.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : "";
     }
 
-    window.handleAuthSubmit = async function(e) {
-      e.preventDefault();
+    window.handleAuthSubmit = function(e) {
+      if (e) e.preventDefault();
 
       if (!isPasswordCreationStep && !isPasswordLoginStep) {
         const nameInput = document.getElementById("inputName").value.trim();
@@ -1822,7 +1809,7 @@
 
         let found = authorizedEmployees.find(emp => {
           const empNormName = normalizeStr(emp.name);
-          const empMat = emp.matricula.trim();
+          const empMat = (emp.matricula || "").trim();
           
           if (empNormName === "ILLICHS SOTO" && normName === "ILLICHS SOTO") return true;
           if (empMat && matInput && empMat === matInput) return true;
@@ -1830,43 +1817,43 @@
           return false;
         });
 
-        if (!found && matInput && window.fetchUserFromFirebase) {
-          const fbUser = await window.fetchUserFromFirebase(matInput);
-          if (fbUser) {
-            found = fbUser;
-            authorizedEmployees.push(found);
-          }
-        }
-
         if (found) {
           tempPendingEmp = found;
           if (!found.password) {
             isPasswordCreationStep = true;
             document.getElementById("step1Fields").classList.add("hidden");
             document.getElementById("step2Fields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Crie sua senha de acesso para continuar";
+            document.getElementById("modalAuthSubtitle").innerText = "Primeiro Acesso: Crie e confirme sua nova senha de acesso";
             document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
           } else {
             isPasswordLoginStep = true;
             document.getElementById("step1Fields").classList.add("hidden");
             document.getElementById("loginPasswordFields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Insira sua senha cadastrada";
-            document.getElementById("authSubmitBtn").innerText = "ENTRAR";
+            document.getElementById("modalAuthSubtitle").innerText = "Insira sua senha de acesso cadastrada";
+            document.getElementById("authSubmitBtn").innerText = "ENTRAR NO JOGO";
           }
         } else {
           tempPendingEmp = { name: nameInput.toUpperCase(), matricula: matInput || "0000", password: "", isAdmin: false };
           isPasswordCreationStep = true;
           document.getElementById("step1Fields").classList.add("hidden");
           document.getElementById("step2Fields").classList.remove("hidden");
-          document.getElementById("modalAuthSubtitle").innerText = "Crie sua senha de acesso para continuar";
+          document.getElementById("modalAuthSubtitle").innerText = "Primeiro Acesso: Crie e confirme sua nova senha de acesso";
           document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
         }
       } else if (isPasswordCreationStep) {
         const pass = document.getElementById("inputPassword").value.trim();
+        const passConfirm = document.getElementById("inputPasswordConfirm").value.trim();
+
         if (!pass) {
-          alert("Insira uma senha válida.");
+          alert("Por favor, digite uma senha de acesso válida.");
           return;
         }
+
+        if (pass !== passConfirm) {
+          alert("As senhas informadas não coincidem! Digite a mesma senha nos dois campos.");
+          return;
+        }
+
         tempPendingEmp.password = pass;
         
         let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
@@ -1876,20 +1863,23 @@
           authorizedEmployees.push(tempPendingEmp);
         }
         
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        try {
+          localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        } catch(err){}
+
         if (window.saveUserToFirebase) {
-          await window.saveUserToFirebase(tempPendingEmp);
+          window.saveUserToFirebase(tempPendingEmp);
         }
         
         currentPlayer.name = tempPendingEmp.name;
         currentPlayer.matricula = tempPendingEmp.matricula;
         currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
 
-        finalizeLoginSession();
+        finalizeLoginAndDirectToGame();
       } else if (isPasswordLoginStep) {
         const pass = document.getElementById("inputLoginPassword").value.trim();
         if (tempPendingEmp.password !== pass) {
-          alert("Senha incorreta!");
+          alert("Senha incorreta! Tente novamente.");
           return;
         }
 
@@ -1897,11 +1887,11 @@
         currentPlayer.matricula = tempPendingEmp.matricula;
         currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
 
-        finalizeLoginSession();
+        finalizeLoginAndDirectToGame();
       }
     };
 
-    function finalizeLoginSession() {
+    function finalizeLoginAndDirectToGame() {
       sessionStorage.setItem("honda_active_session", JSON.stringify(currentPlayer));
       updateSessionUI();
       closeRegistrationModal();
@@ -1910,7 +1900,13 @@
       isPasswordLoginStep = false;
       tempPendingEmp = null;
 
-      launchHondaGameApart();
+      document.getElementById("screenOverview").classList.add("hidden");
+      document.getElementById("screenCarteiras").classList.add("hidden");
+      document.getElementById("screenLibrary").classList.add("hidden");
+      document.getElementById("screenAdmin").classList.add("hidden");
+      document.getElementById("screenGameStandalone").classList.remove("hidden");
+
+      showLevelsScreenApart();
     }
 
     let isLaunching = false;
@@ -1929,7 +1925,6 @@
       const flashOverlay = document.getElementById('flashOverlay');
 
       initAudio();
-      playEngineLaunchAudio();
 
       startBtn.classList.add('running');
       buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
@@ -1995,20 +1990,34 @@
 
     function renderLevelsGridApart() {
       const grid = document.querySelector("#subScreenLevels #levelsGrid");
+      if (!grid) return;
       grid.innerHTML = "";
 
-      gameLevels.forEach(lvl => {
-        const unlocked = isLevelUnlocked(lvl.unlockDate);
+      if (countdownTimerInterval) clearInterval(countdownTimerInterval);
+
+      const playerLevels = getPlayerLevels();
+
+      playerLevels.forEach(lvl => {
+        const unlocked = isLevelUnlocked(lvl);
         const doneRounds = lvl.rounds.filter(r => currentPlayer.completedRounds.includes(r.id)).length;
 
         const card = document.createElement("div");
         card.className = `glass-card p-5 rounded-2xl border transition duration-300 flex flex-col justify-between ${
-          unlocked ? 'border-red-500/40 hover:border-red-500' : 'border-slate-800 opacity-60'
+          unlocked ? 'border-red-500/40 hover:border-red-500' : 'border-slate-800 opacity-70'
         }`;
 
         let statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 font-bold">Disponível</span>`;
+        let buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition">INICIAR DESAFIO <i class="fa-solid fa-play"></i></button>`;
 
-        const buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition">INICIAR DESAFIO <i class="fa-solid fa-play"></i></button>`;
+        if (!unlocked) {
+          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Bloqueado</span>`;
+          buttonHTML = `
+            <div class="w-full py-2 bg-black/50 border border-slate-800 rounded-xl text-center space-y-0.5">
+              <span class="text-[10px] text-slate-400 uppercase tracking-widest block font-mono">Disponível em:</span>
+              <span id="countdown_lvl_${lvl.id}" class="text-xs font-bold text-amber-400 font-mono">Calculando...</span>
+            </div>
+          `;
+        }
 
         card.innerHTML = `
           <div>
@@ -2022,11 +2031,30 @@
         `;
         grid.appendChild(card);
       });
+
+      // Ativar temporizador regressivo em tempo real
+      countdownTimerInterval = setInterval(() => {
+        playerLevels.forEach(lvl => {
+          if (!isLevelUnlocked(lvl)) {
+            const t = getTimeRemaining(lvl.unlockDate);
+            const el = document.getElementById(`countdown_lvl_${lvl.id}`);
+            if (el) {
+              el.innerText = `${t.days}d ${t.hours}h ${t.minutes}m ${t.seconds}s`;
+            }
+          }
+        });
+      }, 1000);
     }
 
     window.startLevelApart = function(levelId) {
-      const lvl = gameLevels.find(l => l.id === levelId);
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === levelId);
       if (!lvl) return;
+
+      if (!isLevelUnlocked(lvl)) {
+        alert("Este nível ainda está bloqueado e será liberado na data programada!");
+        return;
+      }
 
       currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
       setupRoundDisplayApart();
@@ -2036,7 +2064,8 @@
     };
 
     function setupRoundDisplayApart() {
-      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
       const round = lvl.rounds[currentRoundState.roundIndex];
       currentRoundState.roundData = round;
       currentRoundState.clueIndex = 0;
@@ -2078,10 +2107,16 @@
       e.preventDefault();
       const input = document.getElementById("inputAnswer");
       const userAns = normalizeString(input.value);
-      const expectedAns = normalizeString(currentRoundState.roundData.answer);
+      const round = currentRoundState.roundData;
 
-      if (userAns === expectedAns) {
-        const round = currentRoundState.roundData;
+      let isCorrect = false;
+      if (round.acceptedAnswers && Array.isArray(round.acceptedAnswers)) {
+        isCorrect = round.acceptedAnswers.some(ans => normalizeString(ans) === userAns);
+      } else {
+        isCorrect = (userAns === normalizeString(round.answer));
+      }
+
+      if (isCorrect) {
         const points = round.clues[currentRoundState.clueIndex].points;
         if (!currentPlayer.completedRounds.includes(round.id)) {
           currentPlayer.completedRounds.push(round.id);
@@ -2094,15 +2129,16 @@
           currentRoundState.clueIndex++;
           renderCluesApart();
           input.value = "";
-          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Ainda não é isso!", "Próxima pista liberada!", "TENTAR NOVAMENTE", null);
+          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Ainda não é isso!", "Resposta incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
         } else {
-          showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
+          showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta correta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
         }
       }
     };
 
     function advanceGameApart() {
-      const lvl = gameLevels.find(l => l.id === currentRoundState.levelId);
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
       if (currentRoundState.roundIndex < lvl.rounds.length - 1) {
         currentRoundState.roundIndex++;
         setupRoundDisplayApart();
@@ -2129,7 +2165,7 @@
       };
 
       if (window.savePlayerToFirebase) {
-        await window.savePlayerToFirebase(data);
+        window.savePlayerToFirebase(data);
       }
 
       const idx = internalRanking.findIndex(p => p.matricula === currentPlayer.matricula);
@@ -2209,12 +2245,12 @@
     };
 
     window.adminResetPassword = function() {
-      const key = document.getElementById("adminSelectEmployee5").value;
+      const key = document.getElementById("adminSelectEmployee").value;
       const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
       if (emp) {
         emp.password = "";
         localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
-        alert("Senha resetada!");
+        alert("Senha resetada com sucesso! No próximo acesso o usuário definirá uma nova senha.");
       }
     };
 
