@@ -1,3 +1,7 @@
+(Sem assunto)
+THAINA DA SILVA SANTOS
+
+THAINA DA SILVA SANTOS
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
@@ -1027,7 +1031,7 @@
     </div>
   </div>
 
-  <!-- FIREBASE REALTIME ENGINE & LIVE RANKING -->
+  <!-- FIREBASE REALTIME ENGINE & CLOUD SYNC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -1038,6 +1042,17 @@
       const app = initializeApp(firebaseConfig);
       window.db = getDatabase(app);
     } catch(e) {}
+
+    window.syncFirebaseData = function(matricula, callback) {
+      if (!window.db || !matricula) return;
+      const playerRef = ref(window.db, 'rankings/global/' + matricula);
+      onValue(playerRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data && callback) {
+          callback(data);
+        }
+      });
+    };
 
     window.syncFirebaseRanking = function() {
       if (!window.db) return;
@@ -1066,6 +1081,7 @@
             return {
               ...currentData,
               score: Math.max(currentData.score || 0, playerData.score),
+              completedRounds: Array.from(new Set([...(currentData.completedRounds || []), ...(playerData.completedRounds || [])])),
               completedRoundsCount: Math.max(currentData.completedRoundsCount || 0, playerData.completedRoundsCount),
               updatedAt: Date.now()
             };
@@ -1463,16 +1479,24 @@
             const savedAv = localStorage.getItem("user_avatar_3d");
             if (savedAv) playerAvatar = JSON.parse(savedAv);
             updateSessionUI();
+            
+            // Sincronizar dados do Firebase para o usuário logado
+            if (window.syncFirebaseData && currentPlayer.matricula) {
+              window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
+                if (cloudData) {
+                  currentPlayer.score = cloudData.score || 0;
+                  currentPlayer.completedRounds = cloudData.completedRounds || [];
+                }
+              });
+            }
           }
         } catch(e){}
       }
     });
 
     function isLevelUnlocked(lvl) {
-      // Perfil Administrativo tem acesso livre e irrestrito a TODOS os níveis
       if (currentPlayer.isAdmin) return true;
 
-      // Perfil Comum segue rigorosamente a data de desbloqueio configurada
       if (!lvl.unlockDate) return true;
       const now = new Date();
       const unlockTime = new Date(lvl.unlockDate);
@@ -2363,12 +2387,13 @@
         matricula: currentPlayer.matricula, 
         portfolio: currentPlayer.portfolio || "Honda",
         score: currentPlayer.score, 
+        completedRounds: currentPlayer.completedRounds,
         completedRoundsCount: currentPlayer.completedRounds.length,
         updatedAt: Date.now()
       };
 
       if (window.savePlayerToFirebase) {
-        window.savePlayerToFirebase(data);
+        await window.savePlayerToFirebase(data);
       }
 
       const idx = internalRanking.findIndex(p => p.matricula === currentPlayer.matricula);
@@ -2486,3 +2511,6 @@
   </script>
 </body>
 </html>
+
+
+Obter o Outlook para Android
