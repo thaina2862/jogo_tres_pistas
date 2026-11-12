@@ -1406,7 +1406,7 @@
     let internalRanking = [];
     let countdownTimerInterval = null;
 
-    // ALEATORIEDADE RESTRITA ESTRIATAMENTE AO ESCOPO DE CADA NÍVEL (NÃO MISTURA TEMAS)
+    // ALEATORIEDADE RESTRITA ESTRITAMENTE AO ESCOPO DE CADA NÍVEL (NÃO MISTURA TEMAS)
     function getShuffledRoundsForLevel(lvl, matricula) {
       let seed = 0;
       const strKey = `${matricula || "1234"}_level_${lvl.id}`;
@@ -1469,14 +1469,10 @@
     });
 
     function isLevelUnlocked(lvl) {
-      // Perfis Comuns só podem acessar níveis 1 e 2 livremente. 3, 4 e 5 exigem data + admin ou verificação
-      if (!currentPlayer.isAdmin && lvl.id >= 3) {
-        if (!lvl.unlockDate) return false;
-        const now = new Date();
-        const unlockTime = new Date(lvl.unlockDate);
-        return now >= unlockTime;
-      }
+      // Perfil Administrativo tem acesso livre e irrestrito a TODOS os níveis
+      if (currentPlayer.isAdmin) return true;
 
+      // Perfil Comum segue rigorosamente a data de desbloqueio configurada
       if (!lvl.unlockDate) return true;
       const now = new Date();
       const unlockTime = new Date(lvl.unlockDate);
@@ -2313,7 +2309,6 @@
       const playerLevels = getPlayerLevels();
       const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
 
-      // Validação aprimorada com suporte a múltiplos sinônimos aceitos
       let isCorrect = false;
       const possibleAnswers = [round.answer, ...(round.acceptedAnswers || [])];
       isCorrect = possibleAnswers.some(ans => normalizeString(ans) === userAns);
@@ -2322,13 +2317,11 @@
         const points = round.clues[currentRoundState.clueIndex].points;
         const alreadyCompleted = currentPlayer.completedRounds.includes(round.id);
 
-        // Se for nível de treinamento (Nível 1) ou se já tiver feito anteriormente, NÃO pontua mais
         if (!lvl.isTraining && !alreadyCompleted) {
           currentPlayer.completedRounds.push(round.id);
           currentPlayer.score += points;
           savePlayerToInternalRanking();
         } else if (alreadyCompleted && !lvl.isTraining) {
-          // Informa discretamente que já pontuou nesta rodada
           console.log("Rodada já concluída anteriormente. Pontos não acumulados novamente.");
         }
 
