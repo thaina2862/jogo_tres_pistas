@@ -87,7 +87,7 @@
       background-color: #ffffff !important;
       border-bottom: 1px solid #cbd5e1 !important;
     }
-    .light input, .light select {
+    .light input, .light select, .light textarea {
       background-color: #f1f5f9 !important;
       border: 1px solid #94a3b8 !important;
       color: #0f172a !important;
@@ -111,10 +111,7 @@
 
     .stage-wrapper { perspective: 800px; perspective-origin: 50% 55%; transform-style: preserve-3d; }
     
-    .shake-screen {
-        animation: cameraShake 0.06s infinite alternate;
-    }
-
+    .shake-screen { animation: cameraShake 0.06s infinite alternate; }
     @keyframes cameraShake {
         0% { transform: translate(1.5px, 1.5px) rotate(0.1deg); }
         100% { transform: translate(-1.5px, -1.5px) rotate(-0.1deg); }
@@ -135,32 +132,20 @@
         position: absolute; top: 0; bottom: 0; left: 50%; width: 8px; transform: translateX(-50%);
         background: repeating-linear-gradient(to bottom, #ffea00, #ffea00 35px, transparent 35px, transparent 70px); opacity: 0.6;
     }
-    .road-stripes.speeding {
-        animation: roadSpeed 0.12s linear infinite;
-    }
+    .road-stripes.speeding { animation: roadSpeed 0.12s linear infinite; }
     @keyframes roadSpeed {
         from { background-position-y: 0px; }
         to { background-position-y: 70px; }
     }
 
-    .idle-vibe {
-        animation: engineIdle 0.12s infinite alternate ease-in-out;
-    }
-
+    .idle-vibe { animation: engineIdle 0.12s infinite alternate ease-in-out; }
     @keyframes engineIdle {
         0% { transform: translateY(0px) rotate(0deg); }
         100% { transform: translateY(-2px) rotate(0.08deg); }
     }
 
-    .car-assembly {
-        transform-style: preserve-3d;
-        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .launching {
-        animation: launchDrive 1.35s cubic-bezier(0.65, 0.02, 0.2, 1) forwards !important;
-    }
-
+    .car-assembly { transform-style: preserve-3d; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .launching { animation: launchDrive 1.35s cubic-bezier(0.65, 0.02, 0.2, 1) forwards !important; }
     @keyframes launchDrive {
         0% { transform: translate3d(0, 0, 0) scale(1) rotateX(0deg); opacity: 1; }
         18% { transform: translate3d(0, 15px, -60px) scale(0.94) rotateX(-2deg); opacity: 1; }
@@ -169,25 +154,16 @@
         100% { transform: translate3d(0, -50px, 1200px) scale(9.5) rotateX(8deg); opacity: 0; filter: blur(5px); }
     }
 
-    .car-shadow {
-        transition: transform 1.3s cubic-bezier(0.65, 0.02, 0.2, 1), opacity 1.1s ease;
-    }
-    .car-assembly.launching ~ .car-shadow {
-        transform: translateX(-50%) scale(0.1);
-        opacity: 0;
-    }
+    .car-shadow { transition: transform 1.3s cubic-bezier(0.65, 0.02, 0.2, 1), opacity 1.1s ease; }
+    .car-assembly.launching ~ .car-shadow { transform: translateX(-50%) scale(0.1); opacity: 0; }
 
     .drl-glow { filter: drop-shadow(0 0 10px rgba(180, 230, 255, 0.9)) drop-shadow(0 0 25px rgba(0, 160, 255, 0.7)); }
     .fog-glow { box-shadow: 0 0 14px #ffffff, 0 0 25px rgba(255, 255, 255, 0.8); }
 
     .launch-flash {
-        position: absolute;
-        inset: 0;
+        position: absolute; inset: 0;
         background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,0,0,0.3) 45%, transparent 75%);
-        pointer-events: none;
-        opacity: 0;
-        z-index: 50;
-        transition: opacity 0.1s ease;
+        pointer-events: none; opacity: 0; z-index: 50; transition: opacity 0.1s ease;
     }
     .launch-flash.active { opacity: 1; }
 
@@ -197,23 +173,16 @@
       90% { opacity: 1; }
       100% { left: calc(100% + 100px); opacity: 0; }
     }
-
     .animate-bike-custom { animation: bikeDriveCustom 1.8s linear forwards; }
 
     .racetrack-container {
-      background: #1c1c1e;
-      border-top: 6px solid #e11d48;
-      border-bottom: 6px solid #e11d48;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+      background: #1c1c1e; border-top: 6px solid #e11d48; border-bottom: 6px solid #e11d48; box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
     }
-    .curb-pattern {
-      background: repeating-linear-gradient( 90deg, #ffffff, #ffffff 20px, #cc0000 20px, #cc0000 40px );
-    }
+    .curb-pattern { background: repeating-linear-gradient( 90deg, #ffffff, #ffffff 20px, #cc0000 20px, #cc0000 40px ); }
     .chequered-flag {
       background-image: repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), 
                         repeating-linear-gradient(45deg, #000 25%, #fff 25%, #fff 75%, #000 75%, #000);
-      background-position: 0 0, 10px 10px;
-      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px; background-size: 20px 20px;
     }
 
     .start-button-ring { background: radial-gradient(circle, #555 0%, #222 60%, #111 100%); border: 3px solid #8e959e; }
@@ -330,7 +299,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
-            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais disponíveis.</p>
+            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais disponíveis para sua carteira.</p>
           </div>
         </div>
 
@@ -344,7 +313,7 @@
                 <i class="fa-solid fa-folder"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold">Carteira Honda</h4>
+                <h4 id="overviewFolderTitle" class="text-sm font-bold">Minha Carteira Vinculada</h4>
                 <p class="text-[10px] text-slate-400">Acessado recentemente</p>
               </div>
             </div>
@@ -353,42 +322,11 @@
 
         <div class="space-y-3 pt-2">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-gamepad text-red-500"></i> <span>Jogos Recém Acessados</span>
-          </div>
-          <div id="recentGamesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div onclick="launchHondaGameApart()" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-500 flex items-center justify-center font-bold">
-                <i class="fa-solid fa-flag-checkered"></i>
-              </div>
-              <div>
-                <h4 class="text-sm font-bold">Jogo das Três Pistas</h4>
-                <p class="text-[10px] text-slate-400">Operação Honda &amp; Bulgarelli</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-3 pt-2">
-          <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-list-check text-red-500"></i> <span>Jogos em Destaque</span>
+            <i class="fa-solid fa-list-check text-red-500"></i> <span>Jogos Liberados para sua Carteira</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl">
-              <div>
-                <div class="flex justify-between items-start mb-3">
-                  <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/50 flex items-center justify-center text-red-500 font-bold">
-                    <i class="fa-solid fa-flag-checkered"></i>
-                  </div>
-                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 border border-red-500/40 font-bold">Honda</span>
-                </div>
-                <h4 class="font-bold text-base mb-1">Jogo das Três Pistas</h4>
-                <p class="text-xs text-slate-400 mb-4">Desafios de negociação, refinanciamento e procedimentos operacionais.</p>
-              </div>
-              <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white shadow-md shadow-red-900/40 transition">
-                <span>JOGAR</span> <i class="fa-solid fa-play"></i>
-              </button>
-            </div>
+          <div id="overviewAllowedGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dinâmico conforme a carteira do usuário -->
           </div>
         </div>
       </section>
@@ -397,31 +335,11 @@
       <section id="screenCarteiras" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
           <h1 class="text-2xl font-bold font-game tracking-wider">Pastas de Carteiras</h1>
-          <p class="text-xs text-slate-400">Navegue pelas operações de atendimento e cobrança.</p>
+          <p class="text-xs text-slate-400">Operações e simuladores liberados para o seu perfil.</p>
         </div>
 
-        <div class="space-y-6">
-          <div class="glass-card p-5 rounded-2xl border border-red-600/30 space-y-4">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-xl bg-[#cc0000] flex items-center justify-center shadow-md text-white font-bold text-xl">
-                H
-              </div>
-              <div>
-                <h3 class="text-lg font-bold">Carteira Honda</h3>
-                <p class="text-xs text-slate-400">Simuladores de negociação e renegociação.</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
-              <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
-                <div>
-                  <h4 class="font-bold text-sm mb-1">Jogo das Três Pistas</h4>
-                  <p class="text-[11px] text-slate-400 mb-3">Procedimentos, seguros e acordos.</p>
-                </div>
-                <button onclick="launchHondaGameApart()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Jogar</button>
-              </div>
-            </div>
-          </div>
+        <div id="carteirasContainerList" class="space-y-6">
+          <!-- Renderizado por script conforme permissão -->
         </div>
       </section>
 
@@ -429,18 +347,11 @@
       <section id="screenLibrary" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
           <h1 class="text-2xl font-bold font-game tracking-wider">Biblioteca de Jogos</h1>
-          <p class="text-xs text-slate-400">Catálogo de módulos de capacitação e treinamentos corporativos.</p>
+          <p class="text-xs text-slate-400">Catálogo de módulos de capacitação e treinamentos corporativos autorizados.</p>
         </div>
 
         <div id="libraryGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
-            <div>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 font-bold">Carteira Honda</span>
-              <h4 class="font-bold text-base mt-2 mb-1">Jogo das Três Pistas</h4>
-              <p class="text-xs text-slate-400 mb-4">Treinamento de recuperação de crédito e argumentação.</p>
-            </div>
-            <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">Jogar</button>
-          </div>
+          <!-- Renderizado conforme carteira do operador -->
         </div>
       </section>
 
@@ -448,13 +359,13 @@
       <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
           <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-500">Painel Admin — Treinamento &amp; Qualidade</h1>
-          <p class="text-xs text-slate-400">Métricas operacionais, indicadores dos jogos e gestão da equipe.</p>
+          <p class="text-xs text-slate-400">Métricas operacionais, importação de planilhas de colaboradores e gestão de equipes.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold text-slate-400 uppercase">Total de Jogadores</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Total de Colaboradores</span>
               <h3 id="adminStatPlayers" class="text-2xl font-extrabold">0</h3>
             </div>
             <i class="fa-solid fa-users text-red-500/40 text-3xl"></i>
@@ -475,56 +386,99 @@
           </div>
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-500 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold text-slate-400 uppercase">Taxa de Conclusão</span>
-              <h3 id="adminStatCompletion" class="text-2xl font-extrabold text-cyan-500">0%</h3>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">Carteiras Ativas</span>
+              <h3 id="adminStatPortfolios" class="text-2xl font-extrabold text-cyan-500">2</h3>
             </div>
-            <i class="fa-solid fa-bullseye text-cyan-500/40 text-3xl"></i>
+            <i class="fa-solid fa-folder-tree text-cyan-500/40 text-3xl"></i>
+          </div>
+        </div>
+
+        <!-- SISTEMA DE IMPORTAÇÃO DE PLANILHA COM PERFIL -->
+        <div class="glass-card p-6 rounded-2xl border-yellow-500/40 space-y-4">
+          <h3 class="font-bold text-sm uppercase text-yellow-500 flex items-center gap-2">
+            <i class="fa-solid fa-file-excel"></i> Importação de Colaboradores via Planilha
+          </h3>
+          <p class="text-xs text-slate-400">Cole os dados da planilha contendo as colunas: <strong>Nome Completo</strong>, <strong>Matrícula</strong>, <strong>Carteira</strong> e <strong>Perfil</strong> (<span class="text-yellow-400">Admin</span> ou <span class="text-yellow-400">Comum</span>). Separe por Tabulação/Excel ou vírgula.</p>
+          
+          <div class="space-y-3">
+            <textarea id="importSpreadsheetInput" rows="4" placeholder="Exemplo:&#10;Fulano da Silva 1234 Honda Comum&#10;Marina Santos 5678 Stellantis Admin" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
+            <div class="flex gap-3">
+              <button onclick="processSpreadsheetImport()" class="px-6 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
+                <i class="fa-solid fa-upload"></i> Processar e Importar Colaboradores
+              </button>
+              <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition">
+                Exportar Lista Atual
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- GERENCIAR COLABORADOR INDIVIDUAL -->
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
             <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
-              <i class="fa-solid fa-users-gear"></i> Gerenciar Colaboradores
+              <i class="fa-solid fa-users-gear"></i> Gerenciar Perfil e Carteira do Colaborador
             </h3>
-            <p class="text-xs text-slate-400">Altere nome de exibição ou resete senha de acesso.</p>
+            <p class="text-xs text-slate-400">Selecione um colaborador para alterar nome, carteira, perfil de acesso ou resetar a senha para <strong>123Mudar</strong>.</p>
             
             <div class="space-y-3">
               <div>
                 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
-                <select id="adminSelectEmployee" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white"></select>
+                <select id="adminSelectEmployee" onchange="onAdminSelectEmployeeChange()" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white"></select>
               </div>
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Novo Nome (Opcional)</label>
-                <input type="text" id="adminNewName" placeholder="Novo nome de exibição..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Nome de Exibição</label>
+                <input type="text" id="adminNewName" placeholder="Nome completo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira Vinculada</label>
+                  <select id="adminNewPortfolio" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                    <option value="Honda">Honda</option>
+                    <option value="Stellantis">Stellantis</option>
+                    <option value="Geral">Geral</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Tipo de Perfil</label>
+                  <select id="adminNewRole" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                    <option value="Comum">Comum</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
               </div>
               <div class="flex gap-2 pt-2">
-                <button onclick="adminUpdateEmployeeName()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Atualizar Nome</button>
-                <button onclick="adminResetPassword()" class="flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition">Resetar Senha</button>
+                <button onclick="adminSaveEmployeeChanges()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Salvar Alterações</button>
+                <button onclick="adminResetPasswordIndividual()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition" title="Reseta a senha para 123Mudar">Resetar Senha (123Mudar)</button>
               </div>
             </div>
           </div>
 
+          <!-- CADASTRAR JOGO POR CARTEIRA -->
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
             <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
-              <i class="fa-solid fa-circle-plus"></i> Adicionar Novo Jogo
+              <i class="fa-solid fa-circle-plus"></i> Cadastrar Jogo por Carteira
             </h3>
-            <p class="text-xs text-slate-400">Cadastre um novo módulo na biblioteca.</p>
+            <p class="text-xs text-slate-400">Vincule um novo módulo de treinamento a uma carteira específica.</p>
             
             <form onsubmit="adminAddNewGame(event)" class="space-y-3">
               <div>
                 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Título do Jogo</label>
-                <input type="text" id="newGameTitle" required placeholder="Ex: Quiz Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+                <input type="text" id="newGameTitle" required placeholder="Ex: Quiz Stellantis Amigável" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
               </div>
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira</label>
-                <input type="text" id="newGameCategory" required placeholder="Ex: Stellantis" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira Alvo</label>
+                <select id="newGameCategory" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                  <option value="Honda">Honda</option>
+                  <option value="Stellantis">Stellantis</option>
+                  <option value="Geral">Geral (Todas as Carteiras)</option>
+                </select>
               </div>
               <div>
                 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Descrição Curta</label>
                 <input type="text" id="newGameDesc" required placeholder="Breve resumo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
               </div>
-              <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Adicionar à Biblioteca</button>
+              <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Cadastrar na Biblioteca</button>
             </form>
           </div>
         </div>
@@ -569,7 +523,7 @@
               </div>
           </div>
 
-          <!-- HONDA CIVIC TYPE-R 3D COMPLETO INTEGRADO -->
+          <!-- HONDA CIVIC TYPE-R 3D COMPLETO INTEGRADO (INALTERADO) -->
           <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
               <div class="road-perspective pointer-events-none">
                   <div class="road-grid"></div>
@@ -771,7 +725,7 @@
                 <span class="text-xs text-slate-400 uppercase font-semibold block">Operador Conectado</span>
                 <h3 class="text-lg font-bold flex items-center gap-2">
                   <span id="displayPlayerName">---</span> 
-                  <span class="text-xs font-normal text-slate-400">(Matrícula: <span id="displayPlayerMatricula">---</span>)</span>
+                  <span class="text-xs font-normal text-slate-400">(Matrícula: <span id="displayPlayerMatricula">---</span> | Carteira: <span id="displayPlayerPortfolio" class="text-red-400 font-bold">---</span>)</span>
                 </h3>
               </div>
             </div>
@@ -795,10 +749,21 @@
             <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           </div>
 
-          <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6">
-            <h2 class="text-lg font-bold font-game text-yellow-500 flex items-center gap-2 mb-4">
-              <i class="fa-solid fa-ranking-star"></i> Ranking Interno do Jogo (Online)
-            </h2>
+          <!-- RANKING ONLINE COM PÓDIO E TABELA -->
+          <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6 space-y-6">
+            <div class="flex justify-between items-center">
+              <h2 class="text-lg font-bold font-game text-yellow-500 flex items-center gap-2">
+                <i class="fa-solid fa-ranking-star"></i> Ranking Online (Firebase)
+              </h2>
+              <span class="text-xs text-slate-400 font-mono">Atualização em tempo real</span>
+            </div>
+
+            <!-- PÓDIO (1°, 2°, 3°) -->
+            <div id="podiumContainer" class="grid grid-cols-3 gap-3 pt-2 pb-4 border-b border-slate-800">
+              <!-- Renderizado via JS -->
+            </div>
+
+            <!-- TABELA DEMAIS COLOCAÇÕES -->
             <div class="overflow-x-auto">
               <table class="w-full text-left text-sm">
                 <thead>
@@ -806,12 +771,13 @@
                     <th class="p-3">Posição</th>
                     <th class="p-3">Operador</th>
                     <th class="p-3">Matrícula</th>
+                    <th class="p-3">Carteira</th>
                     <th class="p-3">Progresso</th>
                     <th class="p-3 text-right">Pontos</th>
                   </tr>
                 </thead>
                 <tbody id="internalRankingTableBody">
-                  <tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Carregando ranking online do Firebase...</td></tr>
+                  <tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Carregando ranking online do Firebase...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1004,8 +970,8 @@
     <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/30 shadow-2xl relative">
       <div class="text-center mb-6">
         <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
-        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game">Identificação Obrigatória</h2>
-        <p id="modalAuthSubtitle" class="text-xs text-slate-400">Insira seu Nome, Sobrenome e Matrícula para continuar</p>
+        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game">Permissão de Acesso</h2>
+        <p id="modalAuthSubtitle" class="text-xs text-slate-400">Insira seu Nome e Matrícula para acessar o Portal Bulgarelli Play</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <!-- ETAPA 1: NOME E MATRÍCULA -->
@@ -1020,22 +986,22 @@
           </div>
         </div>
 
-        <!-- ETAPA 2: PRIMEIRO ACESSO (CRIAÇÃO + CONFIRMAÇÃO DE SENHA) -->
+        <!-- ETAPA 2: PRIMEIRO ACESSO OU APÓS RESET (SENHA 123Mudar -> CRIAR NOVA SENHA) -->
         <div id="step2Fields" class="hidden space-y-4">
           <div class="p-3 bg-red-950/40 border border-red-500/40 rounded-xl text-xs text-red-200 text-center">
-            Primeiro acesso detectado! Defina sua senha de acesso e confirme abaixo.
+            Primeiro acesso ou senha resetada! Defina sua nova senha pessoal de preferência abaixo.
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Criar Senha de Acesso</label>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nova Senha de Preferência</label>
             <input type="password" id="inputPassword" placeholder="Digite sua nova senha..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Confirmar Senha de Acesso</label>
+            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Confirmar Nova Senha</label>
             <input type="password" id="inputPasswordConfirm" placeholder="Repita a senha criada..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
           </div>
         </div>
 
-        <!-- ETAPA 3: LOGIN REGULAR (SENHA JÁ CADASTRADA) -->
+        <!-- ETAPA 3: LOGIN REGULAR (SENHA JÁ CADASTRADA E DIFERENTE DE 123Mudar) -->
         <div id="loginPasswordFields" class="hidden space-y-4">
           <div>
             <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Insira sua Senha de Acesso</label>
@@ -1061,7 +1027,6 @@
     </div>
   </div>
 
-Bloco 2 de 2:
   <!-- FIREBASE REALTIME ENGINE & LIVE RANKING -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -1076,7 +1041,7 @@ Bloco 2 de 2:
 
     window.syncFirebaseRanking = function() {
       if (!window.db) return;
-      const rankingRef = ref(window.db, 'rankings/honda');
+      const rankingRef = ref(window.db, 'rankings/global');
       onValue(rankingRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -1092,7 +1057,7 @@ Bloco 2 de 2:
 
     window.savePlayerToFirebase = async function(playerData) {
       if (!window.db) return false;
-      const playerRef = ref(window.db, 'rankings/honda/' + playerData.matricula);
+      const playerRef = ref(window.db, 'rankings/global/' + playerData.matricula);
       try {
         await runTransaction(playerRef, (currentData) => {
           if (currentData === null) {
@@ -1110,24 +1075,6 @@ Bloco 2 de 2:
       } catch(e) {
         return false;
       }
-    };
-
-    window.fetchUserFromFirebase = async function(matricula) {
-      if (!window.db) return null;
-      try {
-        const snapshot = await get(ref(window.db, 'users/' + matricula));
-        if (snapshot.exists()) {
-          return snapshot.val();
-        }
-      } catch(e) {}
-      return null;
-    };
-
-    window.saveUserToFirebase = function(userData) {
-      if (!window.db) return;
-      try {
-        set(ref(window.db, 'users/' + userData.matricula), userData);
-      } catch(e) {}
     };
   </script>
 
@@ -1159,6 +1106,7 @@ Bloco 2 de 2:
 
     function initPreloader() {
       const container = document.getElementById("periodicTitleContainer");
+      if (!container) return;
       container.innerHTML = "";
 
       periodicElements.forEach((el, i) => {
@@ -1177,13 +1125,15 @@ Bloco 2 de 2:
       let progress = 0;
       const interval = setInterval(() => {
         progress += 4;
-        bar.style.width = `${progress}%`;
+        if (bar) bar.style.width = `${progress}%`;
         if (progress >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             const preloader = document.getElementById("preloader");
-            preloader.classList.add("transition-opacity", "duration-500", "opacity-0");
-            setTimeout(() => preloader.classList.add("hidden"), 500);
+            if (preloader) {
+              preloader.classList.add("transition-opacity", "duration-500", "opacity-0");
+              setTimeout(() => preloader.classList.add("hidden"), 500);
+            }
           }, 300);
         }
       }, 40);
@@ -1197,14 +1147,14 @@ Bloco 2 de 2:
       if (isDark) {
         document.documentElement.classList.remove("dark");
         document.documentElement.classList.add("light");
-        icon.className = "fa-solid fa-sun";
-        text.innerText = "Claro";
+        if (icon) icon.className = "fa-solid fa-sun";
+        if (text) text.innerText = "Claro";
         localStorage.setItem("theme_preference", "light");
       } else {
         document.documentElement.classList.remove("light");
         document.documentElement.classList.add("dark");
-        icon.className = "fa-solid fa-moon";
-        text.innerText = "Escuro";
+        if (icon) icon.className = "fa-solid fa-moon";
+        if (text) text.innerText = "Escuro";
         localStorage.setItem("theme_preference", "dark");
       }
     }
@@ -1213,121 +1163,72 @@ Bloco 2 de 2:
     function toggleSidebarManual() {
       const sidebar = document.getElementById("sidebarNav");
       const floatBtn = document.getElementById("sidebarToggleFloat");
+      if (!sidebar) return;
       if (!sidebarHidden) {
         sidebar.style.transform = "translateX(-100%)";
         sidebar.style.width = "0";
         sidebar.style.padding = "0";
         sidebar.style.overflow = "hidden";
-        floatBtn.classList.remove("hidden");
+        if (floatBtn) floatBtn.classList.remove("hidden");
         sidebarHidden = true;
       } else {
         sidebar.style.transform = "translateX(0)";
         sidebar.style.width = "16rem";
         sidebar.style.padding = "";
         sidebar.style.overflow = "";
-        floatBtn.classList.add("hidden");
+        if (floatBtn) floatBtn.classList.add("hidden");
         sidebarHidden = false;
       }
     }
 
-    let authorizedEmployees = [
-      { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", password: "", isAdmin: true },
-      { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", password: "", isAdmin: true },
-      { name: "THAINA DA SILVA SANTOS", matricula: "2679", password: "", isAdmin: true },
-      { name: "FABIANE CARDOSO G.FERREIRA", matricula: "2865", password: "", isAdmin: true },
-      { name: "LUCAS VIOTTI GOMES", matricula: "3004", password: "", isAdmin: true },
-      { name: "JESSICA RENATA DIAS", matricula: "3079", password: "", isAdmin: true },
-      { name: "ILLICHS SOTO", matricula: "0000", password: "", isAdmin: true },
+    // BASE DE COLABORADORES
+    let authorizedEmployees = JSON.parse(localStorage.getItem("honda_authorized_employees")) || [
+      { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "THAINA DA SILVA SANTOS", matricula: "2679", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "ILLICHS SOTO", matricula: "0000", portfolio: "Honda", password: "123Mudar", isAdmin: true },
 
-      { name: "ANA CAROLINE SOUZA SANTOS", matricula: "1304", password: "", isAdmin: false },
-      { name: "ANA LUIZA BATISTA DE OLIVEIRA SANTOS", matricula: "2275", password: "", isAdmin: false },
-      { name: "ANA LUIZA DA SILVA", matricula: "2271", password: "", isAdmin: false },
-      { name: "ANA LUIZA MEDEIROS DOS SANTOS", matricula: "3016", password: "", isAdmin: false },
-      { name: "ANA LUIZA SILVA DE CARVALHO", matricula: "2274", password: "", isAdmin: false },
-      { name: "BEATRIZ AGNOLETTO SANTOS", matricula: "1260", password: "", isAdmin: false },
-      { name: "BEATRIZ MATIOLI SENA", matricula: "2937", password: "", isAdmin: false },
-      { name: "BRENDA VITORIA DOS SANTOS SILVA", matricula: "1601", password: "", isAdmin: false },
-      { name: "CARLOS ALBERTO MONTIN JUNIOR", matricula: "2651", password: "", isAdmin: false },
-      { name: "CAROLINA DA LUZ", matricula: "1060", password: "", isAdmin: false },
-      { name: "CELSO ALEXANDRE RIBEIRO MESSIAS", matricula: "1700", password: "", isAdmin: false },
-      { name: "CHRISTAN GUILHERME DA SILVA ARAUJO", matricula: "2560", password: "", isAdmin: false },
-      { name: "DANIELE CARVALHO ARAUJO", matricula: "3148", password: "", isAdmin: false },
-      { name: "DANIELY RAMOS DE SOUZA SILVA", matricula: "2530", password: "", isAdmin: false },
-      { name: "DAVI ACBAS DE LIMA", matricula: "3092", password: "", isAdmin: false },
-      { name: "DAYANE DOS SANTOS DUARTE", matricula: "3050", password: "", isAdmin: false },
-      { name: "DENZEL FEITOSA DE OLIVEIRA JULIO", matricula: "2785", password: "", isAdmin: false },
-      { name: "EDSON SAMUEL DAMASCENO ARCANJO", matricula: "1616", password: "", isAdmin: false },
-      { name: "EDUARDO ANTONY SILVA NASCIMENTO", matricula: "1985", password: "", isAdmin: false },
-      { name: "ELIAS COSTA FIRMINO DA SILVA", matricula: "2003", password: "", isAdmin: false },
-      { name: "EVERSON XAVIER DE ALMEIDA", matricula: "2396", password: "", isAdmin: false },
-      { name: "FABRICIO PEREIRA E SILVA", matricula: "3113", password: "", isAdmin: false },
-      { name: "FELIPE CORREA AMARAL", matricula: "2736", password: "", isAdmin: false },
-      { name: "GABRIEL LUCAS SAMPAIO DOS SANTOS", matricula: "1372", password: "", isAdmin: false },
-      { name: "GISELLE CRISTINA RIBEIRO MESSIAS", matricula: "2375", password: "", isAdmin: false },
-      { name: "GUILHERME FEIJO DE OLIVEIRA", matricula: "1757", password: "", isAdmin: false },
-      { name: "GUSTAVO HENRIQUE TAVARES DOS SANTOS", matricula: "2135", password: "", isAdmin: false },
-      { name: "HEBER GONCALVES NUNES", matricula: "2939", password: "", isAdmin: false },
-      { name: "IARA APARECIDA DA SILVA", matricula: "2924", password: "", isAdmin: false },
-      { name: "ILAINA SUELE SANTANA NASCIMENTO", matricula: "1264", password: "", isAdmin: false },
-      { name: "ISABELLA ALCANTARA SOARES", matricula: "3104", password: "", isAdmin: false },
-      { name: "ISABELLA LUZIA AMORIM DE CARVALHO", matricula: "2566", password: "", isAdmin: false },
-      { name: "JESSICA CRISTINA CAPELOTTO DA SILVA", matricula: "2590", password: "", isAdmin: false },
-      { name: "JOAO VITOR APARECIDO DE ANDRADE DE OLIVEIRA", matricula: "2991", password: "", isAdmin: false },
-      { name: "JOHNNY JEFFERSON RAMOS DO CARMO", matricula: "1947", password: "", isAdmin: false },
-      { name: "JOSE YURI BENEVIDES LIMA", matricula: "1600", password: "", isAdmin: false },
-      { name: "JULIA DE MORAIS MARIANO", matricula: "2270", password: "", isAdmin: false },
-      { name: "KAMILLY ARAUJO DE FREITAS", matricula: "1854", password: "", isAdmin: false },
-      { name: "KAUAN SANTOS DA SILVA", matricula: "2002", password: "", isAdmin: false },
-      { name: "LAIS VITORIA BRAZ DOS SANTOS", matricula: "1371", password: "", isAdmin: false },
-      { name: "LUCAS BARCELLOS CINTRA", matricula: "2996", password: "", isAdmin: false },
-      { name: "MAKU MIGUEL NDOMBE", matricula: "3067", password: "", isAdmin: false },
-      { name: "MARIA EDUARDA LEÃO CARDOSO BATISTA", matricula: "2373", password: "", isAdmin: false },
-      { name: "MARILZA PEREIRA SANT ANA", matricula: "1287", password: "", isAdmin: false },
-      { name: "MARINEIDE ODILON AZEVEDO", matricula: "1112", password: "", isAdmin: false },
-      { name: "MAYARA DO NASCIMENTO SOARES", matricula: "3017", password: "", isAdmin: false },
-      { name: "MIGUEL FERNANDES DE JESUS", matricula: "1350", password: "", isAdmin: false },
-      { name: "NATHALIA PRADO ALVES NASCIMENTO", matricula: "1202", password: "", isAdmin: false },
-      { name: "RAFAELA SILVEIRA MARSOLLA", matricula: "3098", password: "", isAdmin: false },
-      { name: "RAYLA MONALIZA DE MELO SANTOS", matricula: "2227", password: "", isAdmin: false },
-      { name: "RENATA CRISTINA CAMARGO DO PRADO", matricula: "1980", password: "", isAdmin: false },
-      { name: "RHAUA DA SILVA CALADO", matricula: "3057", password: "", isAdmin: false },
-      { name: "ROSELI LOPES DA SILVA", matricula: "1890", password: "", isAdmin: false },
-      { name: "SIMONE DE SOUZA PEREIRA", matricula: "1336", password: "", isAdmin: false },
-      { name: "VITORIA KETLYN PEIXOTO MARTINS", matricula: "1377", password: "", isAdmin: false }
+      { name: "ANA CAROLINE SOUZA SANTOS", matricula: "1304", portfolio: "Honda", password: "123Mudar", isAdmin: false },
+      { name: "BEATRIZ AGNOLETTO SANTOS", matricula: "1260", portfolio: "Stellantis", password: "123Mudar", isAdmin: false }
     ];
 
+    // DEFINIÇÃO DOS NÍVEIS COM DATAS DE DESBLOQUEIO EXATAS E SINÔNIMOS AMPLIADOS
     const gameLevels = [
       {
         id: 1,
-        title: "Nível 1: Fase de Teste (Treinamento Livre)",
+        title: "Nível 1: Fase de Treinamento (Sem Pontuação)",
+        isTraining: true, // Não pontua
         rounds: [
           {
             id: "1-1",
             answer: "SAFRA DIARIA",
+            acceptedAnswers: ["SAFRA DIARIA", "SAFRA", "DIARIO", "INICIO DE ATRASO"],
             clues: [
-              { points: 10, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
-              { points: 9, text: "Dica 2: Atende clientes com atrasos iniciais de 11 a 15 dias (e atualizados de 16 a 30 dias)." },
-              { points: 8, text: "Dica 3: Foco em reabilitar o acesso do cliente às plataformas digitais de pagamento." }
+              { points: 0, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
+              { points: 0, text: "Dica 2: Atende clientes com atrasos iniciais de 11 a 15 dias (e atualizados de 16 a 30 dias)." },
+              { points: 0, text: "Dica 3: Foco em reabilitar o acesso do cliente às plataformas digitais de pagamento." }
             ],
             explanation: "Safra Diária é a faixa inicial de cobrança operacional para atrasos recentes."
           },
           {
             id: "1-2",
             answer: "CONFIRMACAO POSITIVA",
+            acceptedAnswers: ["CONFIRMACAO POSITIVA", "CONFIRMACAO DE DADOS", "VALIDACAO CADASTRAL", "SEGURANCA DE DADOS"],
             clues: [
-              { points: 10, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
-              { points: 9, text: "Dica 2: Exige solicitar o nome completo mais os 3 primeiros dígitos do CPF do cliente." },
-              { points: 8, text: "Dica 3: Pode ser feita também confirmando marca, modelo e ano do veículo se houver recusa do CPF." }
+              { points: 0, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
+              { points: 0, text: "Dica 2: Exige solicitar o nome completo mais os 3 primeiros dígitos do CPF do cliente." },
+              { points: 0, text: "Dica 3: Pode ser feita também confirmando marca, modelo e ano do veículo se houver recusa do CPF." }
             ],
             explanation: "A confirmação positiva garante a segurança das informações e evita quebra de sigilo."
           },
           {
             id: "1-3",
             answer: "ATENDIMENTO HUMANIZADO",
+            acceptedAnswers: ["ATENDIMENTO HUMANIZADO", "EMPATIA", "ESCUTA ATIVA", "BOM ATENDIMENTO"],
             clues: [
-              { points: 10, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
-              { points: 9, text: "Dica 2: Saber se colocar no lugar do cliente, entendendo o imprevisto financeiro." },
-              { points: 8, text: "Dica 3: Cativa o cliente para um atendimento diferenciado em vez de apenas impor cobrança." }
+              { points: 0, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
+              { points: 0, text: "Dica 2: Saber se colocar no lugar do cliente, entendendo o imprevisto financeiro." },
+              { points: 0, text: "Dica 3: Cativa o cliente para um atendimento diferenciado em vez de apenas impor cobrança." }
             ],
             explanation: "Atendimento Humanizado busca criar relacionamento e resolver a inadimplência com empatia."
           }
@@ -1340,6 +1241,7 @@ Bloco 2 de 2:
           {
             id: "2-1",
             answer: "REALOCACAO",
+            acceptedAnswers: ["REALOCACAO", "REALOCACAO DE PARCELA", "MUDANCA DE PARCELA", "TROCA DE PARCELA"],
             clues: [
               { points: 10, text: "Dica 1: Procedimento acionado em sistema quando o cliente pagou por engano uma parcela futura." },
               { points: 9, text: "Dica 2: Exige do operador a inclusão do texto solicitando o ajuste da parcela informada." },
@@ -1350,6 +1252,7 @@ Bloco 2 de 2:
           {
             id: "2-2",
             answer: "BOLETO COMPLEMENTAR",
+            acceptedAnswers: ["BOLETO COMPLEMENTAR", "COMPLEMENTAR", "BOLETO DE DIFERENCA"],
             clues: [
               { points: 10, text: "Dica 1: Emitido pela Honda quando o valor pago na parcela errada é menor que o valor correto." },
               { points: 9, text: "Dica 2: Necessário para cobrir a diferença financeira no processo de realocação." },
@@ -1360,7 +1263,7 @@ Bloco 2 de 2:
           {
             id: "2-3",
             answer: "SOLICITACAO AO JURIDICO",
-            acceptedAnswers: ["SOLICITACAO AO JURIDICO", "SOLICITACAO JURIDICO"],
+            acceptedAnswers: ["SOLICITACAO AO JURIDICO", "SOLICITACAO JURIDICO", "JURIDICO", "CONTENCIOSO"],
             clues: [
               { points: 10, text: "Dica 1: Procedimento via ocorrência 2601 direcionado ao setor de contencioso em contratos ajuizados." },
               { points: 9, text: "Dica 2: Exige informar Tipo de Acordo (Atualização ou Quitação), Parcelas, Vencimento e UF." },
@@ -1373,11 +1276,12 @@ Bloco 2 de 2:
       {
         id: 3,
         title: "Nível 3: Argumentação & Objeções",
-        unlockDate: "2026-11-27T00:00:00",
+        unlockDate: "2026-11-27T00:00:00", // 27/11
         rounds: [
           {
             id: "3-1",
             answer: "RENEGOCIACAO",
+            acceptedAnswers: ["RENEGOCIACAO", "REPACTUACAO", "ACORDO", "PARCELAMENTO DE DIVIDA"],
             clues: [
               { points: 10, text: "Dica 1: Processo de repactuação do débito em atraso com alteração das condições originais." },
               { points: 9, text: "Dica 2: Permite o parcelamento do saldo devedor ajustando ao orçamento do cliente." },
@@ -1388,6 +1292,7 @@ Bloco 2 de 2:
           {
             id: "3-2",
             answer: "CONFIRMACAO EM LINHA",
+            acceptedAnswers: ["CONFIRMACAO EM LINHA", "VALIDACAO NA CHAMADA", "CONFERENCIA EM LIGAÇÃO"],
             clues: [
               { points: 10, text: "Dica 1: Validação de segurança em tempo real realizada pelo operador durante o atendimento." },
               { points: 9, text: "Dica 2: Garante que os dados bancários e os valores negociados foram conferidos perfeitamente." },
@@ -1398,7 +1303,7 @@ Bloco 2 de 2:
           {
             id: "3-3",
             answer: "PRIMEIRA PARCELA",
-            acceptedAnswers: ["PRIMEIRA PARCELA", "PRIMEIRA PARCELA DE ACORDO"],
+            acceptedAnswers: ["PRIMEIRA PARCELA", "PRIMEIRA PARCELA DE ACORDO", "ENTRADA DO ACORDO", "PRIMEIRO PAGAMENTO"],
             clues: [
               { points: 10, text: "Dica 1: Valor inicial que deve ser quitado para formalizar uma repactuação ou acordo financeiro." },
               { points: 9, text: "Dica 2: Sem a sua compensação bancária, a proposta é cancelada automaticamente no sistema." },
@@ -1410,76 +1315,81 @@ Bloco 2 de 2:
       },
       {
         id: 4,
-        title: "Nível 4: Negociação & Jurídico",
-        unlockDate: "2026-12-11T00:00:00",
+        title: "Nível 4: Estratégias de Retenção & Acordos Especiais",
+        unlockDate: "2026-12-11T00:00:00", // 11/12
         rounds: [
           {
             id: "4-1",
-            answer: "PRORROGACAO",
+            answer: "REFINANCIAMENTO",
+            acceptedAnswers: ["REFINANCIAMENTO", "REFIN", "NOVO CREDITO COM VEICULO", "TROCO"],
             clues: [
-              { points: 10, text: "Dica 1: Alteração da data de vencimento de uma parcela sem alterar o valor original do contrato." },
-              { points: 9, text: "Dica 2: Concedida em situações específicas para dar fôlego financeiro de curto prazo ao cliente." },
-              { points: 8, text: "Dica 3: Evita a incidência imediata de novos encargos se quitada na nova data pactuada." }
+              { points: 10, text: "Dica 1: Solução financeira avançada onde o veículo quita o saldo devedor gerando troco ou reduzindo a prestação." },
+              { points: 9, text: "Dica 2: Excelente alternativa para clientes que possuem alto percentual de parcelas pagas." },
+              { points: 8, text: "Dica 3: Exige checagem rigorosa de restrições e avaliação da tabela FIPE do bem." }
             ],
-            explanation: "A prorrogação estende a data limite de pagamento conforme as regras permitidas pela política comercial."
+            explanation: "O refinanciamento permite reestruturar o contrato utilizando o veículo como garantia."
           },
           {
             id: "4-2",
-            answer: "BANCO HONDA",
+            answer: "PAGAMENTO PARCIAL",
+            acceptedAnswers: ["PAGAMENTO PARCIAL", "PARCIAL", "VALOR PARCIAL"],
             clues: [
-              { points: 10, text: "Dica 1: Razão Social oficial do credor e beneficiário obrigatório de todos os boletos emitidos na operação." },
-              { points: 9, text: "Dica 2: Deve ser obrigatoriamente confirmado no script antifraude juntamente ao CNPJ 03.634.220/0001-65." },
-              { points: 8, text: "Dica 3: A linha digitável oficial deste beneficiário inicia-se com o código de banco 237 (Bradesco)." }
+              { points: 10, text: "Dica 1: Medida paliativa aceita em casos excepcionais para demonstrar boa-fé do cliente." },
+              { points: 9, text: "Dica 2: Evita o avanço imediato para a fase de ajuizamento ou busca e apreensão." },
+              { points: 8, text: "Dica 3: Necessita aprovação conforme políticas vigentes da carteira Honda." }
             ],
-            explanation: "No Fechamento Antifraude, o operador deve citar a Razão Social BANCO HONDA, o CNPJ oficial e os primeiros dígitos do boleto."
+            explanation: "O pagamento parcial demonstra intenção de adimplemento, segurando momentaneamente restrições mais graves."
           },
           {
             id: "4-3",
-            answer: "CUSTAS PROCESSUAIS",
+            answer: "BAIXA DE PROTESTO",
+            acceptedAnswers: ["BAIXA DE PROTESTO", "CANCELAMENTO DE PROTESTO", "RETIRADA DE PROTESTO"],
             clues: [
-              { points: 10, text: "Dica 1: Valores incorporados à dívida quando o contrato entra em vias de ajuizamento." },
-              { points: 9, text: "Dica 2: Inclui a cobrança do valor mínimo de 1% do valor da causa no agravamento." },
-              { points: 8, text: "Dica 3: Seu pagamento juntamente com o atraso é obrigatório para paralisar a ação." }
+              { points: 10, text: "Dica 1: Procedimento executado após a confirmação integral da compensação bancária do acordo." },
+              { points: 9, text: "Dica 2: Retira o nome do cliente dos órgãos de proteção ao crédito (SPC/Serasa)." },
+              { points: 8, text: "Dica 3: Prazo regulamentar de atendimento deve ser rigorosamente cumprido após o pagamento." }
             ],
-            explanation: "Ao ser ajuizado, somam-se custas processuais ao débito que devem ser pagas para suspender a ação."
+            explanation: "A baixa de protesto restabelece o crédito do cliente no mercado após a liquidação do débito."
           }
         ]
       },
       {
         id: 5,
-        title: "Nível 5: Casos Especiais & Regras SPF",
-        unlockDate: "2026-12-18T00:00:00",
+        title: "Nível 5: Mestres da Negociação & Fechamento Avançado",
+        unlockDate: "2026-12-18T00:00:00", // 18/12
         rounds: [
           {
             id: "5-1",
-            answer: "SEGURO PROTECAO FINANCEIRA",
-            acceptedAnswers: ["SEGURO PROTECAO FINANCEIRA", "SEGURO PROTECAO", "SEGURO"],
+            answer: "QUEBRA DE ACORDO",
+            acceptedAnswers: ["QUEBRA DE ACORDO", "ROMPIMENTO DE ACORDO", "ACORDO QUEBRADO", "INADIMPLENCIA DE ACORDO"],
             clues: [
-              { points: 10, text: "Dica 1: Benefício verificado na tela de início (F1) em casos de desemprego ou óbito do titular." },
-              { points: 9, text: "Dica 2: Pode cobrir até 6 parcelas do financiamento no caso de demissão involuntária." },
-              { points: 8, text: "Dica 3: Proteção contratada junto ao financiamento que garante a amortização da dívida em imprevistos." }
+              { points: 10, text: "Dica 1: Ocorre quando o cliente não realiza o pagamento da primeira parcela ou prestações seguintes acordadas." },
+              { points: 9, text: "Dica 2: Invalida automaticamente as condições especiais concedidas na renegociação." },
+              { points: 8, text: "Dica 3: Exige nova abordagem imediata pelo operador para reverter o cenário de inadimplência." }
             ],
-            explanation: "O Seguro Proteção Financeira (SPF) é acionado para cobrir imprevistos como desemprego ou falecimento."
+            explanation: "A quebra de acordo retorna o contrato ao status de inadimplência original com vencimento vencido."
           },
           {
             id: "5-2",
-            answer: "QUEBRA DE SIGILO",
+            answer: "DIRETRIZ DE QUALIDADE",
+            acceptedAnswers: ["DIRETRIZ DE QUALIDADE", "CHECKLIST DE QUALIDADE", "PADRAO DE QUALIDADE"],
             clues: [
-              { points: 10, text: "Dica 1: Considerada uma Não Conformidade Grave (NCG) no processo de monitoria de qualidade." },
-              { points: 9, text: "Dica 2: Ocorre ao passar informações financeiras ou contratuais antes da confirmação positiva." },
-              { points: 8, text: "Dica 3: Violação das normas de privacidade LGPD ao divulgar débitos para terceiros não autorizados." }
+              { points: 10, text: "Dica 1: Conjunto de regras e scripts monitorados pela equipe de T&D e Qualidade Bulgarelli." },
+              { points: 9, text: "Dica 2: Avalia a cordialidade, clareza nas informações de juros e checagem de dados cadastrais." },
+              { points: 8, text: "Dica 3: Nota mínima exigida para aprovação nas monitorias mensais dos operadores." }
             ],
-            explanation: "A quebra de sigilo ocorre quando o operador fornece detalhes da dívida sem confirmar os dados do titular."
+            explanation: "As diretrizes de qualidade garantem excelência e conformidade regulatória em todos os atendimentos."
           },
           {
             id: "5-3",
-            answer: "RESTRICAO SPC SERASA",
+            answer: "EXCELENCIA OPERACIONAL",
+            acceptedAnswers: ["EXCELENCIA OPERACIONAL", "ALTA PERFORMANCE", "PERFORMANCE MAXIMA"],
             clues: [
-              { points: 10, text: "Dica 1: Consequência de inadimplência informada na argumentação de cobrança." },
-              { points: 9, text: "Dica 2: O envio para a negativação no SPC ocorre aos 21 dias de atraso." },
-              { points: 8, text: "Dica 3: Ao atingir 31 dias de atraso, o CPF do cliente é encaminhado ao SERASA." }
+              { points: 10, text: "Dica 1: Meta máxima de performance unindo alta conversão de acordos e nota máxima em qualidade." },
+              { points: 9, text: "Dica 2: Destaca o operador no ranking geral do Hub Bulgarelli Play." },
+              { points: 8, text: "Dica 3: O grande objetivo de capacitação das campanhas para as carteiras Honda e Stellantis." }
             ],
-            explanation: "A inclusão de restrição de crédito é direcionada ao SPC com 21 dias e ao SERASA aos 31 dias."
+            explanation: "A excelência operacional coroa o operador de destaque com reconhecimento e alta performance."
           }
         ]
       }
@@ -1491,21 +1401,21 @@ Bloco 2 de 2:
       acessorio: "Nenhum", emocao: "Sorridente / Confiante", estiloVisual: "Pixar 3D", cenario: "Escritório Corporativo"
     };
 
-    let currentPlayer = { name: "", matricula: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
+    let currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
     let internalRanking = [];
     let countdownTimerInterval = null;
 
-    // EMBARALHAMENTO EXCLUSIVO POR JOGADOR (SEEDED SHUFFLE BASEADO NA MATRÍCULA)
-    function getShuffledRounds(roundsArray, levelId, matricula) {
+    // ALEATORIEDADE RESTRITA ESTRIATAMENTE AO ESCOPO DE CADA NÍVEL (NÃO MISTURA TEMAS)
+    function getShuffledRoundsForLevel(lvl, matricula) {
       let seed = 0;
-      const strKey = `${matricula || "1234"}_level_${levelId}`;
+      const strKey = `${matricula || "1234"}_level_${lvl.id}`;
       for (let i = 0; i < strKey.length; i++) {
         seed = (seed << 5) - seed + strKey.charCodeAt(i);
         seed |= 0;
       }
 
-      let arr = [...roundsArray];
+      let arr = [...lvl.rounds];
       for (let i = arr.length - 1; i > 0; i--) {
         seed = (seed * 9301 + 49297) % 233280;
         let rnd = Math.abs(seed) / 233280;
@@ -1515,14 +1425,14 @@ Bloco 2 de 2:
 
       return arr.map((r, idx) => ({
         ...r,
-        titleName: `Desafio ${levelId}.${idx + 1}`
+        titleName: `Desafio ${lvl.id}.${idx + 1}`
       }));
     }
 
     function getPlayerLevels() {
       return gameLevels.map(lvl => ({
         ...lvl,
-        rounds: getShuffledRounds(lvl.rounds, lvl.id, currentPlayer.matricula || "1234")
+        rounds: getShuffledRoundsForLevel(lvl, currentPlayer.matricula || "1234")
       }));
     }
 
@@ -1538,11 +1448,13 @@ Bloco 2 de 2:
       if (savedTheme === "light") {
         document.documentElement.classList.remove("dark");
         document.documentElement.classList.add("light");
-        document.getElementById("themeIcon").className = "fa-solid fa-sun";
-        document.getElementById("themeText").innerText = "Claro";
+        const icon = document.getElementById("themeIcon");
+        const text = document.getElementById("themeText");
+        if (icon) icon.className = "fa-solid fa-sun";
+        if (text) text.innerText = "Claro";
       }
 
-      const savedSession = sessionStorage.getItem("honda_active_session");
+      const savedSession = sessionStorage.getItem("bulgarelli_active_session");
       if (savedSession) {
         try {
           const parsed = JSON.parse(savedSession);
@@ -1557,6 +1469,14 @@ Bloco 2 de 2:
     });
 
     function isLevelUnlocked(lvl) {
+      // Perfis Comuns só podem acessar níveis 1 e 2 livremente. 3, 4 e 5 exigem data + admin ou verificação
+      if (!currentPlayer.isAdmin && lvl.id >= 3) {
+        if (!lvl.unlockDate) return false;
+        const now = new Date();
+        const unlockTime = new Date(lvl.unlockDate);
+        return now >= unlockTime;
+      }
+
       if (!lvl.unlockDate) return true;
       const now = new Date();
       const unlockTime = new Date(lvl.unlockDate);
@@ -1574,31 +1494,47 @@ Bloco 2 de 2:
     }
 
     function openAvatarCustomizerModal() {
-      document.getElementById("modalAvatarCustomizer").classList.remove("hidden");
+      const modal = document.getElementById("modalAvatarCustomizer");
+      if (modal) modal.classList.remove("hidden");
       updateAvatarConfig();
     }
     function closeAvatarCustomizerModal() {
-      document.getElementById("modalAvatarCustomizer").classList.add("hidden");
+      const modal = document.getElementById("modalAvatarCustomizer");
+      if (modal) modal.classList.add("hidden");
     }
 
     function updateAvatarConfig() {
-      playerAvatar.sexo = document.getElementById("avSexo").value;
-      playerAvatar.idade = document.getElementById("avIdade").value;
-      playerAvatar.pele = document.getElementById("avPele").value;
-      playerAvatar.rosto = document.getElementById("avRosto").value;
-      playerAvatar.cabelo = document.getElementById("avCabelo").value;
-      playerAvatar.vestimenta = document.getElementById("avVestimenta").value;
-      playerAvatar.acessorio = document.getElementById("avAcessorio").value;
-      playerAvatar.estiloVisual = document.getElementById("avEstiloVisual").value;
-      playerAvatar.emocao = document.getElementById("avEmocao").value;
-      playerAvatar.cenario = document.getElementById("avCenario").value;
+      const avSexo = document.getElementById("avSexo");
+      const avIdade = document.getElementById("avIdade");
+      const avPele = document.getElementById("avPele");
+      const avRosto = document.getElementById("avRosto");
+      const avCabelo = document.getElementById("avCabelo");
+      const avVestimenta = document.getElementById("avVestimenta");
+      const avAcessorio = document.getElementById("avAcessorio");
+      const avEstiloVisual = document.getElementById("avEstiloVisual");
+      const avEmocao = document.getElementById("avEmocao");
+      const avCenario = document.getElementById("avCenario");
 
-      document.getElementById("summaryCenario").innerText = playerAvatar.cenario;
-      document.getElementById("summaryEstilo").innerText = playerAvatar.estiloVisual;
-      document.getElementById("summaryRoupa").innerText = playerAvatar.vestimenta;
+      if (avSexo) playerAvatar.sexo = avSexo.value;
+      if (avIdade) playerAvatar.idade = avIdade.value;
+      if (avPele) playerAvatar.pele = avPele.value;
+      if (avRosto) playerAvatar.rosto = avRosto.value;
+      if (avCabelo) playerAvatar.cabelo = avCabelo.value;
+      if (avVestimenta) playerAvatar.vestimenta = avVestimenta.value;
+      if (avAcessorio) playerAvatar.acessorio = avAcessorio.value;
+      if (avEstiloVisual) playerAvatar.estiloVisual = avEstiloVisual.value;
+      if (avEmocao) playerAvatar.emocao = avEmocao.value;
+      if (avCenario) playerAvatar.cenario = avCenario.value;
+
+      const sumCen = document.getElementById("summaryCenario");
+      const sumEst = document.getElementById("summaryEstilo");
+      const sumRou = document.getElementById("summaryRoupa");
+      if (sumCen) sumCen.innerText = playerAvatar.cenario;
+      if (sumEst) sumEst.innerText = playerAvatar.estiloVisual;
+      if (sumRou) sumRou.innerText = playerAvatar.vestimenta;
 
       const preview = document.getElementById("avatar3DPreview");
-      preview.innerText = getAvatarEmoji(playerAvatar);
+      if (preview) preview.innerText = getAvatarEmoji(playerAvatar);
     }
 
     function getAvatarEmoji(av) {
@@ -1628,57 +1564,181 @@ Bloco 2 de 2:
     }
 
     window.switchSidebarTab = function(tab) {
-      document.getElementById("screenOverview").classList.add("hidden");
-      document.getElementById("screenCarteiras").classList.add("hidden");
-      document.getElementById("screenLibrary").classList.add("hidden");
-      document.getElementById("screenAdmin").classList.add("hidden");
-      document.getElementById("screenGameStandalone").classList.add("hidden");
+      if (!currentPlayer.name && tab !== 'overview') {
+        openRegistrationModal();
+        return;
+      }
+
+      const scOverview = document.getElementById("screenOverview");
+      const scCarteiras = document.getElementById("screenCarteiras");
+      const scLibrary = document.getElementById("screenLibrary");
+      const scAdmin = document.getElementById("screenAdmin");
+      const scGame = document.getElementById("screenGameStandalone");
+
+      if (scOverview) scOverview.classList.add("hidden");
+      if (scCarteiras) scCarteiras.classList.add("hidden");
+      if (scLibrary) scLibrary.classList.add("hidden");
+      if (scAdmin) scAdmin.classList.add("hidden");
+      if (scGame) scGame.classList.add("hidden");
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
       });
 
       if (tab === 'overview') {
-        document.getElementById("screenOverview").classList.remove("hidden");
-        document.getElementById("navOverview").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (scOverview) scOverview.classList.remove("hidden");
+        const navOv = document.getElementById("navOverview");
+        if (navOv) navOv.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        renderOverviewContent();
       } else if (tab === 'carteiras') {
-        document.getElementById("screenCarteiras").classList.remove("hidden");
-        document.getElementById("navCarteiras").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (scCarteiras) scCarteiras.classList.remove("hidden");
+        const navCar = document.getElementById("navCarteiras");
+        if (navCar) navCar.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        renderPortfoliosScreen();
       } else if (tab === 'library') {
-        document.getElementById("screenLibrary").classList.remove("hidden");
-        document.getElementById("navLibrary").classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (scLibrary) scLibrary.classList.remove("hidden");
+        const navLib = document.getElementById("navLibrary");
+        if (navLib) navLib.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        renderLibraryScreen();
       } else if (tab === 'admin') {
         if (!currentPlayer.isAdmin) {
-          alert("Acesso Restrito: Exclusivo para a Equipe de Treinamento.");
+          alert("Acesso Restrito: Exclusivo para perfis Administrativos.");
           switchSidebarTab('overview');
           return;
         }
-        document.getElementById("screenAdmin").classList.remove("hidden");
-        document.getElementById("navAdmin").classList.add('bg-yellow-500/20', 'text-yellow-500', 'border', 'border-yellow-500/40');
+        if (scAdmin) scAdmin.classList.remove("hidden");
+        const navAd = document.getElementById("navAdmin");
+        if (navAd) navAd.classList.add('bg-yellow-500/20', 'text-yellow-500', 'border', 'border-yellow-500/40');
         populateAdminDashboard();
       }
     };
 
     window.returnToOverview = function() { switchSidebarTab('overview'); };
 
+    function renderOverviewContent() {
+      const folderTitle = document.getElementById("overviewFolderTitle");
+      const allowedGrid = document.getElementById("overviewAllowedGamesGrid");
+      if (folderTitle) folderTitle.innerText = `Carteira ${currentPlayer.portfolio || 'Geral'}`;
+
+      if (allowedGrid) {
+        allowedGrid.innerHTML = "";
+        if (currentPlayer.portfolio === "Honda" || currentPlayer.isAdmin || currentPlayer.portfolio === "Geral") {
+          allowedGrid.innerHTML = `
+            <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl">
+              <div>
+                <div class="flex justify-between items-start mb-3">
+                  <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/50 flex items-center justify-center text-red-500 font-bold">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 border border-red-500/40 font-bold">Honda</span>
+                </div>
+                <h4 class="font-bold text-base mb-1">Jogo das Três Pistas</h4>
+                <p class="text-xs text-slate-400 mb-4">Desafios de negociação, refinanciamento e procedimentos operacionais.</p>
+              </div>
+              <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white shadow-md shadow-red-900/40 transition">
+                <span>JOGAR</span> <i class="fa-solid fa-play"></i>
+              </button>
+            </div>
+          `;
+        } else {
+          allowedGrid.innerHTML = `<div class="col-span-full p-4 text-center text-slate-500 italic">Nenhum jogo liberado para a carteira ${currentPlayer.portfolio}.</div>`;
+        }
+      }
+    }
+
+    function renderPortfoliosScreen() {
+      const container = document.getElementById("carteirasContainerList");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const userPortfolio = currentPlayer.portfolio || "Honda";
+      const portfoliosToShow = currentPlayer.isAdmin ? ["Honda", "Stellantis", "Geral"] : [userPortfolio];
+
+      portfoliosToShow.forEach(port => {
+        const div = document.createElement("div");
+        div.className = "glass-card p-5 rounded-2xl border border-red-600/30 space-y-4";
+        div.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#cc0000] flex items-center justify-center shadow-md text-white font-bold text-xl">
+              ${port.charAt(0)}
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">Carteira ${port}</h3>
+              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais vinculados.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+            ${port === "Honda" || currentPlayer.isAdmin || port === "Geral" ? `
+              <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+                <div>
+                  <h4 class="font-bold text-sm mb-1">Jogo das Três Pistas</h4>
+                  <p class="text-[11px] text-slate-400 mb-3">Procedimentos, seguros e acordos.</p>
+                </div>
+                <button onclick="launchHondaGameApart()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Jogar</button>
+              </div>
+            ` : `<div class="text-xs text-slate-500 italic p-2">Nenhum simulador ativo para esta carteira no momento.</div>`}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderLibraryScreen() {
+      const grid = document.getElementById("libraryGamesGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      if (currentPlayer.portfolio === "Honda" || currentPlayer.isAdmin || currentPlayer.portfolio === "Geral") {
+        grid.innerHTML = `
+          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 font-bold">Carteira Honda</span>
+              <h4 class="font-bold text-base mt-2 mb-1">Jogo das Três Pistas</h4>
+              <p class="text-xs text-slate-400 mb-4">Treinamento de recuperação de crédito e argumentação.</p>
+            </div>
+            <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">Jogar</button>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = `<div class="col-span-full p-6 text-center text-slate-500 italic">Sua carteira (${currentPlayer.portfolio}) não possui jogos na biblioteca no momento.</div>`;
+      }
+    }
+
     window.launchHondaGameApart = function() {
       if (!currentPlayer.name) {
         openRegistrationModal();
         return;
       }
-      document.getElementById("screenOverview").classList.add("hidden");
-      document.getElementById("screenCarteiras").classList.add("hidden");
-      document.getElementById("screenLibrary").classList.add("hidden");
-      document.getElementById("screenAdmin").classList.add("hidden");
-      document.getElementById("screenGameStandalone").classList.remove("hidden");
+      if (currentPlayer.portfolio !== "Honda" && !currentPlayer.isAdmin && currentPlayer.portfolio !== "Geral") {
+        alert(`Acesso Restrito: Este jogo pertence à carteira Honda. Sua carteira atual é ${currentPlayer.portfolio}.`);
+        return;
+      }
 
-      document.getElementById("subScreenCover").classList.remove("hidden");
-      document.getElementById("subScreenLevels").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.add("hidden");
+      const scOverview = document.getElementById("screenOverview");
+      const scCarteiras = document.getElementById("screenCarteiras");
+      const scLibrary = document.getElementById("screenLibrary");
+      const scAdmin = document.getElementById("screenAdmin");
+      const scGame = document.getElementById("screenGameStandalone");
+
+      if (scOverview) scOverview.classList.add("hidden");
+      if (scCarteiras) scCarteiras.classList.add("hidden");
+      if (scLibrary) scLibrary.classList.add("hidden");
+      if (scAdmin) scAdmin.classList.add("hidden");
+      if (scGame) scGame.classList.remove("hidden");
+
+      const subCover = document.getElementById("subScreenCover");
+      const subLevels = document.getElementById("subScreenLevels");
+      const subGame = document.getElementById("subScreenGame");
+
+      if (subCover) subCover.classList.remove("hidden");
+      if (subLevels) subLevels.classList.add("hidden");
+      if (subGame) subGame.classList.add("hidden");
     };
 
     window.closeGameApart = function() {
-      document.getElementById("screenGameStandalone").classList.add("hidden");
+      const scGame = document.getElementById("screenGameStandalone");
+      if (scGame) scGame.classList.add("hidden");
       switchSidebarTab('overview');
     };
 
@@ -1689,15 +1749,71 @@ Bloco 2 de 2:
         authorizedEmployees.forEach(emp => {
           const opt = document.createElement("option");
           opt.value = emp.matricula || emp.name;
-          opt.innerText = `${emp.name} (Matrícula: ${emp.matricula})`;
+          const perfilStr = emp.isAdmin ? "Admin" : "Comum";
+          opt.innerText = `${emp.name} (Mat: ${emp.matricula} | ${emp.portfolio || 'Geral'} | ${perfilStr})`;
           select.appendChild(opt);
         });
+        onAdminSelectEmployeeChange();
       }
       window.updateAdminMetrics(internalRanking);
     }
 
+    window.onAdminSelectEmployeeChange = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        const inName = document.getElementById("adminNewName");
+        const selPort = document.getElementById("adminNewPortfolio");
+        const selRole = document.getElementById("adminNewRole");
+
+        if (inName) inName.value = emp.name;
+        if (selPort) selPort.value = emp.portfolio || "Honda";
+        if (selRole) selRole.value = emp.isAdmin ? "Admin" : "Comum";
+      }
+    };
+
+    window.adminSaveEmployeeChanges = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        const newName = document.getElementById("adminNewName").value.trim();
+        const newPort = document.getElementById("adminNewPortfolio").value;
+        const newRole = document.getElementById("adminNewRole").value;
+
+        if (!newName) {
+          alert("O nome não pode ficar em branco.");
+          return;
+        }
+
+        emp.name = newName.toUpperCase();
+        emp.portfolio = newPort;
+        emp.isAdmin = (newRole === "Admin");
+
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        populateAdminDashboard();
+        alert("Dados do colaborador atualizados com sucesso!");
+      }
+    };
+
+    window.adminResetPasswordIndividual = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        emp.password = "123Mudar";
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        alert(`Senha do colaborador ${emp.name} resetada com sucesso para: 123Mudar. No próximo login, ele será obrigado a definir uma nova senha.`);
+        populateAdminDashboard();
+      }
+    };
+
     window.updateAdminMetrics = function(rankingData) {
-      const totalPlayers = rankingData.length;
+      const totalPlayers = authorizedEmployees.length;
       let totalRounds = 0;
       let totalScore = 0;
 
@@ -1709,19 +1825,77 @@ Bloco 2 de 2:
       const elPlayers = document.getElementById("adminStatPlayers");
       const elRounds = document.getElementById("adminStatRounds");
       const elAvg = document.getElementById("adminStatAvgScore");
-      const elComp = document.getElementById("adminStatCompletion");
+      const elPorts = document.getElementById("adminStatPortfolios");
 
       if (elPlayers) elPlayers.innerText = totalPlayers;
       if (elRounds) elRounds.innerText = totalRounds;
-      if (elAvg) elAvg.innerText = totalPlayers ? Math.round(totalScore / totalPlayers) : 0;
-      if (elComp) elComp.innerText = totalPlayers ? `${Math.round((totalRounds / (totalPlayers * 15)) * 100)}%` : "0%";
+      if (elAvg) elAvg.innerText = rankingData.length ? Math.round(totalScore / rankingData.length) : 0;
+      if (elPorts) elPorts.innerText = 2;
+    };
+
+    window.processSpreadsheetImport = function() {
+      const rawText = document.getElementById("importSpreadsheetInput").value.trim();
+      if (!rawText) {
+        alert("Cole os dados da planilha na caixa de texto.");
+        return;
+      }
+
+      const lines = rawText.split("\n");
+      let countAdded = 0;
+
+      lines.forEach(line => {
+        const parts = line.split(/\t|,|;/).map(p => p.trim()).filter(p => p);
+        if (parts.length >= 2) {
+          const name = parts[0].toUpperCase();
+          const matricula = parts[1];
+          const portfolio = parts[2] || "Honda";
+          const perfilInput = (parts[3] || "comum").toLowerCase();
+          const isAdmin = perfilInput.includes("admin") || perfilInput.includes("adm");
+
+          let existing = authorizedEmployees.find(e => e.matricula === matricula);
+          if (existing) {
+            existing.name = name;
+            existing.portfolio = portfolio;
+            existing.isAdmin = isAdmin;
+          } else {
+            authorizedEmployees.push({
+              name: name,
+              matricula: matricula,
+              portfolio: portfolio,
+              password: "123Mudar",
+              isAdmin: isAdmin
+            });
+            countAdded++;
+          }
+        }
+      });
+
+      localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+      populateAdminDashboard();
+      alert(`Importação concluída! ${countAdded} novos colaboradores adicionados com senha padrão 123Mudar.`);
+      document.getElementById("importSpreadsheetInput").value = "";
+    };
+
+    window.exportEmployeesCSV = function() {
+      let csv = "Nome Completo,Matricula,Carteira,Perfil\n";
+      authorizedEmployees.forEach(e => {
+        const perfilStr = e.isAdmin ? "Admin" : "Comum";
+        csv += `"${e.name}","${e.matricula}","${e.portfolio || 'Geral'}","${perfilStr}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", "colaboradores_bulgarelli.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
 
     window.logoutSession = function() {
-      sessionStorage.removeItem("honda_active_session");
-      currentPlayer = { name: "", matricula: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
+      sessionStorage.removeItem("bulgarelli_active_session");
+      currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
       updateSessionUI();
-      returnToOverview();
+      openRegistrationModal();
     };
 
     function updateSessionUI() {
@@ -1733,61 +1907,87 @@ Bloco 2 de 2:
       const sessionStatus = document.getElementById("sessionStatusIndicator");
 
       if (currentPlayer.name) {
-        sidebarName.innerText = currentPlayer.name;
-        sidebarMat.innerText = `Matrícula: ${currentPlayer.matricula}`;
-        headerName.innerText = currentPlayer.name;
-        sessionStatus.classList.remove("hidden");
-        sessionStatus.classList.add("flex");
-        if (currentPlayer.isAdmin) navAdmin.classList.remove("hidden");
-        else navAdmin.classList.add("hidden");
+        if (sidebarName) sidebarName.innerText = currentPlayer.name;
+        const perfilLabel = currentPlayer.isAdmin ? "Admin" : "Comum";
+        if (sidebarMat) sidebarMat.innerText = `Mat: ${currentPlayer.matricula} | ${currentPlayer.portfolio || 'Geral'} (${perfilLabel})`;
+        if (headerName) headerName.innerText = currentPlayer.name;
+        if (sessionStatus) {
+          sessionStatus.classList.remove("hidden");
+          sessionStatus.classList.add("flex");
+        }
+        if (navAdmin) {
+          if (currentPlayer.isAdmin) navAdmin.classList.remove("hidden");
+          else navAdmin.classList.add("hidden");
+        }
 
-        sessionAction.innerHTML = `
-          <button onclick="logoutSession()" class="w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
-            Encerrar Sessão
-          </button>
-        `;
+        if (sessionAction) {
+          sessionAction.innerHTML = `
+            <button onclick="logoutSession()" class="w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
+              Encerrar Sessão
+            </button>
+          `;
+        }
         updateHeaderAvatarDisplay();
       } else {
-        sidebarName.innerText = "Visitante / Não Logado";
-        sidebarMat.innerText = "Perfil: Visitante";
-        headerName.innerText = "Visitante";
-        sessionStatus.classList.remove("flex");
-        sessionStatus.classList.add("hidden");
-        navAdmin.classList.add("hidden");
+        if (sidebarName) sidebarName.innerText = "Visitante / Não Logado";
+        if (sidebarMat) sidebarMat.innerText = "Perfil: Visitante";
+        if (headerName) headerName.innerText = "Visitante";
+        if (sessionStatus) {
+          sessionStatus.classList.remove("flex");
+          sessionStatus.classList.add("hidden");
+        }
+        if (navAdmin) navAdmin.classList.add("hidden");
 
-        sessionAction.innerHTML = `
-          <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
-            Acessar Login
-          </button>
-        `;
+        if (sessionAction) {
+          sessionAction.innerHTML = `
+            <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
+              Acessar Login
+            </button>
+          `;
+        }
       }
     }
 
     let tempPendingEmp = null;
-    let isPasswordCreationStep = false;
+    let isPasswordChangeStep = false;
     let isPasswordLoginStep = false;
 
     window.openRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.remove("hidden");
-      document.getElementById("inputName").value = "";
-      document.getElementById("inputMatricula").value = "";
-      document.getElementById("inputPassword").value = "";
-      document.getElementById("inputPasswordConfirm").value = "";
-      document.getElementById("inputLoginPassword").value = "";
+      const modalReg = document.getElementById("modalRegistration");
+      if (modalReg) modalReg.classList.remove("hidden");
       
-      document.getElementById("step1Fields").classList.remove("hidden");
-      document.getElementById("step2Fields").classList.add("hidden");
-      document.getElementById("loginPasswordFields").classList.add("hidden");
-      document.getElementById("modalAuthSubtitle").innerText = "Insira seu Nome, Sobrenome e Matrícula para continuar";
-      document.getElementById("authSubmitBtn").innerText = "AVANÇAR";
+      const inName = document.getElementById("inputName");
+      const inMat = document.getElementById("inputMatricula");
+      const inPass = document.getElementById("inputPassword");
+      const inPassConf = document.getElementById("inputPasswordConfirm");
+      const inLoginPass = document.getElementById("inputLoginPassword");
 
-      isPasswordCreationStep = false;
+      if (inName) inName.value = "";
+      if (inMat) inMat.value = "";
+      if (inPass) inPass.value = "";
+      if (inPassConf) inPassConf.value = "";
+      if (inLoginPass) inLoginPass.value = "";
+      
+      const st1 = document.getElementById("step1Fields");
+      const st2 = document.getElementById("step2Fields");
+      const logPass = document.getElementById("loginPasswordFields");
+      const authSub = document.getElementById("modalAuthSubtitle");
+      const authBtn = document.getElementById("authSubmitBtn");
+
+      if (st1) st1.classList.remove("hidden");
+      if (st2) st2.classList.add("hidden");
+      if (logPass) logPass.classList.add("hidden");
+      if (authSub) authSub.innerText = "Insira seu Nome e Matrícula para acessar o Portal Bulgarelli Play";
+      if (authBtn) authBtn.innerText = "AVANÇAR";
+
+      isPasswordChangeStep = false;
       isPasswordLoginStep = false;
       tempPendingEmp = null;
     };
 
     window.closeRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.add("hidden");
+      const modalReg = document.getElementById("modalRegistration");
+      if (modalReg) modalReg.classList.add("hidden");
     };
 
     function normalizeStr(str) {
@@ -1797,116 +1997,100 @@ Bloco 2 de 2:
     window.handleAuthSubmit = function(e) {
       if (e) e.preventDefault();
 
-      if (!isPasswordCreationStep && !isPasswordLoginStep) {
+      if (!isPasswordChangeStep && !isPasswordLoginStep) {
         const nameInput = document.getElementById("inputName").value.trim();
         const matInput = document.getElementById("inputMatricula").value.trim();
         const normName = normalizeStr(nameInput);
-
-        if (normName !== "ILLICHS SOTO" && !nameInput.includes(" ")) {
-          alert("Por favor, insira Nome e Sobrenome.");
-          return;
-        }
 
         let found = authorizedEmployees.find(emp => {
           const empNormName = normalizeStr(emp.name);
           const empMat = (emp.matricula || "").trim();
           
-          if (empNormName === "ILLICHS SOTO" && normName === "ILLICHS SOTO") return true;
           if (empMat && matInput && empMat === matInput) return true;
           if (empNormName === normName) return true;
           return false;
         });
 
+        const st1 = document.getElementById("step1Fields");
+        const st2 = document.getElementById("step2Fields");
+        const logPass = document.getElementById("loginPasswordFields");
+        const authSub = document.getElementById("modalAuthSubtitle");
+        const authBtn = document.getElementById("authSubmitBtn");
+
         if (found) {
           tempPendingEmp = found;
-          if (!found.password) {
-            isPasswordCreationStep = true;
-            document.getElementById("step1Fields").classList.add("hidden");
-            document.getElementById("step2Fields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Primeiro Acesso: Crie e confirme sua nova senha de acesso";
-            document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
+          if (found.password === "123Mudar") {
+            isPasswordChangeStep = true;
+            if (st1) st1.classList.add("hidden");
+            if (st2) st2.classList.remove("hidden");
+            if (authSub) authSub.innerText = "Primeiro Acesso / Senha Resetada: Defina sua nova senha pessoal";
+            if (authBtn) authBtn.innerText = "CRIAR E ENTRAR";
           } else {
             isPasswordLoginStep = true;
-            document.getElementById("step1Fields").classList.add("hidden");
-            document.getElementById("loginPasswordFields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Insira sua senha de acesso cadastrada";
-            document.getElementById("authSubmitBtn").innerText = "ENTRAR NO JOGO";
+            if (st1) st1.classList.add("hidden");
+            if (logPass) logPass.classList.remove("hidden");
+            if (authSub) authSub.innerText = "Insira sua senha de acesso cadastrada";
+            if (authBtn) authBtn.innerText = "ENTRAR NO PORTAL";
           }
         } else {
-          tempPendingEmp = { name: nameInput.toUpperCase(), matricula: matInput || "0000", password: "", isAdmin: false };
-          isPasswordCreationStep = true;
-          document.getElementById("step1Fields").classList.add("hidden");
-          document.getElementById("step2Fields").classList.remove("hidden");
-          document.getElementById("modalAuthSubtitle").innerText = "Primeiro Acesso: Crie e confirme sua nova senha de acesso";
-          document.getElementById("authSubmitBtn").innerText = "CRIAR E ENTRAR";
+          alert("Colaborador não encontrado na base de dados autorizada. Solicite ao gestor a importação via planilha.");
+          return;
         }
-      } else if (isPasswordCreationStep) {
+      } else if (isPasswordChangeStep) {
         const pass = document.getElementById("inputPassword").value.trim();
         const passConfirm = document.getElementById("inputPasswordConfirm").value.trim();
 
         if (!pass) {
-          alert("Por favor, digite uma senha de acesso válida.");
+          alert("Digite uma senha válida.");
           return;
         }
-
+        if (pass === "123Mudar") {
+          alert("Por favor, escolha uma senha diferente de '123Mudar'.");
+          return;
+        }
         if (pass !== passConfirm) {
-          alert("As senhas informadas não coincidem! Digite a mesma senha nos dois campos.");
+          alert("As senhas não coincidem!");
           return;
         }
 
         tempPendingEmp.password = pass;
-        
         let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
-        if (existingIndex >= 0) {
-          authorizedEmployees[existingIndex] = tempPendingEmp;
-        } else {
-          authorizedEmployees.push(tempPendingEmp);
-        }
+        if (existingIndex >= 0) authorizedEmployees[existingIndex] = tempPendingEmp;
         
-        try {
-          localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
-        } catch(err){}
-
-        if (window.saveUserToFirebase) {
-          window.saveUserToFirebase(tempPendingEmp);
-        }
+        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
         
         currentPlayer.name = tempPendingEmp.name;
         currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.portfolio = tempPendingEmp.portfolio || "Honda";
         currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
 
-        finalizeLoginAndDirectToGame();
+        finalizeLoginAndDirectToPortal();
       } else if (isPasswordLoginStep) {
         const pass = document.getElementById("inputLoginPassword").value.trim();
         if (tempPendingEmp.password !== pass) {
-          alert("Senha incorreta! Tente novamente.");
+          alert("Senha incorreta!");
           return;
         }
 
         currentPlayer.name = tempPendingEmp.name;
         currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.portfolio = tempPendingEmp.portfolio || "Honda";
         currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
 
-        finalizeLoginAndDirectToGame();
+        finalizeLoginAndDirectToPortal();
       }
     };
 
-    function finalizeLoginAndDirectToGame() {
-      sessionStorage.setItem("honda_active_session", JSON.stringify(currentPlayer));
+    function finalizeLoginAndDirectToPortal() {
+      sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
       updateSessionUI();
       closeRegistrationModal();
       
-      isPasswordCreationStep = false;
+      isPasswordChangeStep = false;
       isPasswordLoginStep = false;
       tempPendingEmp = null;
 
-      document.getElementById("screenOverview").classList.add("hidden");
-      document.getElementById("screenCarteiras").classList.add("hidden");
-      document.getElementById("screenLibrary").classList.add("hidden");
-      document.getElementById("screenAdmin").classList.add("hidden");
-      document.getElementById("screenGameStandalone").classList.remove("hidden");
-
-      showLevelsScreenApart();
+      switchSidebarTab('overview');
     }
 
     let isLaunching = false;
@@ -1926,57 +2110,66 @@ Bloco 2 de 2:
 
       initAudio();
 
-      startBtn.classList.add('running');
-      buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
-      engineStatusText.innerText = 'VTEC ENGAGED';
-      engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+      if (startBtn) startBtn.classList.add('running');
+      if (buttonLed) buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
+      if (engineStatusText) engineStatusText.innerText = 'VTEC ENGAGED';
+      if (engineStatusDot) engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
 
       let currentRpm = 850;
       const rpmInterval = setInterval(() => {
           if (currentRpm < 7800) {
               currentRpm += 380;
-              rpmGauge.innerText = `${currentRpm} RPM`;
+              if (rpmGauge) rpmGauge.innerText = `${currentRpm} RPM`;
           }
       }, 40);
 
-      roadStripes.classList.add('speeding');
-      sceneWrapper.classList.add('shake-screen');
-      carRoot.classList.remove('idle-vibe');
-      carRoot.classList.add('launching');
+      if (roadStripes) roadStripes.classList.add('speeding');
+      if (sceneWrapper) sceneWrapper.classList.add('shake-screen');
+      if (carRoot) {
+        carRoot.classList.remove('idle-vibe');
+        carRoot.classList.add('launching');
+      }
 
-      setTimeout(() => { flashOverlay.classList.add('active'); }, 900);
-      setTimeout(() => { flashOverlay.classList.remove('active'); }, 1250);
+      setTimeout(() => { if (flashOverlay) flashOverlay.classList.add('active'); }, 900);
+      setTimeout(() => { if (flashOverlay) flashOverlay.classList.remove('active'); }, 1250);
 
       setTimeout(() => {
         clearInterval(rpmInterval);
-        document.getElementById("subScreenCover").classList.add("hidden");
+        const subCover = document.getElementById("subScreenCover");
         const transMoto = document.getElementById("subScreenTransition");
-        transMoto.classList.remove("hidden");
+
+        if (subCover) subCover.classList.add("hidden");
+        if (transMoto) transMoto.classList.remove("hidden");
 
         setTimeout(() => {
-          transMoto.classList.add("hidden");
+          if (transMoto) transMoto.classList.add("hidden");
           showLevelsScreenApart();
-          carRoot.classList.remove('launching');
-          sceneWrapper.classList.remove('shake-screen');
-          roadStripes.classList.remove('speeding');
-          carRoot.classList.add('idle-vibe');
-          startBtn.classList.remove('running');
-          buttonLed.className = 'w-3 h-1 bg-white rounded-full mt-1';
-          engineStatusText.innerText = 'ENGINE IDLE';
-          engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse';
-          rpmGauge.innerText = '850 RPM';
+          if (carRoot) carRoot.classList.remove('launching');
+          if (sceneWrapper) sceneWrapper.classList.remove('shake-screen');
+          if (roadStripes) roadStripes.classList.remove('speeding');
+          if (carRoot) carRoot.classList.add('idle-vibe');
+          if (startBtn) startBtn.classList.remove('running');
+          if (buttonLed) buttonLed.className = 'w-3 h-1 bg-white rounded-full mt-1';
+          if (engineStatusText) engineStatusText.innerText = 'ENGINE IDLE';
+          if (engineStatusDot) engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse';
+          if (rpmGauge) rpmGauge.innerText = '850 RPM';
           isLaunching = false;
         }, 1800);
       }, 1350);
     };
 
     function showLevelsScreenApart() {
-      document.getElementById("subScreenCover").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.add("hidden");
-      document.getElementById("subScreenLevels").classList.remove("hidden");
+      const subCover = document.getElementById("subScreenCover");
+      const subGame = document.getElementById("subScreenGame");
+      const subLevels = document.getElementById("subScreenLevels");
+
+      if (subCover) subCover.classList.add("hidden");
+      if (subGame) subGame.classList.add("hidden");
+      if (subLevels) subLevels.classList.remove("hidden");
 
       document.querySelectorAll('#subScreenLevels #displayPlayerName').forEach(el => el.innerText = currentPlayer.name);
       document.querySelectorAll('#subScreenLevels #displayPlayerMatricula').forEach(el => el.innerText = currentPlayer.matricula);
+      document.querySelectorAll('#subScreenLevels #displayPlayerPortfolio').forEach(el => el.innerText = currentPlayer.portfolio || "Honda");
       document.querySelectorAll('#subScreenLevels #displayPlayerScore').forEach(el => el.innerText = `${currentPlayer.score} pts`);
       
       const levelAvatarPreview = document.getElementById("levelAvatarPreview");
@@ -2007,7 +2200,7 @@ Bloco 2 de 2:
         }`;
 
         let statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-950 text-green-300 font-bold">Disponível</span>`;
-        let buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition">INICIAR DESAFIO <i class="fa-solid fa-play"></i></button>`;
+        let buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition">${lvl.isTraining ? 'INICIAR TREINAMENTO' : 'INICIAR DESAFIO'} <i class="fa-solid fa-play"></i></button>`;
 
         if (!unlocked) {
           statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Bloqueado</span>`;
@@ -2025,17 +2218,16 @@ Bloco 2 de 2:
               <h3 class="font-bold text-base">${lvl.title}</h3>
               ${statusTag}
             </div>
-            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${lvl.rounds.length} desafios concluídos</p>
+            <p class="text-xs text-slate-400 mb-4">${doneRounds}/${lvl.rounds.length} rodadas concluídas</p>
           </div>
           ${buttonHTML}
         `;
         grid.appendChild(card);
       });
 
-      // Ativar temporizador regressivo em tempo real
       countdownTimerInterval = setInterval(() => {
         playerLevels.forEach(lvl => {
-          if (!isLevelUnlocked(lvl)) {
+          if (!isLevelUnlocked(lvl) && lvl.unlockDate) {
             const t = getTimeRemaining(lvl.unlockDate);
             const el = document.getElementById(`countdown_lvl_${lvl.id}`);
             if (el) {
@@ -2052,15 +2244,18 @@ Bloco 2 de 2:
       if (!lvl) return;
 
       if (!isLevelUnlocked(lvl)) {
-        alert("Este nível ainda está bloqueado e será liberado na data programada!");
+        alert("Este nível está bloqueado. Aguarde a data de liberação programada!");
         return;
       }
 
       currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
       setupRoundDisplayApart();
 
-      document.getElementById("subScreenLevels").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.remove("hidden");
+      const subLevels = document.getElementById("subScreenLevels");
+      const subGame = document.getElementById("subScreenGame");
+
+      if (subLevels) subLevels.classList.add("hidden");
+      if (subGame) subGame.classList.remove("hidden");
     };
 
     function setupRoundDisplayApart() {
@@ -2070,16 +2265,22 @@ Bloco 2 de 2:
       currentRoundState.roundData = round;
       currentRoundState.clueIndex = 0;
 
-      document.querySelector("#subScreenGame #gameLevelTitle").innerText = lvl.title;
-      document.querySelector("#subScreenGame #gameRoundTitle").innerText = `${round.titleName} de ${lvl.rounds.length}`;
-      document.querySelector("#subScreenGame #gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
+      const gLvlTitle = document.querySelector("#subScreenGame #gameLevelTitle");
+      const gRndTitle = document.querySelector("#subScreenGame #gameRoundTitle");
+      const gScoreDisp = document.querySelector("#subScreenGame #gameScoreDisplay");
+      const inAns = document.getElementById("inputAnswer");
 
-      document.getElementById("inputAnswer").value = "";
+      if (gLvlTitle) gLvlTitle.innerText = lvl.title;
+      if (gRndTitle) gRndTitle.innerText = `${round.titleName} de ${lvl.rounds.length}`;
+      if (gScoreDisp) gScoreDisp.innerText = `${currentPlayer.score} pts`;
+
+      if (inAns) inAns.value = "";
       renderCluesApart();
     }
 
     function renderCluesApart() {
       const container = document.querySelector("#subScreenGame #cluesContainer");
+      if (!container) return;
       container.innerHTML = "";
       const round = currentRoundState.roundData;
 
@@ -2106,30 +2307,38 @@ Bloco 2 de 2:
     window.handleAnswerSubmit = function(e) {
       e.preventDefault();
       const input = document.getElementById("inputAnswer");
+      if (!input) return;
       const userAns = normalizeString(input.value);
       const round = currentRoundState.roundData;
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
 
+      // Validação aprimorada com suporte a múltiplos sinônimos aceitos
       let isCorrect = false;
-      if (round.acceptedAnswers && Array.isArray(round.acceptedAnswers)) {
-        isCorrect = round.acceptedAnswers.some(ans => normalizeString(ans) === userAns);
-      } else {
-        isCorrect = (userAns === normalizeString(round.answer));
-      }
+      const possibleAnswers = [round.answer, ...(round.acceptedAnswers || [])];
+      isCorrect = possibleAnswers.some(ans => normalizeString(ans) === userAns);
 
       if (isCorrect) {
         const points = round.clues[currentRoundState.clueIndex].points;
-        if (!currentPlayer.completedRounds.includes(round.id)) {
+        const alreadyCompleted = currentPlayer.completedRounds.includes(round.id);
+
+        // Se for nível de treinamento (Nível 1) ou se já tiver feito anteriormente, NÃO pontua mais
+        if (!lvl.isTraining && !alreadyCompleted) {
           currentPlayer.completedRounds.push(round.id);
           currentPlayer.score += points;
           savePlayerToInternalRanking();
+        } else if (alreadyCompleted && !lvl.isTraining) {
+          // Informa discretamente que já pontuou nesta rodada
+          console.log("Rodada já concluída anteriormente. Pontos não acumulados novamente.");
         }
+
         showModal("<i class='fa-solid fa-circle-check text-5xl text-green-400'></i>", "Resposta Correta!", round.explanation, "PRÓXIMO DESAFIO", () => advanceGameApart());
       } else {
         if (currentRoundState.clueIndex < 2) {
           currentRoundState.clueIndex++;
           renderCluesApart();
           input.value = "";
-          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Ainda não é isso!", "Resposta incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
+          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Resposta Divergente!", "Resposta incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
         } else {
           showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta correta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
         }
@@ -2148,7 +2357,7 @@ Bloco 2 de 2:
     }
 
     function refreshInternalRanking() {
-      const stored = localStorage.getItem("honda_ranking_internal");
+      const stored = localStorage.getItem("bulgarelli_ranking_internal");
       if (stored) {
         try { internalRanking = JSON.parse(stored); } catch(e){}
       }
@@ -2159,6 +2368,7 @@ Bloco 2 de 2:
       const data = { 
         name: currentPlayer.name, 
         matricula: currentPlayer.matricula, 
+        portfolio: currentPlayer.portfolio || "Honda",
         score: currentPlayer.score, 
         completedRoundsCount: currentPlayer.completedRounds.length,
         updatedAt: Date.now()
@@ -2173,27 +2383,58 @@ Bloco 2 de 2:
       else internalRanking.push(data);
 
       internalRanking.sort((a, b) => b.score - a.score);
-      localStorage.setItem("honda_ranking_internal", JSON.stringify(internalRanking));
+      localStorage.setItem("bulgarelli_ranking_internal", JSON.stringify(internalRanking));
       renderInternalRankingTable(internalRanking);
     }
 
     window.renderInternalRankingTable = function(ranking) {
+      const podiumEl = document.getElementById("podiumContainer");
       const tbody = document.getElementById("internalRankingTableBody");
-      if (!tbody) return;
-      tbody.innerHTML = "";
+      if (!tbody || !podiumEl) return;
 
       if (!ranking || ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Nenhum operador pontuou ainda.</td></tr>`;
+        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-500 italic">Nenhum operador pontuou no ranking ainda.</div>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Nenhum registro encontrado.</td></tr>`;
         return;
       }
 
+      ranking.sort((a, b) => b.score - a.score);
+
+      const first = ranking[0] || null;
+      const second = ranking[1] || null;
+      const third = ranking[2] || null;
+
+      podiumEl.innerHTML = `
+        <div class="glass-card p-3 rounded-xl border border-amber-500/40 text-center flex flex-col items-center justify-end bg-amber-500/10">
+          <i class="fa-solid fa-medal text-amber-400 text-2xl mb-1"></i>
+          <span class="text-[10px] font-bold text-amber-300 uppercase">2º Lugar</span>
+          <p class="text-xs font-bold truncate w-full mt-1">${second ? second.name : '---'}</p>
+          <span class="text-xs text-yellow-400 font-extrabold">${second ? second.score + ' pts' : '0 pts'}</span>
+        </div>
+        <div class="glass-card p-4 rounded-xl border-2 border-yellow-400 text-center flex flex-col items-center justify-end bg-yellow-400/20 -mt-2 shadow-lg shadow-yellow-500/20">
+          <i class="fa-solid fa-crown text-yellow-400 text-3xl mb-1 animate-bounce"></i>
+          <span class="text-xs font-black text-yellow-300 uppercase">1º Lugar</span>
+          <p class="text-sm font-extrabold truncate w-full mt-1">${first ? first.name : '---'}</p>
+          <span class="text-sm text-yellow-400 font-black">${first ? first.score + ' pts' : '0 pts'}</span>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-orange-500/40 text-center flex flex-col items-center justify-end bg-orange-500/10">
+          <i class="fa-solid fa-award text-orange-400 text-2xl mb-1"></i>
+          <span class="text-[10px] font-bold text-orange-300 uppercase">3º Lugar</span>
+          <p class="text-xs font-bold truncate w-full mt-1">${third ? third.name : '---'}</p>
+          <span class="text-xs text-yellow-400 font-extrabold">${third ? third.score + ' pts' : '0 pts'}</span>
+        </div>
+      `;
+
+      tbody.innerHTML = "";
       ranking.forEach((item, idx) => {
+        const isCurrent = item.matricula === currentPlayer.matricula;
         const tr = document.createElement("tr");
-        tr.className = "border-b border-slate-800/80 hover:bg-white/5";
+        tr.className = `border-b border-slate-800/80 hover:bg-white/5 ${isCurrent ? 'bg-red-950/30 border-l-4 border-l-red-500' : ''}`;
         tr.innerHTML = `
-          <td class="p-3">#${idx + 1}</td>
-          <td class="p-3 font-semibold">${item.name}</td>
-          <td class="p-3 text-slate-400">${item.matricula}</td>
+          <td class="p-3 font-mono font-bold">#${idx + 1}</td>
+          <td class="p-3 font-semibold">${item.name} ${isCurrent ? '<span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded ml-1">Você</span>' : ''}</td>
+          <td class="p-3 text-slate-400 font-mono">${item.matricula}</td>
+          <td class="p-3 text-slate-300"><span class="px-2 py-0.5 bg-black/40 border border-slate-700 rounded text-[10px]">${item.portfolio || 'Honda'}</span></td>
           <td class="p-3 text-slate-400">${item.completedRoundsCount || 0} rodadas</td>
           <td class="p-3 text-right font-bold text-yellow-400">${item.score} pts</td>
         `;
@@ -2202,27 +2443,40 @@ Bloco 2 de 2:
     };
 
     function showModal(iconHTML, title, message, btnText, callback) {
-      document.getElementById("modalIconContainer").innerHTML = iconHTML;
-      document.getElementById("modalTitle").innerHTML = title;
-      document.getElementById("modalMessage").innerHTML = message;
+      const icEl = document.getElementById("modalIconContainer");
+      const titleEl = document.getElementById("modalTitle");
+      const msgEl = document.getElementById("modalMessage");
       const btn = document.getElementById("modalButton");
-      btn.innerText = btnText || "CONTINUAR";
-      btn.className = "w-full py-3 font-bold rounded-xl text-white transition honda-red honda-red-hover";
+
+      if (icEl) icEl.innerHTML = iconHTML;
+      if (titleEl) titleEl.innerHTML = title;
+      if (msgEl) msgEl.innerHTML = message;
+      if (btn) {
+        btn.innerText = btnText || "CONTINUAR";
+        btn.className = "w-full py-3 font-bold rounded-xl text-white transition honda-red honda-red-hover";
+      }
       window.modalCallback = callback;
 
       const overlay = document.getElementById("modalOverlay");
       const card = document.getElementById("modalCard");
-      overlay.classList.remove("hidden");
-      setTimeout(() => { card.classList.remove("scale-95", "opacity-0"); card.classList.add("scale-100", "opacity-100"); }, 10);
+      if (overlay) overlay.classList.remove("hidden");
+      setTimeout(() => { 
+        if (card) {
+          card.classList.remove("scale-95", "opacity-0"); 
+          card.classList.add("scale-100", "opacity-100"); 
+        }
+      }, 10);
     }
 
     window.closeModal = function() {
       const overlay = document.getElementById("modalOverlay");
       const card = document.getElementById("modalCard");
-      card.classList.remove("scale-100", "opacity-100");
-      card.classList.add("scale-95", "opacity-0");
+      if (card) {
+        card.classList.remove("scale-100", "opacity-100");
+        card.classList.add("scale-95", "opacity-0");
+      }
       setTimeout(() => {
-        overlay.classList.add("hidden");
+        if (overlay) overlay.classList.add("hidden");
         if (window.modalCallback) {
           const cb = window.modalCallback;
           window.modalCallback = null;
@@ -2231,32 +2485,9 @@ Bloco 2 de 2:
       }, 200);
     };
 
-    window.adminUpdateEmployeeName = function() {
-      const key = document.getElementById("adminSelectEmployee").value;
-      const newName = document.getElementById("adminNewName").value.trim();
-      if (!newName) return;
-      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
-      if (emp) {
-        emp.name = newName.toUpperCase();
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
-        populateAdminDashboard();
-        alert("Nome do colaborador atualizado!");
-      }
-    };
-
-    window.adminResetPassword = function() {
-      const key = document.getElementById("adminSelectEmployee").value;
-      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
-      if (emp) {
-        emp.password = "";
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
-        alert("Senha resetada com sucesso! No próximo acesso o usuário definirá uma nova senha.");
-      }
-    };
-
     window.adminAddNewGame = function(e) {
       e.preventDefault();
-      alert("Novo jogo adicionado com sucesso à biblioteca!");
+      alert("Novo jogo cadastrado com sucesso para a carteira selecionada!");
       e.target.reset();
     };
   </script>
