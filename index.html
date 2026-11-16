@@ -1,3 +1,4 @@
+<!-- VERSAO PRIORIZANDO FIREBASE COMO FONTE UNICA DE RANKING -->
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
@@ -68,16 +69,17 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
+    /* MODO CLARO AJUSTADO COM CORES FORTES E ALTO CONTRASTE */
     .light body, .light {
-      background-color: #f8fafc !important;
-      color: #0f172a !important;
+      background-color: #f1f5f9 !important;
+      color: #090d16 !important;
     }
     .light .glass-card {
       background: #ffffff !important;
       backdrop-filter: blur(12px);
       border: 1px solid #cbd5e1 !important;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-      color: #0f172a !important;
+      color: #090d16 !important;
     }
     .light aside {
       background-color: #ffffff !important;
@@ -88,13 +90,35 @@
       border-bottom: 1px solid #cbd5e1 !important;
     }
     .light input, .light select, .light textarea {
-      background-color: #f1f5f9 !important;
-      border: 1px solid #94a3b8 !important;
-      color: #0f172a !important;
+      background-color: #ffffff !important;
+      border: 1px solid #64748b !important;
+      color: #090d16 !important;
     }
-    .light .text-slate-400 { color: #475569 !important; }
-    .light .text-slate-300 { color: #334155 !important; }
-    .light .text-slate-200 { color: #1e293b !important; }
+    .light input::placeholder, .light textarea::placeholder {
+      color: #94a3b8 !important;
+    }
+    .light .text-slate-400 { color: #334155 !important; }
+    .light .text-slate-300 { color: #1e293b !important; }
+    .light .text-slate-200 { color: #0f172a !important; }
+    .light h1, .light h2, .light h3, .light h4 { color: #090d16 !important; }
+
+    /* ISOLAMENTO ABSOLUTO DO JOGO: PERMANECE ESCURO MESMO NO MODO CLARO */
+    #screenGameStandalone,
+    #screenGameStandalone *,
+    #screenGameStandalone .glass-card {
+      background-color: #090a0f !important;
+      color: #f8fafc !important;
+    }
+    #screenGameStandalone .glass-card {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #f8fafc !important;
+    }
+    #screenGameStandalone input {
+      background-color: rgba(0, 0, 0, 0.6) !important;
+      border: 1px solid #334155 !important;
+      color: #ffffff !important;
+    }
 
     .honda-red { background-color: #cc0000; }
     .honda-red-hover:hover { background-color: #a80000; }
@@ -280,7 +304,7 @@
           <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition" title="Manejar Menu Lateral">
             <i class="fa-solid fa-bars text-sm"></i>
           </button>
-          <span class="font-bold text-xs uppercase tracking-wider text-red-500">Bulgarelli Play - Hub de Jogos</span>
+          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play - Hub de Jogos</span>
         </div>
 
         <div class="flex items-center gap-3">
@@ -305,11 +329,11 @@
 
         <div class="space-y-3">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-clock-rotate-left text-red-500"></i> <span>Pastas Recém Acessadas</span>
+            <i class="fa-solid fa-clock-rotate-left text-red-600"></i> <span>Pastas Recém Acessadas</span>
           </div>
           <div id="recentFoldersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div onclick="switchSidebarTab('carteiras')" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center font-bold">
+              <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-600 flex items-center justify-center font-bold">
                 <i class="fa-solid fa-folder"></i>
               </div>
               <div>
@@ -322,7 +346,7 @@
 
         <div class="space-y-3 pt-2">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-list-check text-red-500"></i> <span>Jogos Liberados para sua Carteira</span>
+            <i class="fa-solid fa-list-check text-red-600"></i> <span>Jogos Liberados para sua Carteira</span>
           </div>
 
           <div id="overviewAllowedGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -358,47 +382,47 @@
       <!-- PAINEL ADMIN -->
       <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-500">Painel Admin — Treinamento &amp; Qualidade</h1>
+          <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-600">Painel Admin — Treinamento &amp; Qualidade</h1>
           <p class="text-xs text-slate-400">Métricas operacionais, importação de planilhas de colaboradores e gestão de equipes.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center justify-between">
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-600 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Total de Colaboradores</span>
               <h3 id="adminStatPlayers" class="text-2xl font-extrabold">0</h3>
             </div>
-            <i class="fa-solid fa-users text-red-500/40 text-3xl"></i>
+            <i class="fa-solid fa-users text-red-600/40 text-3xl"></i>
           </div>
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-yellow-500 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Rodadas Concluídas</span>
-              <h3 id="adminStatRounds" class="text-2xl font-extrabold text-yellow-500">0</h3>
+              <h3 id="adminStatRounds" class="text-2xl font-extrabold text-yellow-600">0</h3>
             </div>
             <i class="fa-solid fa-trophy text-yellow-500/40 text-3xl"></i>
           </div>
-          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 flex items-center justify-between">
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-600 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Média de Pontos</span>
-              <h3 id="adminStatAvgScore" class="text-2xl font-extrabold text-emerald-500">0</h3>
+              <h3 id="adminStatAvgScore" class="text-2xl font-extrabold text-emerald-600">0</h3>
             </div>
-            <i class="fa-solid fa-chart-line text-emerald-500/40 text-3xl"></i>
+            <i class="fa-solid fa-chart-line text-emerald-600/40 text-3xl"></i>
           </div>
-          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-500 flex items-center justify-between">
+          <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-600 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Carteiras Ativas</span>
-              <h3 id="adminStatPortfolios" class="text-2xl font-extrabold text-cyan-500">2</h3>
+              <h3 id="adminStatPortfolios" class="text-2xl font-extrabold text-cyan-600">2</h3>
             </div>
-            <i class="fa-solid fa-folder-tree text-cyan-500/40 text-3xl"></i>
+            <i class="fa-solid fa-folder-tree text-cyan-600/40 text-3xl"></i>
           </div>
         </div>
 
         <!-- SISTEMA DE IMPORTAÇÃO DE PLANILHA COM PERFIL -->
         <div class="glass-card p-6 rounded-2xl border-yellow-500/40 space-y-4">
-          <h3 class="font-bold text-sm uppercase text-yellow-500 flex items-center gap-2">
+          <h3 class="font-bold text-sm uppercase text-yellow-600 flex items-center gap-2">
             <i class="fa-solid fa-file-excel"></i> Importação de Colaboradores via Planilha
           </h3>
-          <p class="text-xs text-slate-400">Cole os dados da planilha contendo as colunas: <strong>Nome Completo</strong>, <strong>Matrícula</strong>, <strong>Carteira</strong> e <strong>Perfil</strong> (<span class="text-yellow-400">Admin</span> ou <span class="text-yellow-400">Comum</span>). Separe por Tabulação/Excel ou vírgula.</p>
+          <p class="text-xs text-slate-400">Cole os dados da planilha contendo as colunas: <strong>Nome Completo</strong>, <strong>Matrícula</strong>, <strong>Carteira</strong> e <strong>Perfil</strong> (<span class="text-yellow-600 font-bold">Admin</span> ou <span class="text-yellow-600 font-bold">Comum</span>). Separe por Tabulação/Excel ou vírgula.</p>
           
           <div class="space-y-3">
             <textarea id="importSpreadsheetInput" rows="4" placeholder="Exemplo:&#10;Fulano da Silva 1234 Honda Comum&#10;Marina Santos 5678 Stellantis Admin" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
@@ -406,7 +430,7 @@
               <button onclick="processSpreadsheetImport()" class="px-6 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
                 <i class="fa-solid fa-upload"></i> Processar e Importar Colaboradores
               </button>
-              <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition">
+              <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-xl text-xs font-bold transition">
                 Exportar Lista Atual
               </button>
             </div>
@@ -416,7 +440,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- GERENCIAR COLABORADOR INDIVIDUAL -->
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
-            <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
+            <h3 class="font-bold text-sm uppercase text-red-600 flex items-center gap-2">
               <i class="fa-solid fa-users-gear"></i> Gerenciar Perfil e Carteira do Colaborador
             </h3>
             <p class="text-xs text-slate-400">Selecione um colaborador para alterar nome, carteira, perfil de acesso ou resetar a senha para <strong>123Mudar</strong>.</p>
@@ -456,7 +480,7 @@
 
           <!-- CADASTRAR JOGO POR CARTEIRA -->
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
-            <h3 class="font-bold text-sm uppercase text-red-500 flex items-center gap-2">
+            <h3 class="font-bold text-sm uppercase text-red-600 flex items-center gap-2">
               <i class="fa-solid fa-circle-plus"></i> Cadastrar Jogo por Carteira
             </h3>
             <p class="text-xs text-slate-400">Vincule um novo módulo de treinamento a uma carteira específica.</p>
@@ -484,8 +508,8 @@
         </div>
       </section>
 
-      <!-- ================= ABA APARTADA DO JOGO ================= -->
-      <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative">
+      <!-- ================= ABA APARTADA DO JOGO (COM FUNDO ESCURO GARANTIDO) ================= -->
+      <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative bg-[#090a0f] text-slate-100">
         <div id="subScreenCover" class="flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden p-4">
           <div id="flashOverlay" class="launch-flash"></div>
 
@@ -496,7 +520,7 @@
                           CIVIC
                       </div>
                       <div>
-                          <h1 class="text-lg md:text-xl font-black italic tracking-wide racing-font flex items-center gap-2 leading-none">
+                          <h1 class="text-lg md:text-xl font-black italic tracking-wide racing-font flex items-center gap-2 leading-none text-white">
                               HONDA <span class="text-red-500 font-extrabold">TYPE-R</span>
                           </h1>
                           <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-widest uppercase">2.0L VTEC TURBO // 315 HP</p>
@@ -517,7 +541,7 @@
                   <h1 class="text-4xl sm:text-5xl md:text-6xl font-black mb-2 tracking-wider leading-tight">
                       <span class="retro-comic-neon-fire">JOGO DAS TRÊS PISTAS</span>
                   </h1>
-                  <p class="text-xs sm:text-sm bg-black/40 inline-block px-4 py-1.5 rounded-full border border-slate-700/50">
+                  <p class="text-xs sm:text-sm bg-black/40 inline-block px-4 py-1.5 rounded-full border border-slate-700/50 text-slate-200">
                       Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-500 font-semibold">Honda &amp; Bulgarelli</span>
                   </p>
               </div>
@@ -1034,7 +1058,15 @@
 
     window.db = null;
     try {
-      const firebaseConfig = { databaseURL: "https://bulgarelli-play-default-rtdb.firebaseio.com" };
+      const firebaseConfig = {
+  apiKey: "AIzaSyBqCYHv6kzXeF_zCsbzCNSMkHfwrImhjVc",
+  authDomain: "jogo-tres-pontos.firebaseapp.com",
+  projectId: "jogo-tres-pontos",
+  storageBucket: "jogo-tres-pontos.firebasestorage.app",
+  messagingSenderId: "60682371403",
+  appId: "1:60682371403:web:d4641b60bc7e5b8a1de8ce",
+  measurementId: "G-22N725HK6E"
+};
       const app = initializeApp(firebaseConfig);
       window.db = getDatabase(app);
     } catch(e) {}
@@ -1194,7 +1226,7 @@
     }
 
     // BASE DE COLABORADORES
-    let authorizedEmployees = JSON.parse(localStorage.getItem("honda_authorized_employees")) || [
+    let authorizedEmployees = JSON.parse(sessionStorage.getItem("honda_authorized_employees")) || [
       { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", portfolio: "Honda", password: "123Mudar", isAdmin: true },
       { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", portfolio: "Honda", password: "123Mudar", isAdmin: true },
       { name: "THAINA DA SILVA SANTOS", matricula: "2679", portfolio: "Honda", password: "123Mudar", isAdmin: true },
@@ -1598,23 +1630,23 @@
       if (scGame) scGame.classList.add("hidden");
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        btn.classList.remove('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
       });
 
       if (tab === 'overview') {
         if (scOverview) scOverview.classList.remove("hidden");
         const navOv = document.getElementById("navOverview");
-        if (navOv) navOv.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (navOv) navOv.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderOverviewContent();
       } else if (tab === 'carteiras') {
         if (scCarteiras) scCarteiras.classList.remove("hidden");
         const navCar = document.getElementById("navCarteiras");
-        if (navCar) navCar.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (navCar) navCar.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderPortfoliosScreen();
       } else if (tab === 'library') {
         if (scLibrary) scLibrary.classList.remove("hidden");
         const navLib = document.getElementById("navLibrary");
-        if (navLib) navLib.classList.add('bg-red-600/20', 'text-red-500', 'border', 'border-red-500/40');
+        if (navLib) navLib.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderLibraryScreen();
       } else if (tab === 'admin') {
         if (!currentPlayer.isAdmin) {
@@ -1624,7 +1656,7 @@
         }
         if (scAdmin) scAdmin.classList.remove("hidden");
         const navAd = document.getElementById("navAdmin");
-        if (navAd) navAd.classList.add('bg-yellow-500/20', 'text-yellow-500', 'border', 'border-yellow-500/40');
+        if (navAd) navAd.classList.add('bg-yellow-500/20', 'text-yellow-600', 'border', 'border-yellow-500/40');
         populateAdminDashboard();
       }
     };
@@ -2507,5 +2539,3 @@
   </script>
 </body>
 </html>
-
-Obter o Outlook para Android
