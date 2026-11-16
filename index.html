@@ -101,7 +101,7 @@
     .light .text-slate-200 { color: #0f172a !important; }
     .light h1, .light h2, .light h3, .light h4 { color: #090d16 !important; }
 
-    /* ISOLAMENTO ABSOLUTO DO JOGO (VISUAL ANTERIOR RICO PRESERVADO) */
+    /* ISOLAMENTO ABSOLUTO DO JOGO */
     #screenGameStandalone,
     #screenGameStandalone *,
     #screenGameStandalone .glass-card {
@@ -223,14 +223,14 @@
   <!-- TELA DE CARREGAMENTO (TABELA PERIÓDICA) -->
   <div id="preloader" class="fixed inset-0 z-50 bg-[#040508] flex flex-col items-center justify-center p-4">
     <div class="text-center space-y-6 max-w-4xl">
-      <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Inicializando Sistema Corporativo</p>
+      <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Conectando ao Firebase Cloud Engine</p>
       
       <div id="periodicTitleContainer" class="flex flex-wrap justify-center gap-2 sm:gap-3 my-8"></div>
 
       <div class="w-64 mx-auto bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700">
         <div id="preloaderBar" class="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-400 h-full w-0 transition-all duration-300 ease-out"></div>
       </div>
-      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Conectando ao Firebase Realtime Engine...</p>
+      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Sincronizando dados em tempo real...</p>
     </div>
   </div>
 
@@ -246,10 +246,10 @@
             </div>
             <div>
               <span class="font-extrabold text-sm tracking-wide block uppercase">Bulgarelli Play</span>
-              <span class="text-[10px] text-slate-400 font-mono">Hub Operacional</span>
+              <span class="text-[10px] text-slate-400 font-mono">Hub Online (Firebase)</span>
             </div>
           </div>
-          <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg" title="Esconder/Recolher Menu">
+          <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg" title="Recolher Menu">
             <i class="fa-solid fa-chevron-left text-sm"></i>
           </button>
         </div>
@@ -279,11 +279,11 @@
 
         <div id="sessionStatusIndicator" class="hidden items-center gap-2 pt-1 border-t border-slate-800/60">
           <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span class="text-slate-300 font-semibold">Sessão Ativa</span>
+          <span class="text-slate-300 font-semibold">Sessão Online Ativa</span>
         </div>
         <div>
           <p id="sidebarPlayerName" class="font-bold truncate">Visitante / Não Logado</p>
-          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Perfil: Livre</p>
+          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Autenticação Firebase</p>
         </div>
         
         <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between">
@@ -314,7 +314,7 @@
           <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition" title="Manejar Menu Lateral">
             <i class="fa-solid fa-bars text-sm"></i>
           </button>
-          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play - Hub de Jogos</span>
+          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play — Hub Online</span>
         </div>
 
         <div class="flex items-center gap-3">
@@ -333,13 +333,13 @@
         <div class="flex justify-between items-center">
           <div>
             <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
-            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais disponíveis para sua carteira.</p>
+            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais integrados em nuvem.</p>
           </div>
         </div>
 
         <div class="space-y-3">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-clock-rotate-left text-red-600"></i> <span>Pastas Recém Acessadas</span>
+            <i class="fa-solid fa-clock-rotate-left text-red-600"></i> <span>Acesso Recente</span>
           </div>
           <div id="recentFoldersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div onclick="switchSidebarTab('carteiras')" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
@@ -348,7 +348,7 @@
               </div>
               <div>
                 <h4 id="overviewFolderTitle" class="text-sm font-bold">Minha Carteira Vinculada</h4>
-                <p class="text-[10px] text-slate-400">Acessado recentemente</p>
+                <p class="text-[10px] text-slate-400">Sincronizado via Firebase</p>
               </div>
             </div>
           </div>
@@ -387,7 +387,7 @@
       <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
           <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-600">Painel Admin — Treinamento &amp; Qualidade</h1>
-          <p class="text-xs text-slate-400">Métricas operacionais, importação de planilhas de colaboradores e gestão de equipes.</p>
+          <p class="text-xs text-slate-400">Métricas operacionais em nuvem, importação de planilhas e gestão de colaboradores.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -431,7 +431,7 @@
             <textarea id="importSpreadsheetInput" rows="4" placeholder="Exemplo:&#10;Fulano da Silva 1234 Honda Comum&#10;Marina Santos 5678 Stellantis Admin" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
             <div class="flex gap-3">
               <button onclick="processSpreadsheetImport()" class="px-6 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
-                <i class="fa-solid fa-upload"></i> Processar e Importar Colaboradores
+                <i class="fa-solid fa-upload"></i> Processar e Sincronizar no Firebase
               </button>
               <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-xl text-xs font-bold transition">
                 Exportar Lista Atual
@@ -754,7 +754,7 @@
             </div>
             <div class="flex items-center gap-3">
               <div class="text-right bg-black/50 px-4 py-1.5 rounded-xl border border-yellow-500/40">
-                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Total</span>
+                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Total (Cloud)</span>
                 <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
               </div>
               <button onclick="closeGameApart()" class="px-3 py-2 bg-red-900/80 hover:bg-red-800 text-xs font-bold rounded-xl border border-red-500/50 transition flex items-center gap-1.5 text-white">
@@ -772,13 +772,13 @@
             <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           </div>
 
-          <!-- RANKING ONLINE COM PÓDIO E TABELA -->
+          <!-- RANKING ONLINE EM TEMPO REAL (FIREBASE) -->
           <div class="glass-card p-6 rounded-2xl border-red-500/30 mt-6 space-y-6">
             <div class="flex justify-between items-center">
               <h2 class="text-lg font-bold font-game text-yellow-400 flex items-center gap-2">
-                <i class="fa-solid fa-ranking-star"></i> Ranking Online (Firebase)
+                <i class="fa-solid fa-ranking-star"></i> Ranking Online Compartilhado (Firebase)
               </h2>
-              <span class="text-xs text-slate-300 font-mono">Atualização em tempo real</span>
+              <span class="text-xs text-green-400 font-mono flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Sincronizado ao Vivo</span>
             </div>
 
             <!-- PÓDIO (1°, 2°, 3°) -->
@@ -798,7 +798,7 @@
                   </tr>
                 </thead>
                 <tbody id="internalRankingTableBody">
-                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Carregando ranking online do Firebase...</td></tr>
+                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Conectando ao Firebase para carregar ranking compartilhado...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -843,7 +843,7 @@
       </section>
 
       <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto">
-        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS - 2026</p>
+        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS — Banco de Dados em Nuvem Firebase — 2026</p>
       </footer>
     </div>
   </div>
@@ -991,8 +991,8 @@
     <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/40 shadow-2xl relative">
       <div class="text-center mb-6">
         <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
-        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Permissão de Acesso</h2>
-        <p id="modalAuthSubtitle" class="text-xs text-slate-300 font-medium">Insira seu Nome e Matrícula para acessar o Portal Bulgarelli Play</p>
+        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Acesso Online Firebase</h2>
+        <p id="modalAuthSubtitle" class="text-xs text-slate-300 font-medium">Insira seu Nome e Matrícula para autenticar no Portal Bulgarelli Play</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div id="step1Fields" class="space-y-4">
@@ -1075,11 +1075,11 @@
 
       if (isConnected) {
         dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
-        txt.innerText = "Firebase Online";
+        txt.innerText = "Firebase Online (Sincronizado)";
         txt.className = "text-green-400 font-semibold text-[11px]";
       } else {
         dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
-        txt.innerText = "Modo Offline (Local)";
+        txt.innerText = "Sem Conexão Firebase";
         txt.className = "text-red-400 font-semibold text-[11px]";
       }
     };
@@ -1090,8 +1090,8 @@
       if (!tbody || !podiumEl) return;
 
       if (!ranking || ranking.length === 0) {
-        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Nenhum operador pontuou no ranking ainda.</div>`;
-        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Nenhum registro encontrado.</td></tr>`;
+        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Aguardando dados de ranking do Firebase...</div>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Nenhum operador pontuou no ranking compartilhado ainda.</td></tr>`;
         return;
       }
 
@@ -1124,7 +1124,7 @@
 
       tbody.innerHTML = "";
       ranking.forEach((item, idx) => {
-        const isCurrent = item.matricula === currentPlayer.matricula;
+        const isCurrent = currentPlayer && item.matricula === currentPlayer.matricula;
         const tr = document.createElement("tr");
         tr.className = `border-b border-slate-700/80 hover:bg-white/10 ${isCurrent ? 'bg-red-950/40 border-l-4 border-l-red-500 font-bold' : ''}`;
         tr.innerHTML = `
@@ -1161,7 +1161,7 @@
     };
   </script>
 
-  <!-- FIREBASE REALTIME ENGINE COM MONITORAMENTO DE CONEXÃO E TRATAMENTO DE ERROS -->
+  <!-- FIREBASE REALTIME ENGINE 100% ONLINE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -1180,11 +1180,12 @@
         measurementId: "G-22N725HK6E",
         databaseURL: "https://jogo-tres-pontos-default-rtdb.firebaseio.com"
       };
+
       const app = initializeApp(firebaseConfig);
       window.db = getDatabase(app);
       window.firebaseReady = true;
 
-      // Monitor de conexão online/offline do Firebase
+      // Monitor de conexão online/offline em tempo real do Firebase
       const connectedRef = ref(window.db, ".info/connected");
       onValue(connectedRef, (snap) => {
         const isConnected = snap.val() === true;
@@ -1192,7 +1193,27 @@
           window.updateFirebaseStatusUI(isConnected);
         }
       });
+
+      // Inicia sincronização do ranking compartilhado
+      window.syncFirebaseRanking();
+
+      // Sincroniza funcionários e dados da empresa em tempo real do Firebase
+      const employeesRef = ref(window.db, 'config/authorizedEmployees');
+      onValue(employeesRef, (snapshot) => {
+        const cloudEmployees = snapshot.val();
+        if (cloudEmployees && Array.isArray(cloudEmployees)) {
+          authorizedEmployees = cloudEmployees;
+          if (typeof populateAdminDashboard === 'function') {
+            populateAdminDashboard();
+          }
+        } else {
+          // Se o Firebase estiver vazio na primeira execução, grava a lista inicial na nuvem
+          set(employeesRef, authorizedEmployees);
+        }
+      });
+
     } catch(e) {
+      console.error("Erro ao inicializar o Firebase:", e);
       if (window.updateFirebaseStatusUI) window.updateFirebaseStatusUI(false);
     }
 
@@ -1205,8 +1226,6 @@
           if (data && callback) {
             callback(data);
           }
-        }, (error) => {
-          // Erro silencioso ou reconexão tratada
         });
       } catch(e) {}
     };
@@ -1224,14 +1243,10 @@
             if (window.updateAdminMetrics) window.updateAdminMetrics(rankingArray);
           } else {
             if (window.renderInternalRankingTable) window.renderInternalRankingTable([]);
+            if (window.updateAdminMetrics) window.updateAdminMetrics([]);
           }
-        }, (error) => {
-          // Fallback para dados locais caso falhe a rede
-          refreshInternalRanking();
         });
-      } catch(e) {
-        refreshInternalRanking();
-      }
+      } catch(e) {}
     };
 
     window.savePlayerToFirebase = async function(playerData) {
@@ -1253,9 +1268,17 @@
         });
         return true;
       } catch(e) {
-        console.warn("Aviso: Falha ao sincronizar com o Firebase. Pontuação salva localmente.", e);
+        console.warn("Aviso: Falha ao sincronizar pontuação no Firebase.", e);
         return false;
       }
+    };
+
+    window.saveEmployeesToFirebaseCloud = async function() {
+      if (!window.db) return;
+      try {
+        const employeesRef = ref(window.db, 'config/authorizedEmployees');
+        await set(employeesRef, authorizedEmployees);
+      } catch(e) {}
     };
   </script>
 
@@ -1317,13 +1340,11 @@
         document.documentElement.classList.add("light");
         if (icon) icon.className = "fa-solid fa-sun";
         if (text) text.innerText = "Claro";
-        localStorage.setItem("theme_preference", "light");
       } else {
         document.documentElement.classList.remove("light");
         document.documentElement.classList.add("dark");
         if (icon) icon.className = "fa-solid fa-moon";
         if (text) text.innerText = "Escuro";
-        localStorage.setItem("theme_preference", "dark");
       }
     }
 
@@ -1349,7 +1370,7 @@
       }
     }
 
-    let authorizedEmployees = JSON.parse(localStorage.getItem("honda_authorized_employees")) || [
+    let authorizedEmployees = [
       { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", portfolio: "Honda", password: "123Mudar", isAdmin: true },
       { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", portfolio: "Honda", password: "123Mudar", isAdmin: true },
       { name: "THAINA DA SILVA SANTOS", matricula: "2679", portfolio: "Honda", password: "123Mudar", isAdmin: true },
@@ -1569,7 +1590,6 @@
 
     let currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
     let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
-    let internalRanking = [];
     let countdownTimerInterval = null;
 
     function getShuffledRoundsForLevel(lvl, matricula) {
@@ -1603,21 +1623,6 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       initPreloader();
-      refreshInternalRanking();
-
-      if (window.syncFirebaseRanking) {
-        window.syncFirebaseRanking();
-      }
-
-      const savedTheme = localStorage.getItem("theme_preference");
-      if (savedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.classList.add("light");
-        const icon = document.getElementById("themeIcon");
-        const text = document.getElementById("themeText");
-        if (icon) icon.className = "fa-solid fa-sun";
-        if (text) text.innerText = "Claro";
-      }
 
       const savedSession = sessionStorage.getItem("bulgarelli_active_session");
       if (savedSession) {
@@ -1625,15 +1630,13 @@
           const parsed = JSON.parse(savedSession);
           if (parsed.name) {
             currentPlayer = parsed;
-            const savedAv = localStorage.getItem("user_avatar_3d");
-            if (savedAv) playerAvatar = JSON.parse(savedAv);
             updateSessionUI();
             
             if (window.syncFirebaseData && currentPlayer.matricula) {
               window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
                 if (cloudData) {
-                  currentPlayer.score = cloudData.score || 0;
-                  currentPlayer.completedRounds = cloudData.completedRounds || [];
+                  currentPlayer.score = Math.max(currentPlayer.score || 0, cloudData.score || 0);
+                  currentPlayer.completedRounds = Array.from(new Set([...(currentPlayer.completedRounds || []), ...(cloudData.completedRounds || [])]));
                 }
               });
             }
@@ -1717,10 +1720,9 @@
     }
 
     function saveAvatarConfig() {
-      localStorage.setItem("user_avatar_3d", JSON.stringify(playerAvatar));
       closeAvatarCustomizerModal();
       updateHeaderAvatarDisplay();
-      alert("Avatar corporativo atualizado com sucesso!");
+      alert("Avatar corporativo atualizado!");
     }
 
     function updateHeaderAvatarDisplay() {
@@ -1831,7 +1833,7 @@
             </div>
             <div>
               <h3 class="text-lg font-bold">Carteira ${port}</h3>
-              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais vinculados.</p>
+              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais em nuvem.</p>
             </div>
           </div>
 
@@ -1844,7 +1846,7 @@
                 </div>
                 <button onclick="launchHondaGameApart()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Jogar</button>
               </div>
-            ` : `<div class="text-xs text-slate-500 italic p-2">Nenhum simulador ativo para esta carteira no momento.</div>`}
+            ` : `<div class="text-xs text-slate-500 italic p-2">Nenhum simulador ativo para esta carteira.</div>`}
           </div>
         `;
         container.appendChild(div);
@@ -1868,7 +1870,7 @@
           </div>
         `;
       } else {
-        grid.innerHTML = `<div class="col-span-full p-6 text-center text-slate-500 italic">Sua carteira (${currentPlayer.portfolio}) não possui jogos na biblioteca no momento.</div>`;
+        grid.innerHTML = `<div class="col-span-full p-6 text-center text-slate-500 italic">Sua carteira (${currentPlayer.portfolio}) não possui jogos na biblioteca.</div>`;
       }
     }
 
@@ -1922,7 +1924,6 @@
         });
         onAdminSelectEmployeeChange();
       }
-      window.updateAdminMetrics(internalRanking);
     }
 
     window.onAdminSelectEmployeeChange = function() {
@@ -1960,9 +1961,11 @@
         emp.portfolio = newPort;
         emp.isAdmin = (newRole === "Admin");
 
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
         populateAdminDashboard();
-        alert("Dados do colaborador atualizados com sucesso!");
+        alert("Dados do colaborador salvos no Firebase com sucesso!");
       }
     };
 
@@ -1973,8 +1976,10 @@
       const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
       if (emp) {
         emp.password = "123Mudar";
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
-        alert(`Senha do colaborador ${emp.name} resetada com sucesso para: 123Mudar. No próximo login, ele será obrigado a definir uma nova senha.`);
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
+        alert(`Senha do colaborador ${emp.name} resetada no Firebase para: 123Mudar.`);
         populateAdminDashboard();
       }
     };
@@ -2016,9 +2021,11 @@
         }
       });
 
-      localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+      if (window.saveEmployeesToFirebaseCloud) {
+        window.saveEmployeesToFirebaseCloud();
+      }
       populateAdminDashboard();
-      alert(`Importação concluída! ${countAdded} novos colaboradores adicionados com senha padrão 123Mudar.`);
+      alert(`Importação concluída! ${countAdded} novos colaboradores sincronizados no Firebase.`);
       document.getElementById("importSpreadsheetInput").value = "";
     };
 
@@ -2031,7 +2038,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.setAttribute("download", "colaboradores_bulgarelli.csv");
+      link.setAttribute("download", "colaboradores_bulgarelli_firebase.csv");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -2076,7 +2083,7 @@
         updateHeaderAvatarDisplay();
       } else {
         if (sidebarName) sidebarName.innerText = "Visitante / Não Logado";
-        if (sidebarMat) sidebarMat.innerText = "Perfil: Visitante";
+        if (sidebarMat) sidebarMat.innerText = "Autenticação Firebase";
         if (headerName) headerName.innerText = "Visitante";
         if (sessionStatus) {
           sessionStatus.classList.remove("flex");
@@ -2123,7 +2130,7 @@
       if (st1) st1.classList.remove("hidden");
       if (st2) st2.classList.add("hidden");
       if (logPass) logPass.classList.add("hidden");
-      if (authSub) authSub.innerText = "Insira seu Nome e Matrícula para acessar o Portal Bulgarelli Play";
+      if (authSub) authSub.innerText = "Insira seu Nome e Matrícula para autenticar no Portal Bulgarelli Play";
       if (authBtn) authBtn.innerText = "AVANÇAR";
 
       isPasswordChangeStep = false;
@@ -2175,7 +2182,7 @@
             if (authBtn) authBtn.innerText = "ENTRAR NO PORTAL";
           }
         } else {
-          alert("Colaborador não encontrado na base de dados autorizada. Solicite ao gestor a importação via planilha.");
+          alert("Colaborador não encontrado na base de dados do Firebase. Solicite ao gestor a importação via planilha.");
           return;
         }
       } else if (isPasswordChangeStep) {
@@ -2187,7 +2194,7 @@
           return;
         }
         if (pass === "123Mudar") {
-          alert("Por favor, escolha uma senha diferente de '123Mudar'.");
+          alert("Escolha uma senha diferente de '123Mudar'.");
           return;
         }
         if (pass !== passConfirm) {
@@ -2199,7 +2206,9 @@
         let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
         if (existingIndex >= 0) authorizedEmployees[existingIndex] = tempPendingEmp;
         
-        localStorage.setItem("honda_authorized_employees", JSON.stringify(authorizedEmployees));
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
         
         currentPlayer.name = tempPendingEmp.name;
         currentPlayer.matricula = tempPendingEmp.matricula;
@@ -2224,6 +2233,16 @@
     };
 
     function finalizeLoginAndDirectToPortal() {
+      if (window.syncFirebaseData && currentPlayer.matricula) {
+        window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
+          if (cloudData) {
+            currentPlayer.score = Math.max(currentPlayer.score || 0, cloudData.score || 0);
+            currentPlayer.completedRounds = Array.from(new Set([...(currentPlayer.completedRounds || []), ...(cloudData.completedRounds || [])]));
+            sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
+          }
+        });
+      }
+
       sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
       updateSessionUI();
       closeRegistrationModal();
@@ -2320,7 +2339,6 @@
       }
 
       renderLevelsGridApart();
-      refreshInternalRanking();
     }
 
     function renderLevelsGridApart() {
@@ -2345,7 +2363,7 @@
         let buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition shadow-md">${lvl.isTraining ? 'INICIAR TREINAMENTO' : 'INICIAR DESAFIO'} <i class="fa-solid fa-play"></i></button>`;
 
         if (!unlocked) {
-          statusTag = `<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Bloqueado</span>`;
+          statusTag = `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Bloqueado</span>`;
           buttonHTML = `
             <div class="w-full py-2 bg-black/60 border border-slate-700 rounded-xl text-center space-y-0.5">
               <span class="text-[10px] text-slate-300 uppercase tracking-widest block font-mono font-bold">Disponível em:</span>
@@ -2458,7 +2476,8 @@
         if (!lvl.isTraining && !alreadyCompleted) {
           currentPlayer.completedRounds.push(round.id);
           currentPlayer.score += points;
-          savePlayerToInternalRanking();
+          sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
+          savePlayerToCloudRanking();
         }
 
         showModal("<i class='fa-solid fa-circle-check text-5xl text-green-400'></i>", "Resposta Correta!", round.explanation, "PRÓXIMO DESAFIO", () => advanceGameApart());
@@ -2467,7 +2486,7 @@
           currentRoundState.clueIndex++;
           renderCluesApart();
           input.value = "";
-          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Resposta Divergente!", "Resposta incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
+          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Resposta Divergente!", "Incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
         } else {
           showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta correta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
         }
@@ -2481,19 +2500,11 @@
         currentRoundState.roundIndex++;
         setupRoundDisplayApart();
       } else {
-        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts`, "VOLTAR AO MENU", () => showLevelsScreenApart());
+        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts (Sincronizada)`, "VOLTAR AO MENU", () => showLevelsScreenApart());
       }
     }
 
-    function refreshInternalRanking() {
-      const stored = localStorage.getItem("bulgarelli_ranking_internal");
-      if (stored) {
-        try { internalRanking = JSON.parse(stored); } catch(e){}
-      }
-      if (window.renderInternalRankingTable) window.renderInternalRankingTable(internalRanking);
-    }
-
-    async function savePlayerToInternalRanking() {
+    async function savePlayerToCloudRanking() {
       const data = { 
         name: currentPlayer.name, 
         matricula: currentPlayer.matricula, 
@@ -2507,14 +2518,6 @@
       if (window.savePlayerToFirebase) {
         await window.savePlayerToFirebase(data);
       }
-
-      const idx = internalRanking.findIndex(p => p.matricula === currentPlayer.matricula);
-      if (idx >= 0) internalRanking[idx] = data;
-      else internalRanking.push(data);
-
-      internalRanking.sort((a, b) => b.score - a.score);
-      localStorage.setItem("bulgarelli_ranking_internal", JSON.stringify(internalRanking));
-      if (window.renderInternalRankingTable) window.renderInternalRankingTable(internalRanking);
     }
 
     function showModal(iconHTML, title, message, btnText, callback) {
@@ -2562,7 +2565,7 @@
 
     window.adminAddNewGame = function(e) {
       e.preventDefault();
-      alert("Novo jogo cadastrado com sucesso para a carteira selecionada!");
+      alert("Novo jogo cadastrado com sucesso!");
       e.target.reset();
     };
   </script>
