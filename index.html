@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Jogos Corporativos - Bulgarelli Play (Online Firebase)</title>
+  <title>Portal de Jogos Corporativos - Bulgarelli Play</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -158,8 +158,17 @@
     .launching { animation: launchDrive 1.35s cubic-bezier(0.65, 0.02, 0.2, 1) forwards !important; }
     @keyframes launchDrive {
         0% { transform: translate3d(0, 0, 0) scale(1) rotateX(0deg); opacity: 1; }
+        18% { transform: translate3d(0, 15px, -60px) scale(0.94) rotateX(-2deg); opacity: 1; }
+        35% { transform: translate3d(0, -6px, 100px) scale(1.3) rotateX(2deg); opacity: 1; }
+        75% { transform: translate3d(0, -20px, 600px) scale(4.8) rotateX(5deg); opacity: 0.95; }
         100% { transform: translate3d(0, -50px, 1200px) scale(9.5) rotateX(8deg); opacity: 0; filter: blur(5px); }
     }
+
+    .car-shadow { transition: transform 1.3s cubic-bezier(0.65, 0.02, 0.2, 1), opacity 1.1s ease; }
+    .car-assembly.launching ~ .car-shadow { transform: translateX(-50%) scale(0.1); opacity: 0; }
+
+    .drl-glow { filter: drop-shadow(0 0 12px rgba(180, 230, 255, 0.95)) drop-shadow(0 0 28px rgba(0, 160, 255, 0.8)); }
+    .fog-glow { box-shadow: 0 0 16px #ffffff, 0 0 30px rgba(255, 255, 255, 0.9); }
 
     .launch-flash {
         position: absolute; inset: 0;
@@ -193,21 +202,23 @@
 </head>
 <body class="bg-[#090a0f] text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-  <!-- TELA DE CARREGAMENTO (TABELA PERIÓDICA CONECTADA) -->
+  <!-- TELA DE CARREGAMENTO (TABELA PERIÓDICA) -->
   <div id="preloader" class="fixed inset-0 z-50 bg-[#040508] flex flex-col items-center justify-center p-4">
     <div class="text-center space-y-6 max-w-4xl">
-      <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Sincronizando com Firebase Cloud Realtime Database...</p>
+      <p class="text-xs font-mono uppercase tracking-widest text-slate-400">Carregando Bulgarelli Play</p>
+      
       <div id="periodicTitleContainer" class="flex flex-wrap justify-center gap-2 sm:gap-3 my-8"></div>
+
       <div class="w-64 mx-auto bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700">
         <div id="preloaderBar" class="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-400 h-full w-0 transition-all duration-300 ease-out"></div>
       </div>
-      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Conectando à base de dados em nuvem...</p>
+      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Sincronizando dados...</p>
     </div>
   </div>
 
   <div id="appContainer" class="flex-1 flex w-full min-h-screen relative overflow-x-hidden">
 
-    <!-- MENU LATERAL -->
+    <!-- MENU LATERAL RETRÁTIL -->
     <aside id="sidebarNav" class="w-64 bg-[#040508] border-r border-slate-800 flex flex-col justify-between fixed md:sticky top-0 h-screen z-40 transition-all duration-300">
       <div class="p-5">
         <div class="flex items-center justify-between mb-8">
@@ -217,10 +228,10 @@
             </div>
             <div>
               <span class="font-extrabold text-sm tracking-wide block uppercase">Bulgarelli Play</span>
-              <span class="text-[10px] text-green-400 font-mono">Firebase Conectado</span>
+              <span class="text-[10px] text-slate-400 font-mono">Hub Online</span>
             </div>
           </div>
-          <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg" title="Recolher Menu">
             <i class="fa-solid fa-chevron-left text-sm"></i>
           </button>
         </div>
@@ -242,18 +253,18 @@
       </div>
 
       <div class="p-4 m-4 rounded-2xl bg-black/40 border border-slate-800 text-xs space-y-3">
-        <div id="firebaseStatusIndicator" class="flex items-center gap-2">
-          <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></div>
-          <span id="firebaseStatusText" class="text-slate-300 font-semibold text-[11px]">Conectando ao Firebase...</span>
+        <!-- Sinalização de status de conexão solicitada -->
+        <div id="connectionSignalBadge" class="flex items-center justify-between bg-black/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
+          <span class="text-[10px] text-slate-400 font-bold uppercase">Status:</span>
+          <div class="flex items-center gap-1.5">
+            <div id="connectionDot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></div>
+            <span id="connectionText" class="text-[11px] font-bold text-amber-400">Conectando...</span>
+          </div>
         </div>
 
-        <div id="sessionStatusIndicator" class="hidden items-center gap-2 pt-1 border-t border-slate-800/60">
-          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span class="text-green-400 font-semibold">Online &amp; Sincronizado</span>
-        </div>
         <div>
           <p id="sidebarPlayerName" class="font-bold truncate">Visitante / Não Logado</p>
-          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Autenticação Cloud</p>
+          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Autenticação Firebase</p>
         </div>
         
         <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between">
@@ -266,7 +277,7 @@
 
         <div id="sessionActionContainer">
           <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
-            Acessar Login Online
+            Acessar Login
           </button>
         </div>
       </div>
@@ -278,12 +289,13 @@
 
     <div class="flex-1 flex flex-col min-h-screen w-full transition-all">
 
+      <!-- CABEÇALHO SUPERIOR -->
       <header id="appHeader" class="sticky top-0 z-30 glass-card border-b border-slate-800 px-4 py-3 shadow-xl flex justify-between items-center">
         <div class="flex items-center gap-3">
-          <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition">
+          <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition" title="Manejar Menu Lateral">
             <i class="fa-solid fa-bars text-sm"></i>
           </button>
-          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play — Cloud Firebase</span>
+          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play — Hub Online</span>
         </div>
 
         <div class="flex items-center gap-3">
@@ -299,14 +311,16 @@
 
       <!-- VISÃO GERAL -->
       <section id="screenOverview" class="flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
-        <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal (Online)</h1>
-          <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais 100% integrados em nuvem.</p>
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
+            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais integrados em nuvem.</p>
+          </div>
         </div>
 
         <div class="space-y-3">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-cloud text-green-500"></i> <span>Carteira Vinculada no Firebase</span>
+            <i class="fa-solid fa-clock-rotate-left text-red-600"></i> <span>Acesso Recente</span>
           </div>
           <div id="recentFoldersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div onclick="switchSidebarTab('carteiras')" class="glass-card p-4 rounded-2xl cursor-pointer transition hover:border-red-500 flex items-center gap-3">
@@ -314,8 +328,8 @@
                 <i class="fa-solid fa-folder"></i>
               </div>
               <div>
-                <h4 id="overviewFolderTitle" class="text-sm font-bold">Minha Carteira Firebase</h4>
-                <p class="text-[10px] text-green-400 font-mono">Sincronizado em tempo real</p>
+                <h4 id="overviewFolderTitle" class="text-sm font-bold">Minha Carteira Vinculada</h4>
+                <p class="text-[10px] text-slate-400">Sincronizado via Firebase</p>
               </div>
             </div>
           </div>
@@ -323,8 +337,9 @@
 
         <div class="space-y-3 pt-2">
           <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <i class="fa-solid fa-list-check text-red-600"></i> <span>Jogos Liberados para sua Conta</span>
+            <i class="fa-solid fa-list-check text-red-600"></i> <span>Jogos Liberados para sua Carteira</span>
           </div>
+
           <div id="overviewAllowedGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
       </section>
@@ -332,26 +347,28 @@
       <!-- CARTEIRAS -->
       <section id="screenCarteiras" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider">Pastas de Carteiras Online</h1>
-          <p class="text-xs text-slate-400">Operações e simuladores liberados para o seu perfil autenticado.</p>
+          <h1 class="text-2xl font-bold font-game tracking-wider">Pastas de Carteiras</h1>
+          <p class="text-xs text-slate-400">Operações e simuladores liberados para o seu perfil.</p>
         </div>
+
         <div id="carteirasContainerList" class="space-y-6"></div>
       </section>
 
-      <!-- BIBLIOTECA -->
+      <!-- BIBLIOTECA DE JOGOS -->
       <section id="screenLibrary" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider">Biblioteca de Jogos em Nuvem</h1>
-          <p class="text-xs text-slate-400">Módulos de capacitação e treinamentos corporativos sincronizados.</p>
+          <h1 class="text-2xl font-bold font-game tracking-wider">Biblioteca de Jogos</h1>
+          <p class="text-xs text-slate-400">Catálogo de módulos de capacitação e treinamentos corporativos autorizados.</p>
         </div>
+
         <div id="libraryGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </section>
 
       <!-- PAINEL ADMIN -->
       <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
-          <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-500">Painel Admin — Firebase Cloud</h1>
-          <p class="text-xs text-slate-400">Gestão de colaboradores armazenada e validada diretamente no Realtime Database.</p>
+          <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-600">Painel Admin — Treinamento &amp; Qualidade</h1>
+          <p class="text-xs text-slate-400">Métricas operacionais em nuvem, importação de planilhas e gestão de colaboradores.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -365,39 +382,40 @@
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-yellow-500 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Rodadas Concluídas</span>
-              <h3 id="adminStatRounds" class="text-2xl font-extrabold text-yellow-500">0</h3>
+              <h3 id="adminStatRounds" class="text-2xl font-extrabold text-yellow-600">0</h3>
             </div>
             <i class="fa-solid fa-trophy text-yellow-500/40 text-3xl"></i>
           </div>
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-600 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Média de Pontos</span>
-              <h3 id="adminStatAvgScore" class="text-2xl font-extrabold text-emerald-500">0</h3>
+              <h3 id="adminStatAvgScore" class="text-2xl font-extrabold text-emerald-600">0</h3>
             </div>
             <i class="fa-solid fa-chart-line text-emerald-600/40 text-3xl"></i>
           </div>
           <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-600 flex items-center justify-between">
             <div>
               <span class="text-[10px] font-bold text-slate-400 uppercase">Carteiras Ativas</span>
-              <h3 id="adminStatPortfolios" class="text-2xl font-extrabold text-cyan-500">2</h3>
+              <h3 id="adminStatPortfolios" class="text-2xl font-extrabold text-cyan-600">2</h3>
             </div>
             <i class="fa-solid fa-folder-tree text-cyan-600/40 text-3xl"></i>
           </div>
         </div>
 
         <div class="glass-card p-6 rounded-2xl border-yellow-500/40 space-y-4">
-          <h3 class="font-bold text-sm uppercase text-yellow-500 flex items-center gap-2">
-            <i class="fa-solid fa-file-excel"></i> Sincronizar Colaboradores na Nuvem
+          <h3 class="font-bold text-sm uppercase text-yellow-600 flex items-center gap-2">
+            <i class="fa-solid fa-file-excel"></i> Importação de Colaboradores via Planilha
           </h3>
-          <p class="text-xs text-slate-400">Cole os dados contendo: <strong>Nome Completo</strong>, <strong>Matrícula</strong>, <strong>Carteira</strong> e <strong>Perfil</strong> (Admin ou Comum).</p>
+          <p class="text-xs text-slate-400">Cole os dados da planilha contendo as colunas: <strong>Nome Completo</strong>, <strong>Matrícula</strong>, <strong>Carteira</strong> e <strong>Perfil</strong> (<span class="text-yellow-600 font-bold">Admin</span> ou <span class="text-yellow-600 font-bold">Comum</span>).</p>
+          
           <div class="space-y-3">
-            <textarea id="importSpreadsheetInput" rows="4" placeholder="Fulano Silva 1234 Honda Comum" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
+            <textarea id="importSpreadsheetInput" rows="4" placeholder="Exemplo:&#10;Fulano da Silva 1234 Honda Comum&#10;Marina Santos 5678 Stellantis Admin" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
             <div class="flex gap-3">
               <button onclick="processSpreadsheetImport()" class="px-6 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Enviar para o Firebase
+                <i class="fa-solid fa-upload"></i> Processar e Sincronizar no Firebase
               </button>
               <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-xl text-xs font-bold transition">
-                Exportar CSV
+                Exportar Lista Atual
               </button>
             </div>
           </div>
@@ -406,20 +424,21 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
             <h3 class="font-bold text-sm uppercase text-red-600 flex items-center gap-2">
-              <i class="fa-solid fa-users-gear"></i> Editar Perfil do Colaborador
+              <i class="fa-solid fa-users-gear"></i> Gerenciar Perfil e Carteira do Colaborador
             </h3>
+            
             <div class="space-y-3">
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Colaborador</label>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
                 <select id="adminSelectEmployee" onchange="onAdminSelectEmployeeChange()" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white"></select>
               </div>
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Nome Completo</label>
-                <input type="text" id="adminNewName" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Nome de Exibição</label>
+                <input type="text" id="adminNewName" placeholder="Nome completo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira</label>
+                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira Vinculada</label>
                   <select id="adminNewPortfolio" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
                     <option value="Honda">Honda</option>
                     <option value="Stellantis">Stellantis</option>
@@ -427,7 +446,7 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Perfil</label>
+                  <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Tipo de Perfil</label>
                   <select id="adminNewRole" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
                     <option value="Comum">Comum</option>
                     <option value="Admin">Admin</option>
@@ -435,40 +454,41 @@
                 </div>
               </div>
               <div class="flex gap-2 pt-2">
-                <button onclick="adminSaveEmployeeChanges()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Salvar no Firebase</button>
-                <button onclick="adminResetPasswordIndividual()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition">Resetar Senha (123Mudar)</button>
+                <button onclick="adminSaveEmployeeChanges()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Salvar Alterações</button>
+                <button onclick="adminResetPasswordIndividual()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition" title="Reseta a senha para 123Mudar">Resetar Senha (123Mudar)</button>
               </div>
             </div>
           </div>
 
           <div class="glass-card p-6 rounded-2xl border-slate-700 space-y-4">
             <h3 class="font-bold text-sm uppercase text-red-600 flex items-center gap-2">
-              <i class="fa-solid fa-circle-plus"></i> Cadastrar Novo Jogo
+              <i class="fa-solid fa-circle-plus"></i> Cadastrar Jogo por Carteira
             </h3>
+            
             <form onsubmit="adminAddNewGame(event)" class="space-y-3">
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Título</label>
-                <input type="text" id="newGameTitle" required placeholder="Nome do jogo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Título do Jogo</label>
+                <input type="text" id="newGameTitle" required placeholder="Ex: Quiz Stellantis Amigável" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
               </div>
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira</label>
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Carteira Alvo</label>
                 <select id="newGameCategory" class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
                   <option value="Honda">Honda</option>
                   <option value="Stellantis">Stellantis</option>
-                  <option value="Geral">Geral</option>
+                  <option value="Geral">Geral (Todas as Carteiras)</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Descrição</label>
-                <input type="text" id="newGameDesc" required placeholder="Resumo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs text-white">
+                <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Descrição Curta</label>
+                <input type="text" id="newGameDesc" required placeholder="Breve resumo..." class="w-full px-3 py-2 bg-black/60 border border-slate-700 rounded-xl text-xs">
               </div>
-              <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Cadastrar no Firebase</button>
+              <button type="submit" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold transition">Cadastrar na Biblioteca</button>
             </form>
           </div>
         </div>
       </section>
 
-      <!-- TELA DO JOGO (TRÊS PISTAS) -->
+      <!-- ================= ABA DO JOGO (PRESERVADA EXATAMENTE COMO ANTES) ================= -->
       <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative bg-[#090a0f] text-slate-100">
         <div id="subScreenCover" class="flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden p-4">
           <div id="flashOverlay" class="launch-flash"></div>
@@ -502,11 +522,12 @@
                       <span class="retro-comic-neon-fire">JOGO DAS TRÊS PISTAS</span>
                   </h1>
                   <p class="text-xs sm:text-sm bg-black/50 inline-block px-4 py-1.5 rounded-full border border-slate-700/60 text-slate-100 font-semibold shadow-md">
-                      Treinamento em Nuvem Firebase — <span class="text-red-400 font-extrabold">Honda &amp; Bulgarelli</span>
+                      Treinamento de Negociação e Recuperação de Crédito — <span class="text-red-400 font-extrabold">Honda &amp; Bulgarelli</span>
                   </p>
               </div>
           </div>
 
+          <!-- HONDA CIVIC TYPE-R 3D ORIGINAL COMPLETO -->
           <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
               <div class="road-perspective pointer-events-none">
                   <div class="road-grid"></div>
@@ -521,21 +542,117 @@
               <div id="carShadow" class="car-shadow absolute bottom-24 w-[380px] h-6 bg-black/90 rounded-full blur-md z-0"></div>
 
               <div id="carRoot" class="car-assembly idle-vibe relative w-[390px] h-[210px] z-10 flex flex-col items-center justify-end">
+                  
+                  <div class="absolute -top-3 w-[310px] flex flex-col items-center z-0">
+                      <div class="w-full h-4 bg-gradient-to-r from-[#181818] via-[#2a2a2a] to-[#181818] rounded-t-md shadow-lg border-b border-black flex justify-between px-1 items-center">
+                          <div class="w-2.5 h-6 bg-[#0e0e0e] rounded-sm transform -rotate-6 border border-zinc-700"></div>
+                          <div class="w-48 h-1.5 bg-[#141414] rounded-full mx-auto"></div>
+                          <div class="w-2.5 h-6 bg-[#0e0e0e] rounded-sm transform rotate-6 border border-zinc-700"></div>
+                      </div>
+                      <div class="w-[210px] flex justify-between px-6">
+                          <div class="w-3 h-8 bg-gradient-to-b from-[#1c1c1c] to-[#0c0c0c] rounded-b-sm border-x border-zinc-800"></div>
+                          <div class="w-3 h-8 bg-gradient-to-b from-[#1c1c1c] to-[#0c0c0c] rounded-b-sm border-x border-zinc-800"></div>
+                      </div>
+                  </div>
+
+                  <div class="relative w-[280px] h-[82px] flex items-center justify-center z-10">
+                      <div class="absolute -left-6 top-10 flex items-center">
+                          <div class="w-8 h-5 bg-[#111] rounded-l-full border border-zinc-800 shadow-md transform -rotate-3 relative overflow-hidden flex items-center justify-end pr-1">
+                              <div class="w-1.5 h-3.5 bg-sky-200/40 rounded-sm"></div>
+                              <div class="absolute top-0 left-0 w-full h-1.5 bg-[#c70000]"></div>
+                          </div>
+                          <div class="w-3 h-1.5 bg-[#0a0a0a]"></div>
+                      </div>
+                      <div class="absolute -right-6 top-10 flex items-center">
+                          <div class="w-3 h-1.5 bg-[#0a0a0a]"></div>
+                          <div class="w-8 h-5 bg-[#111] rounded-r-full border border-zinc-800 shadow-md transform rotate-3 relative overflow-hidden flex items-center justify-start pl-1">
+                              <div class="w-1.5 h-3.5 bg-sky-200/40 rounded-sm"></div>
+                              <div class="absolute top-0 right-0 w-full h-1.5 bg-[#c70000]"></div>
+                          </div>
+                      </div>
+                      <div class="w-[220px] h-[78px] bg-gradient-to-b from-[#1a1a1a] via-[#101318] to-[#08090c] rounded-t-[55px] p-2 border-t-2 border-zinc-600/30 relative shadow-2xl flex flex-col items-center">
+                          <div class="w-[196px] h-[64px] bg-gradient-to-b from-[#16212e] via-[#0c131c] to-[#05080c] rounded-t-[44px] relative overflow-hidden border border-white/10 shadow-inner">
+                              <div class="absolute bottom-1 w-full flex justify-between px-9 opacity-40">
+                                  <div class="w-6 h-7 bg-red-700 rounded-t-md border border-red-500"></div>
+                                  <div class="w-6 h-7 bg-red-700 rounded-t-md border border-red-500"></div>
+                              </div>
+                              <div class="absolute top-1 left-1/2 -translate-x-1/2 w-6 h-2 bg-neutral-900 border border-zinc-700 rounded-sm"></div>
+                              <div class="absolute -top-4 left-4 w-10 h-28 bg-white/15 transform rotate-35 pointer-events-none blur-[0.5px]"></div>
+                              <div class="absolute -top-4 right-10 w-4 h-28 bg-white/10 transform rotate-35 pointer-events-none"></div>
+                              <div class="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/80 to-transparent"></div>
+                              <div class="absolute inset-y-0 right-0 w-3 bg-gradient-to-l from-black/80 to-transparent"></div>
+                          </div>
+                      </div>
+                  </div>
+
                   <div class="relative w-[360px] z-20 flex flex-col items-center -mt-1">
                       <div class="relative w-full h-[62px] bg-gradient-to-b from-[#b80000] via-[#c70000] to-[#990000] rounded-t-2xl shadow-xl border-t border-red-400/50 flex flex-col items-center">
+                          <div class="w-[260px] h-full flex justify-between items-center px-4 relative">
+                              <div class="w-1.5 h-10 bg-black/20 rounded-full blur-[0.5px] transform -rotate-12"></div>
+                              <div class="w-20 h-3.5 bg-[#121212] border border-zinc-800 rounded-t-sm shadow-inner flex items-center justify-center -mt-3">
+                                  <div class="w-16 h-1 bg-[#222] rounded-sm"></div>
+                              </div>
+                              <div class="w-1.5 h-10 bg-black/20 rounded-full blur-[0.5px] transform rotate-12"></div>
+                          </div>
                           <div class="absolute bottom-0 w-full h-[32px] bg-gradient-to-b from-[#181818] via-[#101010] to-[#080808] border-t-2 border-zinc-700 flex items-center justify-between px-3 z-30 shadow-md">
-                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-bl-lg overflow-hidden border-t border-l border-zinc-500 transform -rotate-3 flex items-center px-1">
-                                  <div class="absolute top-0.5 right-0 w-full h-[3px] bg-white"></div>
+                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-bl-lg overflow-hidden border-t border-l border-zinc-500 transform -rotate-3 flex items-center px-1 shadow-[0_0_12px_rgba(0,180,255,0.4)]">
+                                  <div class="absolute top-0.5 right-0 w-full h-[3px] bg-white drl-glow"></div>
+                                  <div class="flex items-center gap-1.5 z-10 pl-1">
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-cyan-200 rounded-sm shadow-[0_0_8px_#38bdf8]"></div>
+                                  </div>
+                                  <div class="absolute bottom-0 left-0 w-3 h-1 bg-amber-400"></div>
                               </div>
                               <div class="flex-1 h-full flex items-center justify-center px-2">
                                   <div class="relative w-full h-[26px] bg-[#0d0d0d] rounded flex items-center justify-center border-b border-red-700/60">
-                                      <div class="relative w-8 h-6 bg-[#b00000] border-2 border-[#e6e6e6] rounded-[4px] flex items-center justify-center z-20">
-                                          <span class="text-white font-bold text-xs">H</span>
+                                      <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:4px_4px]"></div>
+                                      <div class="relative w-8 h-6 bg-[#b00000] border-2 border-[#e6e6e6] rounded-[4px] flex items-center justify-center shadow-[0_0_8px_rgba(200,0,0,0.8)] z-20">
+                                          <svg viewBox="0 0 24 20" class="w-5 h-4 fill-white drop-shadow">
+                                              <path d="M3 2h3.2l2.3 12.5h1.2L12 9.5l2.3 5h1.2L17.8 2H21l-3 16h-4.2l-1.8-4.5-1.8 4.5H6.2L3 2z"/>
+                                          </svg>
                                       </div>
                                   </div>
                               </div>
-                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-br-lg overflow-hidden border-t border-r border-zinc-500 transform rotate-3 flex items-center justify-end px-1">
-                                  <div class="absolute top-0.5 left-0 w-full h-[3px] bg-white"></div>
+                              <div class="relative w-[76px] h-[22px] bg-[#0c1017] rounded-br-lg overflow-hidden border-t border-r border-zinc-500 transform rotate-3 flex items-center justify-end px-1 shadow-[0_0_12px_rgba(0,180,255,0.4)]">
+                                  <div class="absolute top-0.5 left-0 w-full h-[3px] bg-white drl-glow"></div>
+                                  <div class="flex items-center gap-1.5 z-10 pr-1">
+                                      <div class="w-3.5 h-3 bg-cyan-200 rounded-sm shadow-[0_0_8px_#38bdf8]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                      <div class="w-3.5 h-3 bg-white rounded-sm shadow-[0_0_8px_#ffffff]"></div>
+                                  </div>
+                                  <div class="absolute bottom-0 right-0 w-3 h-1 bg-amber-400"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="w-full h-[62px] bg-gradient-to-b from-[#8f0000] via-[#750000] to-[#590000] rounded-b-xl border-t border-black/40 relative flex items-center justify-between px-3 shadow-2xl">
+                          <div class="w-14 h-11 bg-[#101010] rounded-md border border-zinc-800 relative overflow-hidden flex flex-col justify-end p-1 shadow-inner">
+                              <div class="w-3 h-3 bg-white rounded-full fog-glow mb-0.5 ml-1"></div>
+                              <div class="w-full h-1.5 bg-red-600/80 rounded-sm"></div>
+                          </div>
+                          <div class="w-[188px] h-11 bg-[#0b0c0e] rounded-md border border-zinc-800 relative flex flex-col justify-between p-1 shadow-inner">
+                              <div class="w-full h-1.5 bg-[#1f242d] rounded-sm opacity-60"></div>
+                              <div class="w-full h-4 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-800 opacity-25 rounded-xs"></div>
+                              <div class="w-full h-[3px] bg-[#ff1a1a] rounded-full shadow-[0_0_6px_#ff0000]"></div>
+                          </div>
+                          <div class="w-14 h-11 bg-[#101010] rounded-md border border-zinc-800 relative overflow-hidden flex flex-col justify-end items-end p-1 shadow-inner">
+                              <div class="w-3 h-3 bg-white rounded-full fog-glow mb-0.5 mr-1"></div>
+                              <div class="w-full h-1.5 bg-red-600/80 rounded-sm"></div>
+                          </div>
+                          <div class="absolute -bottom-2 inset-x-0 h-3 bg-[#0a0a0a] rounded-b-md border-t border-zinc-700 flex justify-between px-1">
+                              <div class="w-5 h-4 bg-black rounded-tl-sm border-l border-zinc-600 -mt-1"></div>
+                              <div class="w-5 h-4 bg-black rounded-tr-sm border-r border-zinc-600 -mt-1"></div>
+                          </div>
+                      </div>
+                      <div class="absolute -bottom-4 w-[372px] flex justify-between px-1 -z-10">
+                          <div class="w-10 h-16 bg-[#121316] rounded-md border-2 border-zinc-800 shadow-2xl flex flex-col items-center justify-center transform -rotate-1">
+                              <div class="w-5 h-8 border border-zinc-600/50 rounded-sm bg-gradient-to-b from-[#222] to-[#111] flex items-center justify-center">
+                                  <div class="w-2.5 h-2.5 bg-red-600 rounded-full"></div>
+                              </div>
+                          </div>
+                          <div class="w-10 h-16 bg-[#121316] rounded-md border-2 border-zinc-800 shadow-2xl flex flex-col items-center justify-center transform rotate-1">
+                              <div class="w-5 h-8 border border-zinc-600/50 rounded-sm bg-gradient-to-b from-[#222] to-[#111] flex items-center justify-center">
+                                  <div class="w-2.5 h-2.5 bg-red-600 rounded-full"></div>
                               </div>
                           </div>
                       </div>
@@ -560,27 +677,48 @@
           </footer>
         </div>
 
-        <!-- TRANSIÇÃO -->
+        <!-- TRANSIÇÃO COM A PISTA DE CORRIDA E A MOTO 3D -->
         <div id="subScreenTransition" class="hidden absolute inset-0 z-50 bg-[#090203] flex flex-col justify-center items-center text-center overflow-hidden">
           <div class="relative z-10 px-4 mb-12">
             <h2 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-widest uppercase retro-comic-neon-fire">
-              ONLINE FIREBASE!
+              VAMOS JOGAR!
             </h2>
           </div>
+
           <div class="absolute bottom-16 w-full h-28 racetrack-container flex flex-col justify-between overflow-hidden">
             <div class="w-full h-3 curb-pattern"></div>
             <div class="relative flex-1 flex items-center overflow-hidden">
               <div class="w-full border-b-2 border-dashed border-slate-400/60"></div>
               <div class="absolute right-24 top-0 bottom-0 w-8 chequered-flag opacity-80 border-x border-white"></div>
-              <div class="absolute top-1/2 -translate-y-1/2 animate-bike-custom flex items-center text-white font-bold text-2xl">
-                🏍️ HONDA VTEC
+              
+              <div class="absolute top-1/2 -translate-y-1/2 animate-bike-custom flex items-center">
+                <svg class="w-44 h-28 sm:w-56 sm:h-36 drop-shadow-[0_10px_12px_rgba(0,0,0,0.95)]" viewBox="0 0 550 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="120" cy="200" r="54" fill="#111" stroke="#222" stroke-width="12"/>
+                  <circle cx="120" cy="200" r="38" fill="#d1d5db" stroke="#6b7280" stroke-width="4"/>
+                  <circle cx="120" cy="200" r="22" fill="#ef4444"/>
+                  <circle cx="410" cy="200" r="54" fill="#111" stroke="#222" stroke-width="12"/>
+                  <circle cx="410" cy="200" r="38" fill="#d1d5db" stroke="#6b7280" stroke-width="4"/>
+                  <circle cx="410" cy="200" r="22" fill="#ef4444"/>
+                  <path d="M400 170 L420 230" stroke="#000" stroke-width="8"/>
+                  <path d="M160 215 L240 215 L280 185" stroke="#4b5563" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M220 210 L285 180" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M140 170 L220 120 L300 110 L370 140 L350 190 L240 190 Z" fill="#dc2626"/>
+                  <path d="M220 120 L320 110 L270 160 Z" fill="#ffffff"/>
+                  <path d="M120 140 L210 110 L160 160 Z" fill="#111827"/>
+                  <path d="M340 130 C360 100, 420 120, 430 160 C400 170, 360 170, 340 130 Z" fill="#b91c1c"/>
+                  <polygon points="360,115 410,125 390,145" fill="#38bdf8" opacity="0.8"/>
+                  <polygon points="410,145 435,150 420,165" fill="#ffffff"/>
+                  <circle cx="310" cy="65" r="22" fill="#111827" stroke="#dc2626" stroke-width="4"/>
+                  <path d="M315 55 Q330 65 325 75" stroke="#f59e0b" stroke-width="6" fill="none"/>
+                  <path d="M230 130 C240 80, 290 85, 310 90 L270 135 Z" fill="#1f2937"/>
+                  <path d="M290 90 L350 110 L330 130" stroke="#dc2626" stroke-width="12" stroke-linecap="round" fill="none"/>
+                </svg>
               </div>
             </div>
             <div class="w-full h-3 curb-pattern"></div>
           </div>
         </div>
 
-        <!-- NÍVEIS E RANKING ONLINE -->
         <div id="subScreenLevels" class="hidden flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6 overflow-y-auto">
           <div class="glass-card p-4 rounded-2xl border-red-500/30 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -588,7 +726,7 @@
                 👨‍💼
               </div>
               <div>
-                <span class="text-xs text-green-400 uppercase font-bold block">Conectado ao Firebase</span>
+                <span class="text-xs text-slate-300 uppercase font-bold block">Operador Conectado</span>
                 <h3 class="text-lg font-bold flex items-center gap-2 text-white">
                   <span id="displayPlayerName">---</span> 
                   <span class="text-xs font-normal text-slate-300">(Matrícula: <span id="displayPlayerMatricula">---</span> | Carteira: <span id="displayPlayerPortfolio" class="text-red-400 font-bold">---</span>)</span>
@@ -597,7 +735,7 @@
             </div>
             <div class="flex items-center gap-3">
               <div class="text-right bg-black/50 px-4 py-1.5 rounded-xl border border-yellow-500/40">
-                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Cloud</span>
+                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Total (Cloud)</span>
                 <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
               </div>
               <button onclick="closeGameApart()" class="px-3 py-2 bg-red-900/80 hover:bg-red-800 text-xs font-bold rounded-xl border border-red-500/50 transition flex items-center gap-1.5 text-white">
@@ -609,13 +747,13 @@
           <div>
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-xl font-bold font-game flex items-center gap-2 text-white">
-                <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio — Honda (Cloud)
+                <i class="fa-solid fa-layer-group text-red-500"></i> Níveis de Desafio — Honda
               </h2>
             </div>
             <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           </div>
 
-          <!-- RANKING 100% ONLINE FIREBASE -->
+          <!-- RANKING ONLINE EM TEMPO REAL (FIREBASE) -->
           <div class="glass-card p-6 rounded-2xl border-red-500/30 mt-6 space-y-6">
             <div class="flex justify-between items-center">
               <h2 class="text-lg font-bold font-game text-yellow-400 flex items-center gap-2">
@@ -624,8 +762,10 @@
               <span class="text-xs text-green-400 font-mono flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Sincronizado ao Vivo</span>
             </div>
 
+            <!-- PÓDIO (1°, 2°, 3°) -->
             <div id="podiumContainer" class="grid grid-cols-3 gap-3 pt-2 pb-4 border-b border-slate-700"></div>
 
+            <!-- TABELA DEMAIS COLOCAÇÕES -->
             <div class="overflow-x-auto">
               <table class="w-full text-left text-sm">
                 <thead>
@@ -639,14 +779,13 @@
                   </tr>
                 </thead>
                 <tbody id="internalRankingTableBody">
-                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Carregando ranking do Firebase...</td></tr>
+                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Conectando ao Firebase para carregar ranking compartilhado...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- TELA DE PERGUNTAS -->
         <div id="subScreenGame" class="hidden flex-1 max-w-3xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center overflow-y-auto">
           <div class="glass-card p-6 sm:p-8 rounded-3xl border-red-500/40 space-y-6 relative shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-700/80 pb-4">
@@ -654,10 +793,11 @@
                 <span id="gameLevelTitle" class="text-xs font-bold text-red-400 uppercase tracking-widest block font-game">Módulo 1</span>
                 <div class="flex items-center gap-2 mt-0.5">
                   <h2 id="gameRoundTitle" class="text-lg font-bold font-game text-white">Desafio 1 de 3</h2>
+                  <span id="roundStatusBadge" class="hidden text-[10px] bg-yellow-500/25 text-yellow-300 border border-yellow-500/50 px-2 py-0.5 rounded-full font-bold">Concluído</span>
                 </div>
               </div>
               <div class="text-right">
-                <span class="text-xs text-slate-300 block font-semibold">Pontuação Cloud</span>
+                <span class="text-xs text-slate-300 block font-semibold">Sua Pontuação</span>
                 <span id="gameScoreDisplay" class="text-2xl font-black text-yellow-400">0 pts</span>
               </div>
             </div>
@@ -665,7 +805,7 @@
             <div id="cluesContainer" class="space-y-3"></div>
 
             <form id="formAnswer" onsubmit="handleAnswerSubmit(event)" class="space-y-3 pt-2">
-              <label class="block text-xs font-bold uppercase text-slate-200">Sua Resposta (Sincronizada no Firebase):</label>
+              <label class="block text-xs font-bold uppercase text-slate-200">Sua Resposta para a Pista Ativa:</label>
               <div class="flex gap-2">
                 <input type="text" id="inputAnswer" autocomplete="off" required placeholder="Digite a resposta..." class="flex-1 px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium focus:outline-none focus:border-red-500 transition">
                 <button type="submit" class="px-6 py-3 honda-red honda-red-hover text-white font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-red-900/50">
@@ -684,7 +824,7 @@
       </section>
 
       <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto">
-        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS — Banco de Dados Cloud Firebase — 2026</p>
+        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS — Banco de Dados em Nuvem Firebase — 2026</p>
       </footer>
     </div>
   </div>
@@ -707,8 +847,13 @@
             👨‍💼
           </div>
           <div>
-            <h4 class="font-bold text-sm text-white">Avatar Pixar 3D</h4>
+            <h4 id="previewAvatarTitle" class="font-bold text-sm text-white">Avatar Pixar 3D</h4>
             <p class="text-[10px] text-slate-300">Estilo Corporativo Premium</p>
+          </div>
+          <div class="text-[10px] bg-black/70 p-3 rounded-xl border border-slate-700 text-left space-y-1 w-full text-slate-200">
+            <p><strong>Cena:</strong> <span id="summaryCenario">Escritório</span></p>
+            <p><strong>Estilo:</strong> <span id="summaryEstilo">Pixar 3D</span></p>
+            <p><strong>Roupa:</strong> <span id="summaryRoupa">Camisa Social</span></p>
           </div>
         </div>
 
@@ -722,12 +867,93 @@
               </select>
             </div>
             <div>
+              <label class="block font-bold mb-1 text-slate-200">Idade (18 a 60)</label>
+              <input type="number" id="avIdade" min="18" max="60" value="28" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Tom de Pele</label>
+              <select id="avPele" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="morena clara">Morena Clara</option>
+                <option value="clara">Clara</option>
+                <option value="morena">Morena</option>
+                <option value="negra">Negra</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Formato do Rosto</label>
+              <select id="avRosto" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="oval">Oval</option>
+                <option value="redondo">Redondo</option>
+                <option value="quadrado">Quadrado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Cabelo &amp; Cor</label>
+              <select id="avCabelo" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="curto degradê preto">Preto Curto Degradê</option>
+                <option value="medio castanho">Médio Castanho</option>
+                <option value="longo loiro">Longo Loiro</option>
+                <option value="cacheado crespo">Cacheado / Crespo</option>
+                <option value="grisalho executivo">Grisalho Executivo</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Vestimenta</label>
+              <select id="avVestimenta" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="Camisa Social Azul Marinho">Camisa Social Azul Marinho</option>
+                <option value="Uniforme Corporativo">Uniforme Corporativo</option>
+                <option value="Polo Empresarial">Polo Empresarial</option>
+                <option value="Blazer Executivo">Blazer Executivo</option>
+                <option value="Roupa Casual">Roupa Casual</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
               <label class="block font-bold mb-1 text-slate-200">Acessórios</label>
               <select id="avAcessorio" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
                 <option value="Nenhum">Nenhum</option>
                 <option value="Crachá Corporativo">Crachá Corporativo</option>
                 <option value="Óculos Modernos">Óculos Modernos</option>
                 <option value="Headset Atendimento">Headset</option>
+                <option value="Relógio Executivo">Relógio Executivo</option>
+                <option value="Tablet / Notebook">Tablet</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Estilo Visual 3D</label>
+              <select id="avEstiloVisual" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="Pixar 3D">Pixar 3D</option>
+                <option value="DreamWorks">DreamWorks</option>
+                <option value="Disney 3D">Disney 3D</option>
+                <option value="Semi-Realista">Semi-Realista</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Emoção / Expressão</label>
+              <select id="avEmocao" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="Sorridente / Confiante">Sorridente &amp; Confiante</option>
+                <option value="Motivado / Inspirador">Motivado</option>
+                <option value="Empático / Explicando">Empático</option>
+                <option value="Celebrando">Celebrando Resultados</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-slate-200">Cenário de Fundo</label>
+              <select id="avCenario" onchange="updateAvatarConfig()" class="w-full p-2 bg-black/70 border border-slate-600 rounded-lg text-white font-medium">
+                <option value="Escritório Corporativo">Escritório Corporativo</option>
+                <option value="Sala de Treinamento">Sala de Treinamento</option>
+                <option value="Identidade Visual Empresa">Identidade Bulgarelli</option>
               </select>
             </div>
           </div>
@@ -736,18 +962,18 @@
 
       <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
         <button onclick="closeAvatarCustomizerModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl transition text-white">Cancelar</button>
-        <button onclick="saveAvatarConfig()" class="px-6 py-2 honda-red honda-red-hover text-white text-xs font-bold rounded-xl shadow-lg transition">Salvar Avatar</button>
+        <button onclick="saveAvatarConfig()" class="px-6 py-2 honda-red honda-red-hover text-white text-xs font-bold rounded-xl shadow-lg shadow-red-900/40 transition">Salvar Avatar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL AUTENTICAÇÃO ONLINE -->
+  <!-- MODAL AUTENTICAÇÃO -->
   <div id="modalRegistration" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/40 shadow-2xl relative">
       <div class="text-center mb-6">
-        <i class="fa-solid fa-cloud-arrow-down text-4xl text-green-400 mb-2"></i>
-        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Login Cloud Firebase</h2>
-        <p id="modalAuthSubtitle" class="text-xs text-slate-300 font-medium">Autenticação direta com a base de dados online</p>
+        <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
+        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Acesso Online Firebase</h2>
+        <p id="modalAuthSubtitle" class="text-xs text-slate-300 font-medium">Insira seu Nome e Matrícula para autenticar no Portal Bulgarelli Play</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div id="step1Fields" class="space-y-4">
@@ -762,35 +988,35 @@
         </div>
 
         <div id="step2Fields" class="hidden space-y-4">
-          <div class="p-3 bg-green-950/60 border border-green-500/50 rounded-xl text-xs text-green-200 text-center font-bold">
-            Primeiro acesso na nuvem! Defina sua nova senha pessoal.
+          <div class="p-3 bg-red-950/60 border border-red-500/50 rounded-xl text-xs text-red-200 text-center font-bold">
+            Primeiro acesso ou senha resetada! Defina sua nova senha pessoal de preferência abaixo.
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Nova Senha</label>
-            <input type="password" id="inputPassword" placeholder="Sua nova senha..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium">
+            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Nova Senha de Preferência</label>
+            <input type="password" id="inputPassword" placeholder="Digite sua nova senha..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium focus:outline-none focus:border-red-500 transition">
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Confirmar Senha</label>
-            <input type="password" id="inputPasswordConfirm" placeholder="Repita a senha..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium">
+            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Confirmar Nova Senha</label>
+            <input type="password" id="inputPasswordConfirm" placeholder="Repita a senha criada..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium focus:outline-none focus:border-red-500 transition">
           </div>
         </div>
 
         <div id="loginPasswordFields" class="hidden space-y-4">
           <div>
-            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Senha de Acesso Cloud</label>
-            <input type="password" id="inputLoginPassword" placeholder="Digite sua senha..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium">
+            <label class="block text-xs font-bold uppercase text-slate-200 mb-1">Insira sua Senha de Acesso</label>
+            <input type="password" id="inputLoginPassword" placeholder="Digite sua senha cadastrada..." class="w-full px-4 py-3 bg-black/70 border border-slate-600 rounded-xl text-white font-medium focus:outline-none focus:border-red-500 transition">
           </div>
         </div>
 
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="closeRegistrationModal()" class="w-1/3 py-3 bg-black/60 hover:bg-black/90 text-slate-200 font-bold rounded-xl border border-slate-600 transition">CANCELAR</button>
-          <button type="submit" id="authSubmitBtn" class="w-2/3 py-3 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg transition">AUTENTICAR</button>
+          <button type="submit" id="authSubmitBtn" class="w-2/3 py-3 honda-red honda-red-hover text-white font-bold rounded-xl shadow-lg shadow-red-900/50 transition">CONTINUAR</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL FEEDBACK -->
+  <!-- MODAL FEEDBACK / CORREÇÃO -->
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border border-red-500/50 text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
       <div id="modalIconContainer" class="mb-4"></div>
@@ -800,88 +1026,208 @@
     </div>
   </div>
 
-  <!-- FIREBASE ENGINE & APLICATIVO ONLINE -->
+  <!-- SCRIPT GLOBAL -->
+  <script>
+    let audioCtx = null;
+    function initAudio() {
+        try {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        } catch (e) {}
+    }
+
+    function normalizeString(str) {
+      return String(str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    // Sinalizador visual de status online / conectado
+    window.updateConnectionStatusUI = function(isConnected) {
+      const dot = document.getElementById("connectionDot");
+      const txt = document.getElementById("connectionText");
+      if (!dot || !txt) return;
+
+      if (isConnected) {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
+        txt.innerText = "Online";
+        txt.className = "text-[11px] font-bold text-green-400";
+      } else {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
+        txt.innerText = "Reconectando...";
+        txt.className = "text-[11px] font-bold text-red-400";
+      }
+    };
+
+    window.renderInternalRankingTable = function(ranking) {
+      const podiumEl = document.getElementById("podiumContainer");
+      const tbody = document.getElementById("internalRankingTableBody");
+      if (!tbody || !podiumEl) return;
+
+      if (!ranking || ranking.length === 0) {
+        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Aguardando dados de ranking do Firebase...</div>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Nenhum operador pontuou no ranking compartilhado ainda.</td></tr>`;
+        return;
+      }
+
+      ranking.sort((a, b) => b.score - a.score);
+
+      const first = ranking[0] || null;
+      const second = ranking[1] || null;
+      const third = ranking[2] || null;
+
+      podiumEl.innerHTML = `
+        <div class="glass-card p-3 rounded-xl border border-amber-500/50 text-center flex flex-col items-center justify-end bg-amber-500/15">
+          <i class="fa-solid fa-medal text-amber-400 text-2xl mb-1"></i>
+          <span class="text-[10px] font-bold text-amber-300 uppercase">2º Lugar</span>
+          <p class="text-xs font-extrabold truncate w-full mt-1 text-white">${second ? second.name : '---'}</p>
+          <span class="text-xs text-yellow-400 font-black">${second ? second.score + ' pts' : '0 pts'}</span>
+        </div>
+        <div class="glass-card p-4 rounded-xl border-2 border-yellow-400 text-center flex flex-col items-center justify-end bg-yellow-400/25 -mt-2 shadow-xl shadow-yellow-500/30">
+          <i class="fa-solid fa-crown text-yellow-400 text-3xl mb-1 animate-bounce"></i>
+          <span class="text-xs font-black text-yellow-300 uppercase">1º Lugar</span>
+          <p class="text-sm font-black truncate w-full mt-1 text-white">${first ? first.name : '---'}</p>
+          <span class="text-sm text-yellow-400 font-black">${first ? first.score + ' pts' : '0 pts'}</span>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-orange-500/50 text-center flex flex-col items-center justify-end bg-orange-500/15">
+          <i class="fa-solid fa-award text-orange-400 text-2xl mb-1"></i>
+          <span class="text-[10px] font-bold text-orange-300 uppercase">3º Lugar</span>
+          <p class="text-xs font-extrabold truncate w-full mt-1 text-white">${third ? third.name : '---'}</p>
+          <span class="text-xs text-yellow-400 font-black">${third ? third.score + ' pts' : '0 pts'}</span>
+        </div>
+      `;
+
+      tbody.innerHTML = "";
+      ranking.forEach((item, idx) => {
+        const isCurrent = currentPlayer && item.matricula === currentPlayer.matricula;
+        const tr = document.createElement("tr");
+        tr.className = `border-b border-slate-700/80 hover:bg-white/10 ${isCurrent ? 'bg-red-950/40 border-l-4 border-l-red-500 font-bold' : ''}`;
+        tr.innerHTML = `
+          <td class="p-3 font-mono font-bold text-white">#${idx + 1}</td>
+          <td class="p-3 font-bold text-white">${item.name} ${isCurrent ? '<span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded ml-1 font-bold">Você</span>' : ''}</td>
+          <td class="p-3 text-slate-300 font-mono font-medium">${item.matricula}</td>
+          <td class="p-3 text-slate-200 font-semibold"><span class="px-2 py-0.5 bg-black/60 border border-slate-600 rounded text-[10px]">${item.portfolio || 'Honda'}</span></td>
+          <td class="p-3 text-slate-300 font-medium">${item.completedRoundsCount || 0} rodadas</td>
+          <td class="p-3 text-right font-black text-yellow-400">${item.score} pts</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    };
+
+    window.updateAdminMetrics = function(rankingData) {
+      const totalPlayers = authorizedEmployees.length;
+      let totalRounds = 0;
+      let totalScore = 0;
+
+      rankingData.forEach(p => {
+        totalRounds += (p.completedRoundsCount || 0);
+        totalScore += (p.score || 0);
+      });
+
+      const elPlayers = document.getElementById("adminStatPlayers");
+      const elRounds = document.getElementById("adminStatRounds");
+      const elAvg = document.getElementById("adminStatAvgScore");
+      const elPorts = document.getElementById("adminStatPortfolios");
+
+      if (elPlayers) elPlayers.innerText = totalPlayers;
+      if (elRounds) elRounds.innerText = totalRounds;
+      if (elAvg) elAvg.innerText = rankingData.length ? Math.round(totalScore / rankingData.length) : 0;
+      if (elPorts) elPorts.innerText = 2;
+    };
+  </script>
+
+  <!-- FIREBASE REALTIME ENGINE 100% ONLINE COM A SUA CONFIGURAÇÃO -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Configuração oficial fornecida para conexão online
-    const firebaseConfig = {
-      apiKey: "AIzaSyBqCYHv6kzXeF_zCsbzCNSMkHfwrImhjVc",
-      authDomain: "jogo-tres-pontos.firebaseapp.com",
-      projectId: "jogo-tres-pontos",
-      storageBucket: "jogo-tres-pontos.firebasestorage.app",
-      messagingSenderId: "60682371403",
-      appId: "1:60682371403:web:d4641b60bc7e5b8a1de8ce",
-      measurementId: "G-22N725HK6E",
-      databaseURL: "https://jogo-tres-pontos-default-rtdb.firebaseio.com"
-    };
-
     window.db = null;
     window.firebaseReady = false;
-    window.authorizedEmployees = [];
 
     try {
+      const firebaseConfig = {
+        apiKey: "AIzaSyBqCYHv6kzXeF_zCsbzCNSMkHfwrImhjVc",
+        authDomain: "jogo-tres-pontos.firebaseapp.com",
+        projectId: "jogo-tres-pontos",
+        storageBucket: "jogo-tres-pontos.firebasestorage.app",
+        messagingSenderId: "60682371403",
+        appId: "1:60682371403:web:d4641b60bc7e5b8a1de8ce",
+        measurementId: "G-22N725HK6E",
+        databaseURL: "https://jogo-tres-pontos-default-rtdb.firebaseio.com"
+      };
+
       const app = initializeApp(firebaseConfig);
       window.db = getDatabase(app);
       window.firebaseReady = true;
 
-      // Monitor de conexão online
+      // Monitor de conexão online/offline do Firebase
       const connectedRef = ref(window.db, ".info/connected");
       onValue(connectedRef, (snap) => {
         const isConnected = snap.val() === true;
-        updateFirebaseStatusUI(isConnected);
+        if (window.updateConnectionStatusUI) {
+          window.updateConnectionStatusUI(isConnected);
+        }
       });
 
-      // Sincronização em tempo real dos colaboradores cadastrados na nuvem
+      // Sincronização do ranking compartilhado
+      window.syncFirebaseRanking();
+
+      // Sincronização de funcionários e permissões em tempo real
       const employeesRef = ref(window.db, 'config/authorizedEmployees');
       onValue(employeesRef, (snapshot) => {
         const cloudEmployees = snapshot.val();
         if (cloudEmployees && Array.isArray(cloudEmployees)) {
-          window.authorizedEmployees = cloudEmployees;
+          authorizedEmployees = cloudEmployees;
           if (typeof populateAdminDashboard === 'function') {
             populateAdminDashboard();
           }
         } else {
-          // Inicializa dados padrão na nuvem caso esteja vazio
-          const initialEmployees = [
-            { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", portfolio: "Honda", password: "123Mudar", isAdmin: true },
-            { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", portfolio: "Honda", password: "123Mudar", isAdmin: true },
-            { name: "THAINA DA SILVA SANTOS", matricula: "2679", portfolio: "Honda", password: "123Mudar", isAdmin: true },
-            { name: "ILLICHS SOTO", matricula: "0000", portfolio: "Honda", password: "123Mudar", isAdmin: true }
-          ];
-          set(employeesRef, initialEmployees);
-          window.authorizedEmployees = initialEmployees;
-        }
-      });
-
-      // Sincronização do Ranking Compartilhado Global
-      const rankingRef = ref(window.db, 'rankings/global');
-      onValue(rankingRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const rankingArray = Object.values(data);
-          rankingArray.sort((a, b) => b.score - a.score);
-          if (window.renderInternalRankingTable) window.renderInternalRankingTable(rankingArray);
-          if (window.updateAdminMetrics) window.updateAdminMetrics(rankingArray);
-        } else {
-          if (window.renderInternalRankingTable) window.renderInternalRankingTable([]);
-          if (window.updateAdminMetrics) window.updateAdminMetrics([]);
+          set(employeesRef, authorizedEmployees);
         }
       });
 
     } catch(e) {
-      console.error("Erro na inicialização do Firebase:", e);
-      updateFirebaseStatusUI(false);
+      console.error("Erro ao inicializar o Firebase:", e);
+      if (window.updateConnectionStatusUI) window.updateConnectionStatusUI(false);
     }
 
     window.syncFirebaseData = function(matricula, callback) {
       if (!window.db || !matricula) return;
-      const playerRef = ref(window.db, 'rankings/global/' + matricula);
-      onValue(playerRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data && callback) callback(data);
-      });
+      try {
+        const playerRef = ref(window.db, 'rankings/global/' + matricula);
+        onValue(playerRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data && callback) {
+            callback(data);
+          }
+        });
+      } catch(e) {}
+    };
+
+    window.syncFirebaseRanking = function() {
+      if (!window.db) return;
+      try {
+        const rankingRef = ref(window.db, 'rankings/global');
+        onValue(rankingRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const rankingArray = Object.values(data);
+            rankingArray.sort((a, b) => b.score - a.score);
+            if (window.renderInternalRankingTable) window.renderInternalRankingTable(rankingArray);
+            if (window.updateAdminMetrics) window.updateAdminMetrics(rankingArray);
+          } else {
+            if (window.renderInternalRankingTable) window.renderInternalRankingTable([]);
+            if (window.updateAdminMetrics) window.updateAdminMetrics([]);
+          }
+        });
+      } catch(e) {}
     };
 
     window.savePlayerToFirebase = async function(playerData) {
@@ -911,12 +1257,11 @@
       if (!window.db) return;
       try {
         const employeesRef = ref(window.db, 'config/authorizedEmployees');
-        await set(employeesRef, window.authorizedEmployees);
+        await set(employeesRef, authorizedEmployees);
       } catch(e) {}
     };
   </script>
 
-  <!-- LÓGICA DO SISTEMA ONLINE -->
   <script>
     const periodicElements = [
       { sym: "B", name: "Boro", color: "bg-red-600 border-red-400" },
@@ -934,6 +1279,7 @@
       const container = document.getElementById("periodicTitleContainer");
       if (!container) return;
       container.innerHTML = "";
+
       periodicElements.forEach((el, i) => {
         const box = document.createElement("div");
         box.className = `periodic-element w-12 h-14 sm:w-14 sm:h-16 rounded-xl border-2 ${el.color} flex flex-col justify-between p-1 shadow-lg text-white font-bold`;
@@ -949,7 +1295,7 @@
       const bar = document.getElementById("preloaderBar");
       let progress = 0;
       const interval = setInterval(() => {
-        progress += 5;
+        progress += 4;
         if (bar) bar.style.width = `${progress}%`;
         if (progress >= 100) {
           clearInterval(interval);
@@ -964,130 +1310,94 @@
       }, 40);
     }
 
-    window.updateFirebaseStatusUI = function(isConnected) {
-      const dot = document.getElementById("firebaseStatusDot");
-      const txt = document.getElementById("firebaseStatusText");
-      if (!dot || !txt) return;
-      if (isConnected) {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
-        txt.innerText = "Firebase Cloud Online";
-        txt.className = "text-green-400 font-semibold text-[11px]";
+    function toggleThemeManual() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const icon = document.getElementById("themeIcon");
+      const text = document.getElementById("themeText");
+
+      if (isDark) {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        if (icon) icon.className = "fa-solid fa-sun";
+        if (text) text.innerText = "Claro";
       } else {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
-        txt.innerText = "Reconectando ao Firebase...";
-        txt.className = "text-red-400 font-semibold text-[11px]";
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+        if (icon) icon.className = "fa-solid fa-moon";
+        if (text) text.innerText = "Escuro";
       }
-    };
-
-    window.renderInternalRankingTable = function(ranking) {
-      const podiumEl = document.getElementById("podiumContainer");
-      const tbody = document.getElementById("internalRankingTableBody");
-      if (!tbody || !podiumEl) return;
-
-      if (!ranking || ranking.length === 0) {
-        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Aguardando dados da nuvem...</div>`;
-        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Nenhum operador no ranking online ainda.</td></tr>`;
-        return;
-      }
-
-      ranking.sort((a, b) => b.score - a.score);
-      const first = ranking[0] || null;
-      const second = ranking[1] || null;
-      const third = ranking[2] || null;
-
-      podiumEl.innerHTML = `
-        <div class="glass-card p-3 rounded-xl border border-amber-500/50 text-center flex flex-col items-center justify-end bg-amber-500/15">
-          <i class="fa-solid fa-medal text-amber-400 text-2xl mb-1"></i>
-          <span class="text-[10px] font-bold text-amber-300 uppercase">2º Lugar</span>
-          <p class="text-xs font-extrabold truncate w-full mt-1 text-white">${second ? second.name : '---'}</p>
-          <span class="text-xs text-yellow-400 font-black">${second ? second.score + ' pts' : '0 pts'}</span>
-        </div>
-        <div class="glass-card p-4 rounded-xl border-2 border-yellow-400 text-center flex flex-col items-center justify-end bg-yellow-400/25 -mt-2 shadow-xl">
-          <i class="fa-solid fa-crown text-yellow-400 text-3xl mb-1 animate-bounce"></i>
-          <span class="text-xs font-black text-yellow-300 uppercase">1º Lugar</span>
-          <p class="text-sm font-black truncate w-full mt-1 text-white">${first ? first.name : '---'}</p>
-          <span class="text-sm text-yellow-400 font-black">${first ? first.score + ' pts' : '0 pts'}</span>
-        </div>
-        <div class="glass-card p-3 rounded-xl border border-orange-500/50 text-center flex flex-col items-center justify-end bg-orange-500/15">
-          <i class="fa-solid fa-award text-orange-400 text-2xl mb-1"></i>
-          <span class="text-[10px] font-bold text-orange-300 uppercase">3º Lugar</span>
-          <p class="text-xs font-extrabold truncate w-full mt-1 text-white">${third ? third.name : '---'}</p>
-          <span class="text-xs text-yellow-400 font-black">${third ? third.score + ' pts' : '0 pts'}</span>
-        </div>
-      `;
-
-      tbody.innerHTML = "";
-      ranking.forEach((item, idx) => {
-        const isCurrent = currentPlayer && item.matricula === currentPlayer.matricula;
-        const tr = document.createElement("tr");
-        tr.className = `border-b border-slate-700/80 hover:bg-white/10 ${isCurrent ? 'bg-red-950/40 border-l-4 border-l-red-500 font-bold' : ''}`;
-        tr.innerHTML = `
-          <td class="p-3 font-mono font-bold text-white">#${idx + 1}</td>
-          <td class="p-3 font-bold text-white">${item.name} ${isCurrent ? '<span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded ml-1 font-bold">Você</span>' : ''}</td>
-          <td class="p-3 text-slate-300 font-mono">${item.matricula}</td>
-          <td class="p-3 text-slate-200"><span class="px-2 py-0.5 bg-black/60 border border-slate-600 rounded text-[10px]">${item.portfolio || 'Honda'}</span></td>
-          <td class="p-3 text-slate-300">${item.completedRoundsCount || 0} rodadas</td>
-          <td class="p-3 text-right font-black text-yellow-400">${item.score} pts</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    };
-
-    window.updateAdminMetrics = function(rankingData) {
-      const totalPlayers = window.authorizedEmployees.length;
-      let totalRounds = 0;
-      let totalScore = 0;
-
-      rankingData.forEach(p => {
-        totalRounds += (p.completedRoundsCount || 0);
-        totalScore += (p.score || 0);
-      });
-
-      const elPlayers = document.getElementById("adminStatPlayers");
-      const elRounds = document.getElementById("adminStatRounds");
-      const elAvg = document.getElementById("adminStatAvgScore");
-      const elPorts = document.getElementById("adminStatPortfolios");
-
-      if (elPlayers) elPlayers.innerText = totalPlayers;
-      if (elRounds) elRounds.innerText = totalRounds;
-      if (elAvg) elAvg.innerText = rankingData.length ? Math.round(totalScore / rankingData.length) : 0;
-      if (elPorts) elPorts.innerText = 2;
-    };
-
-    function normalizeString(str) {
-      return String(str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
     }
 
-    let currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], isAdmin: false };
-    let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
-    let countdownTimerInterval = null;
+    let sidebarHidden = false;
+    function toggleSidebarManual() {
+      const sidebar = document.getElementById("sidebarNav");
+      const floatBtn = document.getElementById("sidebarToggleFloat");
+      if (!sidebar) return;
+      if (!sidebarHidden) {
+        sidebar.style.transform = "translateX(-100%)";
+        sidebar.style.width = "0";
+        sidebar.style.padding = "0";
+        sidebar.style.overflow = "hidden";
+        if (floatBtn) floatBtn.classList.remove("hidden");
+        sidebarHidden = true;
+      } else {
+        sidebar.style.transform = "translateX(0)";
+        sidebar.style.width = "16rem";
+        sidebar.style.padding = "";
+        sidebar.style.overflow = "";
+        if (floatBtn) floatBtn.classList.add("hidden");
+        sidebarHidden = false;
+      }
+    }
+
+    let authorizedEmployees = [
+      { name: "DENNIS EDUARDO DA SILVA PAIVA", matricula: "1213", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "KARLA ISABELA CARDOSO COELHO", matricula: "2466", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "THAINA DA SILVA SANTOS", matricula: "2679", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+      { name: "ILLICHS SOTO", matricula: "0000", portfolio: "Honda", password: "123Mudar", isAdmin: true },
+
+      { name: "ANA CAROLINE SOUZA SANTOS", matricula: "1304", portfolio: "Honda", password: "123Mudar", isAdmin: false },
+      { name: "BEATRIZ AGNOLETTO SANTOS", matricula: "1260", portfolio: "Stellantis", password: "123Mudar", isAdmin: false }
+    ];
 
     const gameLevels = [
       {
         id: 1,
-        title: "Nível 1: Fase de Treinamento",
+        title: "Nível 1: Fase de Treinamento (Sem Pontuação)",
         isTraining: true,
         rounds: [
           {
             id: "1-1",
             answer: "SAFRA DIARIA",
-            acceptedAnswers: ["SAFRA DIARIA", "SAFRA", "DIARIO"],
-            clues: [{ points: 0, text: "Dica 1: Segmento operacional de atrasos recentes." }, { points: 0, text: "Dica 2: Atende clientes com atrasos de 11 a 15 dias." }],
-            explanation: "Safra Diária é a faixa inicial de cobrança."
+            acceptedAnswers: ["SAFRA DIARIA", "SAFRA", "DIARIO", "INICIO DE ATRASO"],
+            clues: [
+              { points: 0, text: "Dica 1: Segmento operacional focado nos contratos com menor tempo de inadimplência." },
+              { points: 0, text: "Dica 2: Atende clientes com atrasos iniciais de 11 a 15 dias (e atualizados de 16 a 30 dias)." },
+              { points: 0, text: "Dica 3: Foco em reabilitar o acesso do cliente às plataformas digitais de pagamento." }
+            ],
+            explanation: "Safra Diária é a faixa inicial de cobrança operacional para atrasos recentes."
           },
           {
             id: "1-2",
             answer: "CONFIRMACAO POSITIVA",
-            acceptedAnswers: ["CONFIRMACAO POSITIVA", "VALIDACAO CADASTRAL"],
-            clues: [{ points: 0, text: "Dica 1: Obrigatório antes de passar dados do débito." }, { points: 0, text: "Dica 2: Solicitar nome completo e 3 primeiros dígitos do CPF." }],
-            explanation: "Confirmação positiva garante segurança."
+            acceptedAnswers: ["CONFIRMACAO POSITIVA", "CONFIRMACAO DE DADOS", "VALIDACAO CADASTRAL", "SEGURANCA DE DADOS"],
+            clues: [
+              { points: 0, text: "Dica 1: Procedimento obrigatório de monitoria de qualidade antes de passar dados do débito." },
+              { points: 0, text: "Dica 2: Exige solicitar o nome completo mais os 3 primeiros dígitos do CPF do cliente." },
+              { points: 0, text: "Dica 3: Pode ser feita também confirmando marca, modelo e ano do veículo se houver recusa do CPF." }
+            ],
+            explanation: "A confirmação positiva garante a segurança das informações e evita quebra de sigilo."
           },
           {
             id: "1-3",
             answer: "ATENDIMENTO HUMANIZADO",
-            acceptedAnswers: ["ATENDIMENTO HUMANIZADO", "EMPATIA"],
-            clues: [{ points: 0, text: "Dica 1: Focado em escuta ativa e empatia." }],
-            explanation: "Cria relacionamento."
+            acceptedAnswers: ["ATENDIMENTO HUMANIZADO", "EMPATIA", "ESCUTA ATIVA", "BOM ATENDIMENTO"],
+            clues: [
+              { points: 0, text: "Dica 1: Prática de comunicação focada na escuta ativa e empatia durante o contato." },
+              { points: 0, text: "Dica 2: Saber se colocar no lugar do cliente, entendendo o imprevisto financeiro." },
+              { points: 0, text: "Dica 3: Cativa o cliente para um atendimento diferenciado em vez de apenas impor cobrança." }
+            ],
+            explanation: "Atendimento Humanizado busca criar relacionamento e resolver a inadimplência com empatia."
           }
         ]
       },
@@ -1098,27 +1408,169 @@
           {
             id: "2-1",
             answer: "REALOCACAO",
-            acceptedAnswers: ["REALOCACAO", "REALOCACAO DE PARCELA"],
-            clues: [{ points: 10, text: "Dica 1: Acionado quando o cliente pagou parcela futura." }, { points: 9, text: "Dica 2: Ocorrência 2600 enviada para o Backoffice." }],
-            explanation: "Ajusta pagamentos."
+            acceptedAnswers: ["REALOCACAO", "REALOCACAO DE PARCELA", "MUDANCA DE PARCELA", "TROCA DE PARCELA"],
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento acionado em sistema quando o cliente pagou por engano uma parcela futura." },
+              { points: 9, text: "Dica 2: Exige do operador a inclusão do texto solicitando o ajuste da parcela informada." },
+              { points: 8, text: "Dica 3: Ocorrência 2600 enviada para a planilha do Backoffice puxada diariamente às 17h." }
+            ],
+            explanation: "A realocação de parcela ajusta pagamentos efetuados em vencimentos ou parcelas incorretas."
           },
           {
             id: "2-2",
             answer: "BOLETO COMPLEMENTAR",
-            acceptedAnswers: ["BOLETO COMPLEMENTAR", "COMPLEMENTAR"],
-            clues: [{ points: 10, text: "Dica 1: Emitido quando o valor pago é menor que o devido." }],
-            explanation: "Cobre a diferença."
+            acceptedAnswers: ["BOLETO COMPLEMENTAR", "COMPLEMENTAR", "BOLETO DE DIFERENCA"],
+            clues: [
+              { points: 10, text: "Dica 1: Emitido pela Honda quando o valor pago na parcela errada é menor que o valor correto." },
+              { points: 9, text: "Dica 2: Necessário para cobrir a diferença financeira no processo de realocação." },
+              { points: 8, text: "Dica 3: É gerado atualizando os juros até a sua nova data de vencimento." }
+            ],
+            explanation: "Se o valor pago na parcela de destino for insuficiente, a Honda gera um boleto complementar."
           },
           {
             id: "2-3",
             answer: "SOLICITACAO AO JURIDICO",
-            acceptedAnswers: ["SOLICITACAO AO JURIDICO", "JURIDICO"],
-            clues: [{ points: 10, text: "Dica 1: Ocorrência 2601 em contratos ajuizados." }],
-            explanation: "Tratativas judiciais."
+            acceptedAnswers: ["SOLICITACAO AO JURIDICO", "SOLICITACAO JURIDICO", "JURIDICO", "CONTENCIOSO"],
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento via ocorrência 2601 direcionado ao setor de contencioso em contratos ajuizados." },
+              { points: 9, text: "Dica 2: Exige informar Tipo de Acordo (Atualização ou Quitação), Parcelas, Vencimento e UF." },
+              { points: 8, text: "Dica 3: Indispensável para validar formalmente minutas e propostas sob ação judicial." }
+            ],
+            explanation: "A solicitação ao Jurídico (Ocorrência 2601) é obrigatória para liberar tratativas em contratos ajuizados."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Nível 3: Argumentação & Objeções",
+        unlockDate: "2026-11-27T00:00:00",
+        rounds: [
+          {
+            id: "3-1",
+            answer: "RENEGOCIACAO",
+            acceptedAnswers: ["RENEGOCIACAO", "REPACTUACAO", "ACORDO", "PARCELAMENTO DE DIVIDA"],
+            clues: [
+              { points: 10, text: "Dica 1: Processo de repactuação do débito em atraso com alteração das condições originais." },
+              { points: 9, text: "Dica 2: Permite o parcelamento do saldo devedor ajustando ao orçamento do cliente." },
+              { points: 8, text: "Dica 3: É obrigatório o pagamento da 1ª parcela para efetivar a contratação e formalizar o acordo." }
+            ],
+            explanation: "A renegociação exige o pagamento pontual da 1ª parcela para efetivar e validar a proposta."
+          },
+          {
+            id: "3-2",
+            answer: "CONFIRMACAO EM LINHA",
+            acceptedAnswers: ["CONFIRMACAO EM LINHA", "VALIDACAO NA CHAMADA", "CONFERENCIA EM LIGAÇÃO"],
+            clues: [
+              { points: 10, text: "Dica 1: Validação de segurança em tempo real realizada pelo operador durante o atendimento." },
+              { points: 9, text: "Dica 2: Garante que os dados bancários e os valores negociados foram conferidos perfeitamente." },
+              { points: 8, text: "Dica 3: Procedimento obrigatório executado na própria chamada antes da emissão do documento de quitação." }
+            ],
+            explanation: "A confirmação em linha previne erros e fraude, checando todas as informações durante a ligação."
+          },
+          {
+            id: "3-3",
+            answer: "PRIMEIRA PARCELA",
+            acceptedAnswers: ["PRIMEIRA PARCELA", "PRIMEIRA PARCELA DE ACORDO", "ENTRADA DO ACORDO", "PRIMEIRO PAGAMENTO"],
+            clues: [
+              { points: 10, text: "Dica 1: Valor inicial que deve ser quitado para formalizar uma repactuação ou acordo financeiro." },
+              { points: 9, text: "Dica 2: Sem a sua compensação bancária, a proposta é cancelada automaticamente no sistema." },
+              { points: 8, text: "Dica 3: É o compromisso de entrada exigido para suspender temporariamente as cobranças operacionais." }
+            ],
+            explanation: "O pagamento da primeira parcela (ou primeira parcela de acordo) é a condição necessária para validar o acordo."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Nível 4: Estratégias de Retenção & Acordos Especiais",
+        unlockDate: "2026-12-11T00:00:00",
+        rounds: [
+          {
+            id: "4-1",
+            answer: "REFINANCIAMENTO",
+            acceptedAnswers: ["REFINANCIAMENTO", "REFIN", "NOVO CREDITO COM VEICULO", "TROCO"],
+            clues: [
+              { points: 10, text: "Dica 1: Solução financeira avançada onde o veículo quita o saldo devedor gerando troco ou reduzindo a prestação." },
+              { points: 9, text: "Dica 2: Excelente alternativa para clientes que possuem alto percentual de parcelas pagas." },
+              { points: 8, text: "Dica 3: Exige checagem rigorosa de restrições e avaliação da tabela FIPE do bem." }
+            ],
+            explanation: "O refinanciamento permite reestruturar o contrato utilizando o veículo como garantia."
+          },
+          {
+            id: "4-2",
+            answer: "PAGAMENTO PARCIAL",
+            acceptedAnswers: ["PAGAMENTO PARCIAL", "PARCIAL", "VALOR PARCIAL"],
+            clues: [
+              { points: 10, text: "Dica 1: Medida paliativa aceita em casos excepcionais para demonstrar boa-fé do cliente." },
+              { points: 9, text: "Dica 2: Evita o avanço imediato para a fase de ajuizamento ou busca e apreensão." },
+              { points: 8, text: "Dica 3: Necessita aprovação conforme políticas vigentes da carteira Honda." }
+            ],
+            explanation: "O pagamento parcial demonstra intenção de adimplemento, segurando momentaneamente restrições mais graves."
+          },
+          {
+            id: "4-3",
+            answer: "BAIXA DE PROTESTO",
+            acceptedAnswers: ["BAIXA DE PROTESTO", "CANCELAMENTO DE PROTESTO", "RETIRADA DE PROTESTO"],
+            clues: [
+              { points: 10, text: "Dica 1: Procedimento executado após a confirmação integral da compensação bancária do acordo." },
+              { points: 9, text: "Dica 2: Retira o nome do cliente dos órgãos de proteção ao crédito (SPC/Serasa)." },
+              { points: 8, text: "Dica 3: Prazo regulamentar de atendimento deve ser rigorosamente cumprido após o pagamento." }
+            ],
+            explanation: "A baixa de protesto restabelece o crédito do cliente no mercado após a liquidação do débito."
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Nível 5: Mestres da Negociação & Fechamento Avançado",
+        unlockDate: "2026-12-18T00:00:00",
+        rounds: [
+          {
+            id: "5-1",
+            answer: "QUEBRA DE ACORDO",
+            acceptedAnswers: ["QUEBRA DE ACORDO", "ROMPIMENTO DE ACORDO", "ACORDO QUEBRADO", "INADIMPLENCIA DE ACORDO"],
+            clues: [
+              { points: 10, text: "Dica 1: Ocorre quando o cliente não realiza o pagamento da primeira parcela ou prestações seguintes acordadas." },
+              { points: 9, text: "Dica 2: Invalida automaticamente as condições especiais concedidas na renegociação." },
+              { points: 8, text: "Dica 3: Exige nova abordagem imediata pelo operador para reverter o cenário de inadimplência." }
+            ],
+            explanation: "A quebra de acordo retorna o contrato ao status de inadimplência original com vencimento vencido."
+          },
+          {
+            id: "5-2",
+            answer: "DIRETRIZ DE QUALIDADE",
+            acceptedAnswers: ["DIRETRIZ DE QUALIDADE", "CHECKLIST DE QUALIDADE", "PADRAO DE QUALIDADE"],
+            clues: [
+              { points: 10, text: "Dica 1: Conjunto de regras e scripts monitorados pela equipe de T&D e Qualidade Bulgarelli." },
+              { points: 9, text: "Dica 2: Avalia a cordialidade, clareza nas informações de juros e checagem de dados cadastrais." },
+              { points: 8, text: "Dica 3: Nota mínima exigida para aprovação nas monitorias mensais dos operadores." }
+            ],
+            explanation: "As diretrizes de qualidade garantem excelência e conformidade regulatória em todos os atendimentos."
+          },
+          {
+            id: "5-3",
+            answer: "EXCELENCIA OPERACIONAL",
+            acceptedAnswers: ["EXCELENCIA OPERACIONAL", "ALTA PERFORMANCE", "PERFORMANCE MAXIMA"],
+            clues: [
+              { points: 10, text: "Dica 1: Meta máxima de performance unindo alta conversão de acordos e nota máxima em qualidade." },
+              { points: 9, text: "Dica 2: Destaca o operador no ranking geral do Hub Bulgarelli Play." },
+              { points: 8, text: "Dica 3: O grande objetivo de capacitação das campanhas para as carteiras Honda e Stellantis." }
+            ],
+            explanation: "A excelência operacional coroa o operador de destaque com reconhecimento e alta performance."
           }
         ]
       }
     ];
+
+    let playerAvatar = {
+      sexo: "masculino", idade: 28, pele: "morena clara", rosto: "oval",
+      olhos: "castanho", cabelo: "curto degradê preto", vestimenta: "Camisa Social Azul Marinho",
+      acessorio: "Nenhum", emocao: "Sorridente / Confiante", estiloVisual: "Pixar 3D", cenario: "Escritório Corporativo"
+    };
+
+    let currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
+    let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
+    let countdownTimerInterval = null;
 
     function getShuffledRoundsForLevel(lvl, matricula) {
       let seed = 0;
@@ -1127,13 +1579,19 @@
         seed = (seed << 5) - seed + strKey.charCodeAt(i);
         seed |= 0;
       }
+
       let arr = [...lvl.rounds];
       for (let i = arr.length - 1; i > 0; i--) {
         seed = (seed * 9301 + 49297) % 233280;
-        let j = Math.floor((Math.abs(seed) / 233280) * (i + 1));
+        let rnd = Math.abs(seed) / 233280;
+        let j = Math.floor(rnd * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      return arr.map((r, idx) => ({ ...r, titleName: `Desafio ${lvl.id}.${idx + 1}` }));
+
+      return arr.map((r, idx) => ({
+        ...r,
+        titleName: `Desafio ${lvl.id}.${idx + 1}`
+      }));
     }
 
     function getPlayerLevels() {
@@ -1145,6 +1603,7 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       initPreloader();
+
       const savedSession = sessionStorage.getItem("bulgarelli_active_session");
       if (savedSession) {
         try {
@@ -1152,6 +1611,7 @@
           if (parsed.name) {
             currentPlayer = parsed;
             updateSessionUI();
+            
             if (window.syncFirebaseData && currentPlayer.matricula) {
               window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
                 if (cloudData) {
@@ -1165,11 +1625,99 @@
       }
     });
 
+    function isLevelUnlocked(lvl) {
+      if (currentPlayer.isAdmin) return true;
+      if (!lvl.unlockDate) return true;
+      const now = new Date();
+      const unlockTime = new Date(lvl.unlockDate);
+      return now >= unlockTime;
+    }
+
+    function getTimeRemaining(unlockDateStr) {
+      const total = Date.parse(new Date(unlockDateStr)) - Date.parse(new Date());
+      if (total <= 0) return { total: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+      const seconds = Math.floor((total / 1000) % 60);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(total / (1000 * 60 * 60 * 24));
+      return { total, days, hours, minutes, seconds };
+    }
+
+    function openAvatarCustomizerModal() {
+      const modal = document.getElementById("modalAvatarCustomizer");
+      if (modal) modal.classList.remove("hidden");
+      updateAvatarConfig();
+    }
+    function closeAvatarCustomizerModal() {
+      const modal = document.getElementById("modalAvatarCustomizer");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function updateAvatarConfig() {
+      const avSexo = document.getElementById("avSexo");
+      const avIdade = document.getElementById("avIdade");
+      const avPele = document.getElementById("avPele");
+      const avRosto = document.getElementById("avRosto");
+      const avCabelo = document.getElementById("avCabelo");
+      const avVestimenta = document.getElementById("avVestimenta");
+      const avAcessorio = document.getElementById("avAcessorio");
+      const avEstiloVisual = document.getElementById("avEstiloVisual");
+      const avEmocao = document.getElementById("avEmocao");
+      const avCenario = document.getElementById("avCenario");
+
+      if (avSexo) playerAvatar.sexo = avSexo.value;
+      if (avIdade) playerAvatar.idade = avIdade.value;
+      if (avPele) playerAvatar.pele = avPele.value;
+      if (avRosto) playerAvatar.rosto = avRosto.value;
+      if (avCabelo) playerAvatar.cabelo = avCabelo.value;
+      if (avVestimenta) playerAvatar.vestimenta = avVestimenta.value;
+      if (avAcessorio) playerAvatar.acessorio = avAcessorio.value;
+      if (avEstiloVisual) playerAvatar.estiloVisual = avEstiloVisual.value;
+      if (avEmocao) playerAvatar.emocao = avEmocao.value;
+      if (avCenario) playerAvatar.cenario = avCenario.value;
+
+      const sumCen = document.getElementById("summaryCenario");
+      const sumEst = document.getElementById("summaryEstilo");
+      const sumRou = document.getElementById("summaryRoupa");
+      if (sumCen) sumCen.innerText = playerAvatar.cenario;
+      if (sumEst) sumEst.innerText = playerAvatar.estiloVisual;
+      if (sumRou) sumRou.innerText = playerAvatar.vestimenta;
+
+      const preview = document.getElementById("avatar3DPreview");
+      if (preview) preview.innerText = getAvatarEmoji(playerAvatar);
+    }
+
+    function getAvatarEmoji(av) {
+      if (av.sexo === "feminino") {
+        if (av.acessorio === "Óculos Modernos") return "👩‍💻";
+        if (av.acessorio === "Headset Atendimento") return "🎧";
+        return "👩‍💼";
+      } else {
+        if (av.acessorio === "Óculos Modernos") return "👨‍💻";
+        if (av.acessorio === "Headset Atendimento") return "🎧";
+        return "👨‍💼";
+      }
+    }
+
+    function saveAvatarConfig() {
+      closeAvatarCustomizerModal();
+      updateHeaderAvatarDisplay();
+      alert("Avatar corporativo atualizado!");
+    }
+
+    function updateHeaderAvatarDisplay() {
+      const headerContainer = document.getElementById("headerAvatarContainer");
+      if (headerContainer) {
+        headerContainer.innerText = getAvatarEmoji(playerAvatar);
+      }
+    }
+
     window.switchSidebarTab = function(tab) {
       if (!currentPlayer.name && tab !== 'overview') {
         openRegistrationModal();
         return;
       }
+
       const scOverview = document.getElementById("screenOverview");
       const scCarteiras = document.getElementById("screenCarteiras");
       const scLibrary = document.getElementById("screenLibrary");
@@ -1182,63 +1730,128 @@
       if (scAdmin) scAdmin.classList.add("hidden");
       if (scGame) scGame.classList.add("hidden");
 
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
+      });
+
       if (tab === 'overview') {
-        scOverview.classList.remove("hidden");
+        if (scOverview) scOverview.classList.remove("hidden");
+        const navOv = document.getElementById("navOverview");
+        if (navOv) navOv.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderOverviewContent();
       } else if (tab === 'carteiras') {
-        scCarteiras.classList.remove("hidden");
+        if (scCarteiras) scCarteiras.classList.remove("hidden");
+        const navCar = document.getElementById("navCarteiras");
+        if (navCar) navCar.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderPortfoliosScreen();
       } else if (tab === 'library') {
-        scLibrary.classList.remove("hidden");
+        if (scLibrary) scLibrary.classList.remove("hidden");
+        const navLib = document.getElementById("navLibrary");
+        if (navLib) navLib.classList.add('bg-red-600/20', 'text-red-600', 'border', 'border-red-500/40');
         renderLibraryScreen();
       } else if (tab === 'admin') {
         if (!currentPlayer.isAdmin) {
-          alert("Acesso Restrito: Exclusivo para administradores.");
+          alert("Acesso Restrito: Exclusivo para perfis Administrativos.");
           switchSidebarTab('overview');
           return;
         }
-        scAdmin.classList.remove("hidden");
+        if (scAdmin) scAdmin.classList.remove("hidden");
+        const navAd = document.getElementById("navAdmin");
+        if (navAd) navAd.classList.add('bg-yellow-500/20', 'text-yellow-600', 'border', 'border-yellow-500/40');
         populateAdminDashboard();
       }
     };
+
+    window.returnToOverview = function() { switchSidebarTab('overview'); };
 
     function renderOverviewContent() {
       const folderTitle = document.getElementById("overviewFolderTitle");
       const allowedGrid = document.getElementById("overviewAllowedGamesGrid");
       if (folderTitle) folderTitle.innerText = `Carteira ${currentPlayer.portfolio || 'Geral'}`;
+
       if (allowedGrid) {
-        allowedGrid.innerHTML = `
-          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl">
-            <div>
-              <h4 class="font-bold text-base mb-1">Jogo das Três Pistas (Online)</h4>
-              <p class="text-xs text-slate-400 mb-4">Treinamento e ranking integrado no Firebase.</p>
+        allowedGrid.innerHTML = "";
+        if (currentPlayer.portfolio === "Honda" || currentPlayer.isAdmin || currentPlayer.portfolio === "Geral") {
+          allowedGrid.innerHTML = `
+            <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between hover:border-red-500 transition shadow-xl">
+              <div>
+                <div class="flex justify-between items-start mb-3">
+                  <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/50 flex items-center justify-center text-red-500 font-bold">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 border border-red-500/40 font-bold">Honda</span>
+                </div>
+                <h4 class="font-bold text-base mb-1">Jogo das Três Pistas</h4>
+                <p class="text-xs text-slate-400 mb-4">Desafios de negociação, refinanciamento e procedimentos operacionais.</p>
+              </div>
+              <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white shadow-md shadow-red-900/40 transition">
+                <span>JOGAR</span> <i class="fa-solid fa-play"></i>
+              </button>
             </div>
-            <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">JOGAR</button>
-          </div>
-        `;
+          `;
+        } else {
+          allowedGrid.innerHTML = `<div class="col-span-full p-4 text-center text-slate-500 italic">Nenhum jogo liberado para a carteira ${currentPlayer.portfolio}.</div>`;
+        }
       }
     }
 
     function renderPortfoliosScreen() {
       const container = document.getElementById("carteirasContainerList");
       if (!container) return;
-      container.innerHTML = `
-        <div class="glass-card p-5 rounded-2xl border border-red-600/30 space-y-4">
-          <h3 class="text-lg font-bold">Carteira ${currentPlayer.portfolio || 'Honda'}</h3>
-          <button onclick="launchHondaGameApart()" class="px-6 py-2.5 bg-red-600 text-white rounded-xl text-xs font-bold">Acessar Jogo</button>
-        </div>
-      `;
+      container.innerHTML = "";
+
+      const userPortfolio = currentPlayer.portfolio || "Honda";
+      const portfoliosToShow = currentPlayer.isAdmin ? ["Honda", "Stellantis", "Geral"] : [userPortfolio];
+
+      portfoliosToShow.forEach(port => {
+        const div = document.createElement("div");
+        div.className = "glass-card p-5 rounded-2xl border border-red-600/30 space-y-4";
+        div.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#cc0000] flex items-center justify-center shadow-md text-white font-bold text-xl">
+              ${port.charAt(0)}
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">Carteira ${port}</h3>
+              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais em nuvem.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+            ${port === "Honda" || currentPlayer.isAdmin || port === "Geral" ? `
+              <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+                <div>
+                  <h4 class="font-bold text-sm mb-1">Jogo das Três Pistas</h4>
+                  <p class="text-[11px] text-slate-400 mb-3">Procedimentos, seguros e acordos.</p>
+                </div>
+                <button onclick="launchHondaGameApart()" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">Jogar</button>
+              </div>
+            ` : `<div class="text-xs text-slate-500 italic p-2">Nenhum simulador ativo para esta carteira.</div>`}
+          </div>
+        `;
+        container.appendChild(div);
+      });
     }
 
     function renderLibraryScreen() {
       const grid = document.getElementById("libraryGamesGrid");
       if (!grid) return;
-      grid.innerHTML = `
-        <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
-          <h4 class="font-bold text-base mb-1">Jogo das Três Pistas</h4>
-          <button onclick="launchHondaGameApart()" class="w-full py-2.5 honda-red honda-red-hover text-white rounded-xl text-xs font-bold mt-3">Jogar</button>
-        </div>
-      `;
+      grid.innerHTML = "";
+
+      if (currentPlayer.portfolio === "Honda" || currentPlayer.isAdmin || currentPlayer.portfolio === "Geral") {
+        grid.innerHTML = `
+          <div class="glass-card p-5 rounded-2xl border border-red-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-900/60 text-red-200 font-bold">Carteira Honda</span>
+              <h4 class="font-bold text-base mt-2 mb-1">Jogo das Três Pistas</h4>
+              <p class="text-xs text-slate-400 mb-4">Treinamento de recuperação de crédito e argumentação.</p>
+            </div>
+            <button onclick="launchHondaGameApart()" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">Jogar</button>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = `<div class="col-span-full p-6 text-center text-slate-500 italic">Sua carteira (${currentPlayer.portfolio}) não possui jogos na biblioteca.</div>`;
+      }
     }
 
     window.launchHondaGameApart = function() {
@@ -1246,152 +1859,217 @@
         openRegistrationModal();
         return;
       }
-      document.getElementById("screenOverview").classList.add("hidden");
-      document.getElementById("screenGameStandalone").classList.remove("hidden");
-      document.getElementById("subScreenCover").classList.remove("hidden");
-      document.getElementById("subScreenLevels").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.add("hidden");
+      if (currentPlayer.portfolio !== "Honda" && !currentPlayer.isAdmin && currentPlayer.portfolio !== "Geral") {
+        alert(`Acesso Restrito: Este jogo pertence à carteira Honda. Sua carteira atual é ${currentPlayer.portfolio}.`);
+        return;
+      }
+
+      const scOverview = document.getElementById("screenOverview");
+      const scCarteiras = document.getElementById("screenCarteiras");
+      const scLibrary = document.getElementById("screenLibrary");
+      const scAdmin = document.getElementById("screenAdmin");
+      const scGame = document.getElementById("screenGameStandalone");
+
+      if (scOverview) scOverview.classList.add("hidden");
+      if (scCarteiras) scCarteiras.classList.add("hidden");
+      if (scLibrary) scLibrary.classList.add("hidden");
+      if (scAdmin) scAdmin.classList.add("hidden");
+      if (scGame) scGame.classList.remove("hidden");
+
+      const subCover = document.getElementById("subScreenCover");
+      const subLevels = document.getElementById("subScreenLevels");
+      const subGame = document.getElementById("subScreenGame");
+
+      if (subCover) subCover.classList.remove("hidden");
+      if (subLevels) subLevels.classList.add("hidden");
+      if (subGame) subGame.classList.add("hidden");
     };
 
     window.closeGameApart = function() {
-      document.getElementById("screenGameStandalone").classList.add("hidden");
+      const scGame = document.getElementById("screenGameStandalone");
+      if (scGame) scGame.classList.add("hidden");
       switchSidebarTab('overview');
     };
 
-    let isLaunching = false;
-    window.startCarAccelerationTransition = function() {
-      if (isLaunching) return;
-      isLaunching = true;
-      document.getElementById('carRoot').classList.add('launching');
-      setTimeout(() => {
-        document.getElementById("subScreenCover").classList.add("hidden");
-        document.getElementById("subScreenTransition").classList.remove("hidden");
-        setTimeout(() => {
-          document.getElementById("subScreenTransition").classList.add("hidden");
-          showLevelsScreenApart();
-          document.getElementById('carRoot').classList.remove('launching');
-          isLaunching = false;
-        }, 1500);
-      }, 1000);
-    };
-
-    function showLevelsScreenApart() {
-      document.getElementById("subScreenCover").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.add("hidden");
-      document.getElementById("subScreenLevels").classList.remove("hidden");
-
-      document.getElementById("displayPlayerName").innerText = currentPlayer.name;
-      document.getElementById("displayPlayerMatricula").innerText = currentPlayer.matricula;
-      document.getElementById("displayPlayerPortfolio").innerText = currentPlayer.portfolio || "Honda";
-      document.getElementById("displayPlayerScore").innerText = `${currentPlayer.score} pts`;
-
-      renderLevelsGridApart();
+    function populateAdminDashboard() {
+      const select = document.getElementById("adminSelectEmployee");
+      if (select) {
+        select.innerHTML = "";
+        authorizedEmployees.forEach(emp => {
+          const opt = document.createElement("option");
+          opt.value = emp.matricula || emp.name;
+          const perfilStr = emp.isAdmin ? "Admin" : "Comum";
+          opt.innerText = `${emp.name} (Mat: ${emp.matricula} | ${emp.portfolio || 'Geral'} | ${perfilStr})`;
+          select.appendChild(opt);
+        });
+        onAdminSelectEmployeeChange();
+      }
     }
 
-    function renderLevelsGridApart() {
-      const grid = document.querySelector("#subScreenLevels #levelsGrid");
-      if (!grid) return;
-      grid.innerHTML = "";
-      const playerLevels = getPlayerLevels();
+    window.onAdminSelectEmployeeChange = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        const inName = document.getElementById("adminNewName");
+        const selPort = document.getElementById("adminNewPortfolio");
+        const selRole = document.getElementById("adminNewRole");
 
-      playerLevels.forEach(lvl => {
-        const doneRounds = lvl.rounds.filter(r => currentPlayer.completedRounds.includes(r.id)).length;
-        const card = document.createElement("div");
-        card.className = "glass-card p-5 rounded-2xl border border-red-500/50 hover:border-red-500 transition flex flex-col justify-between";
-        card.innerHTML = `
-          <div>
-            <h3 class="font-bold text-base text-white mb-2">${lvl.title}</h3>
-            <p class="text-xs text-slate-300 mb-4">${doneRounds}/${lvl.rounds.length} rodadas concluídas</p>
-          </div>
-          <button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs honda-red honda-red-hover text-white transition">INICIAR</button>
-        `;
-        grid.appendChild(card);
+        if (inName) inName.value = emp.name;
+        if (selPort) selPort.value = emp.portfolio || "Honda";
+        if (selRole) selRole.value = emp.isAdmin ? "Admin" : "Comum";
+      }
+    };
+
+    window.adminSaveEmployeeChanges = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        const newName = document.getElementById("adminNewName").value.trim();
+        const newPort = document.getElementById("adminNewPortfolio").value;
+        const newRole = document.getElementById("adminNewRole").value;
+
+        if (!newName) {
+          alert("O nome não pode ficar em branco.");
+          return;
+        }
+
+        emp.name = newName.toUpperCase();
+        emp.portfolio = newPort;
+        emp.isAdmin = (newRole === "Admin");
+
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
+        populateAdminDashboard();
+        alert("Dados do colaborador salvos no Firebase com sucesso!");
+      }
+    };
+
+    window.adminResetPasswordIndividual = function() {
+      const sel = document.getElementById("adminSelectEmployee");
+      if (!sel) return;
+      const key = sel.value;
+      const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+      if (emp) {
+        emp.password = "123Mudar";
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
+        alert(`Senha do colaborador ${emp.name} resetada no Firebase para: 123Mudar.`);
+        populateAdminDashboard();
+      }
+    };
+
+    window.processSpreadsheetImport = function() {
+      const rawText = document.getElementById("importSpreadsheetInput").value.trim();
+      if (!rawText) {
+        alert("Cole os dados da planilha na caixa de texto.");
+        return;
+      }
+
+      const lines = rawText.split("\n");
+      let countAdded = 0;
+
+      lines.forEach(line => {
+        const parts = line.split(/\t|,|;/).map(p => p.trim()).filter(p => p);
+        if (parts.length >= 2) {
+          const name = parts[0].toUpperCase();
+          const matricula = parts[1];
+          const portfolio = parts[2] || "Honda";
+          const perfilInput = (parts[3] || "comum").toLowerCase();
+          const isAdmin = perfilInput.includes("admin") || perfilInput.includes("adm");
+
+          let existing = authorizedEmployees.find(e => e.matricula === matricula);
+          if (existing) {
+            existing.name = name;
+            existing.portfolio = portfolio;
+            existing.isAdmin = isAdmin;
+          } else {
+            authorizedEmployees.push({
+              name: name,
+              matricula: matricula,
+              portfolio: portfolio,
+              password: "123Mudar",
+              isAdmin: isAdmin
+            });
+            countAdded++;
+          }
+        }
       });
-    }
 
-    window.startLevelApart = function(levelId) {
-      const lvl = getPlayerLevels().find(l => l.id === levelId);
-      currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
-      setupRoundDisplayApart();
-      document.getElementById("subScreenLevels").classList.add("hidden");
-      document.getElementById("subScreenGame").classList.remove("hidden");
+      if (window.saveEmployeesToFirebaseCloud) {
+        window.saveEmployeesToFirebaseCloud();
+      }
+      populateAdminDashboard();
+      alert(`Importação concluída! ${countAdded} novos colaboradores sincronizados no Firebase.`);
+      document.getElementById("importSpreadsheetInput").value = "";
     };
 
-    function setupRoundDisplayApart() {
-      const lvl = getPlayerLevels().find(l => l.id === currentRoundState.levelId);
-      const round = lvl.rounds[currentRoundState.roundIndex];
-      currentRoundState.roundData = round;
-      currentRoundState.clueIndex = 0;
-
-      document.querySelector("#subScreenGame #gameLevelTitle").innerText = lvl.title;
-      document.querySelector("#subScreenGame #gameRoundTitle").innerText = `${round.titleName} de ${lvl.rounds.length}`;
-      document.querySelector("#subScreenGame #gameScoreDisplay").innerText = `${currentPlayer.score} pts`;
-      document.getElementById("inputAnswer").value = "";
-      renderCluesApart();
-    }
-
-    function renderCluesApart() {
-      const container = document.querySelector("#subScreenGame #cluesContainer");
-      container.innerHTML = "";
-      const round = currentRoundState.roundData;
-      for (let i = 0; i <= currentRoundState.clueIndex; i++) {
-        const clue = round.clues[i];
-        const clueDiv = document.createElement("div");
-        clueDiv.className = "glass-card p-4 rounded-xl border border-red-500/40 flex items-start gap-3 shadow-md";
-        clueDiv.innerHTML = `<div class="bg-red-600/40 text-yellow-300 font-bold px-2.5 py-1 rounded-lg text-xs">${clue.points} Pts</div><p class="text-xs text-slate-100">${clue.text}</p>`;
-        container.appendChild(clueDiv);
-      }
-    }
-
-    window.handleAnswerSubmit = function(e) {
-      e.preventDefault();
-      const userAns = normalizeString(document.getElementById("inputAnswer").value);
-      const round = currentRoundState.roundData;
-      const possibleAnswers = [round.answer, ...(round.acceptedAnswers || [])];
-      const isCorrect = possibleAnswers.some(ans => normalizeString(ans) === userAns);
-
-      if (isCorrect) {
-        const points = round.clues[currentRoundState.clueIndex].points;
-        if (!currentPlayer.completedRounds.includes(round.id)) {
-          currentPlayer.completedRounds.push(round.id);
-          currentPlayer.score += points;
-          sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
-          savePlayerToCloudRanking();
-        }
-        showModal("<i class='fa-solid fa-circle-check text-5xl text-green-400'></i>", "Correto!", round.explanation, "PRÓXIMO", () => advanceGameApart());
-      } else {
-        if (currentRoundState.clueIndex < round.clues.length - 1) {
-          currentRoundState.clueIndex++;
-          renderCluesApart();
-          document.getElementById("inputAnswer").value = "";
-          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Incorreta!", "Próxima pista liberada.", "TENTAR", null);
-        } else {
-          showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `Resposta: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
-        }
-      }
+    window.exportEmployeesCSV = function() {
+      let csv = "Nome Completo,Matricula,Carteira,Perfil\n";
+      authorizedEmployees.forEach(e => {
+        const perfilStr = e.isAdmin ? "Admin" : "Comum";
+        csv += `"${e.name}","${e.matricula}","${e.portfolio || 'Geral'}","${perfilStr}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", "colaboradores_bulgarelli_firebase.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
 
-    function advanceGameApart() {
-      const lvl = getPlayerLevels().find(l => l.id === currentRoundState.levelId);
-      if (currentRoundState.roundIndex < lvl.rounds.length - 1) {
-        currentRoundState.roundIndex++;
-        setupRoundDisplayApart();
-      } else {
-        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Nível Concluído!", `Total: ${currentPlayer.score} pts`, "VOLTAR", () => showLevelsScreenApart());
-      }
-    }
+    window.logoutSession = function() {
+      sessionStorage.removeItem("bulgarelli_active_session");
+      currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, completedRounds: [], completedLevels: [], updatedAt: 0, isAdmin: false };
+      updateSessionUI();
+      openRegistrationModal();
+    };
 
-    async function savePlayerToCloudRanking() {
-      const data = { 
-        name: currentPlayer.name, 
-        matricula: currentPlayer.matricula, 
-        portfolio: currentPlayer.portfolio || "Honda",
-        score: currentPlayer.score, 
-        completedRounds: currentPlayer.completedRounds,
-        completedRoundsCount: currentPlayer.completedRounds.length,
-        updatedAt: Date.now()
-      };
-      if (window.savePlayerToFirebase) await window.savePlayerToFirebase(data);
+    function updateSessionUI() {
+      const sidebarName = document.getElementById("sidebarPlayerName");
+      const sidebarMat = document.getElementById("sidebarPlayerMat");
+      const headerName = document.getElementById("headerPlayerName");
+      const navAdmin = document.getElementById("navAdmin");
+      const sessionAction = document.getElementById("sessionActionContainer");
+
+      if (currentPlayer.name) {
+        if (sidebarName) sidebarName.innerText = currentPlayer.name;
+        const perfilLabel = currentPlayer.isAdmin ? "Admin" : "Comum";
+        if (sidebarMat) sidebarMat.innerText = `Mat: ${currentPlayer.matricula} | ${currentPlayer.portfolio || 'Geral'} (${perfilLabel})`;
+        if (headerName) headerName.innerText = currentPlayer.name;
+        if (navAdmin) {
+          if (currentPlayer.isAdmin) navAdmin.classList.remove("hidden");
+          else navAdmin.classList.add("hidden");
+        }
+
+        if (sessionAction) {
+          sessionAction.innerHTML = `
+            <button onclick="logoutSession()" class="w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
+              Encerrar Sessão
+            </button>
+          `;
+        }
+        updateHeaderAvatarDisplay();
+      } else {
+        if (sidebarName) sidebarName.innerText = "Visitante / Não Logado";
+        if (sidebarMat) sidebarMat.innerText = "Autenticação Firebase";
+        if (headerName) headerName.innerText = "Visitante";
+        if (navAdmin) navAdmin.classList.add("hidden");
+
+        if (sessionAction) {
+          sessionAction.innerHTML = `
+            <button onclick="openRegistrationModal()" class="w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg border border-red-500/50 text-[10px] font-bold transition">
+              Acessar Login
+            </button>
+          `;
+        }
+      }
     }
 
     let tempPendingEmp = null;
@@ -1399,82 +2077,133 @@
     let isPasswordLoginStep = false;
 
     window.openRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.remove("hidden");
-      document.getElementById("inputName").value = "";
-      document.getElementById("inputMatricula").value = "";
-      document.getElementById("step1Fields").classList.remove("hidden");
-      document.getElementById("step2Fields").classList.add("hidden");
-      document.getElementById("loginPasswordFields").classList.add("hidden");
-      document.getElementById("modalAuthSubtitle").innerText = "Autenticação online direta no Firebase";
+      const modalReg = document.getElementById("modalRegistration");
+      if (modalReg) modalReg.classList.remove("hidden");
+      
+      const inName = document.getElementById("inputName");
+      const inMat = document.getElementById("inputMatricula");
+      const inPass = document.getElementById("inputPassword");
+      const inPassConf = document.getElementById("inputPasswordConfirm");
+      const inLoginPass = document.getElementById("inputLoginPassword");
+
+      if (inName) inName.value = "";
+      if (inMat) inMat.value = "";
+      if (inPass) inPass.value = "";
+      if (inPassConf) inPassConf.value = "";
+      if (inLoginPass) inLoginPass.value = "";
+      
+      const st1 = document.getElementById("step1Fields");
+      const st2 = document.getElementById("step2Fields");
+      const logPass = document.getElementById("loginPasswordFields");
+      const authSub = document.getElementById("modalAuthSubtitle");
+      const authBtn = document.getElementById("authSubmitBtn");
+
+      if (st1) st1.classList.remove("hidden");
+      if (st2) st2.classList.add("hidden");
+      if (logPass) logPass.classList.add("hidden");
+      if (authSub) authSub.innerText = "Insira seu Nome e Matrícula para autenticar no Portal Bulgarelli Play";
+      if (authBtn) authBtn.innerText = "AVANÇAR";
+
       isPasswordChangeStep = false;
       isPasswordLoginStep = false;
       tempPendingEmp = null;
     };
 
     window.closeRegistrationModal = function() {
-      document.getElementById("modalRegistration").classList.add("hidden");
+      const modalReg = document.getElementById("modalRegistration");
+      if (modalReg) modalReg.classList.add("hidden");
     };
 
     window.handleAuthSubmit = function(e) {
       if (e) e.preventDefault();
+
       if (!isPasswordChangeStep && !isPasswordLoginStep) {
         const nameInput = document.getElementById("inputName").value.trim();
         const matInput = document.getElementById("inputMatricula").value.trim();
         const normName = normalizeString(nameInput);
 
-        let found = window.authorizedEmployees.find(emp => {
+        let found = authorizedEmployees.find(emp => {
           const empNormName = normalizeString(emp.name);
           const empMat = (emp.matricula || "").trim();
+          
           if (empMat && matInput && empMat === matInput) return true;
           if (empNormName === normName) return true;
           return false;
         });
 
+        const st1 = document.getElementById("step1Fields");
+        const st2 = document.getElementById("step2Fields");
+        const logPass = document.getElementById("loginPasswordFields");
+        const authSub = document.getElementById("modalAuthSubtitle");
+        const authBtn = document.getElementById("authSubmitBtn");
+
         if (found) {
           tempPendingEmp = found;
           if (found.password === "123Mudar") {
             isPasswordChangeStep = true;
-            document.getElementById("step1Fields").classList.add("hidden");
-            document.getElementById("step2Fields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Defina sua nova senha pessoal na nuvem";
+            if (st1) st1.classList.add("hidden");
+            if (st2) st2.classList.remove("hidden");
+            if (authSub) authSub.innerText = "Primeiro Acesso / Senha Resetada: Defina sua nova senha pessoal";
+            if (authBtn) authBtn.innerText = "CRIAR E ENTRAR";
           } else {
             isPasswordLoginStep = true;
-            document.getElementById("step1Fields").classList.add("hidden");
-            document.getElementById("loginPasswordFields").classList.remove("hidden");
-            document.getElementById("modalAuthSubtitle").innerText = "Insira sua senha de acesso";
+            if (st1) st1.classList.add("hidden");
+            if (logPass) logPass.classList.remove("hidden");
+            if (authSub) authSub.innerText = "Insira sua senha de acesso cadastrada";
+            if (authBtn) authBtn.innerText = "ENTRAR NO PORTAL";
           }
         } else {
-          alert("Colaborador não encontrado na base de dados do Firebase.");
+          alert("Colaborador não encontrado na base de dados do Firebase. Solicite ao gestor a importação via planilha.");
+          return;
         }
       } else if (isPasswordChangeStep) {
         const pass = document.getElementById("inputPassword").value.trim();
         const passConfirm = document.getElementById("inputPasswordConfirm").value.trim();
-        if (!pass || pass !== passConfirm) {
-          alert("Senhas inválidas ou não conferem.");
+
+        if (!pass) {
+          alert("Digite uma senha válida.");
           return;
         }
-        tempPendingEmp.password = pass;
-        let idx = window.authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
-        if (idx >= 0) window.authorizedEmployees[idx] = tempPendingEmp;
-        if (window.saveEmployeesToFirebaseCloud) window.saveEmployeesToFirebaseCloud();
+        if (pass === "123Mudar") {
+          alert("Escolha uma senha diferente de '123Mudar'.");
+          return;
+        }
+        if (pass !== passConfirm) {
+          alert("As senhas não coincidem!");
+          return;
+        }
 
-        finalizeCloudLogin(tempPendingEmp);
+        tempPendingEmp.password = pass;
+        let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
+        if (existingIndex >= 0) authorizedEmployees[existingIndex] = tempPendingEmp;
+        
+        if (window.saveEmployeesToFirebaseCloud) {
+          window.saveEmployeesToFirebaseCloud();
+        }
+        
+        currentPlayer.name = tempPendingEmp.name;
+        currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.portfolio = tempPendingEmp.portfolio || "Honda";
+        currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
+
+        finalizeLoginAndDirectToPortal();
       } else if (isPasswordLoginStep) {
         const pass = document.getElementById("inputLoginPassword").value.trim();
         if (tempPendingEmp.password !== pass) {
           alert("Senha incorreta!");
           return;
         }
-        finalizeCloudLogin(tempPendingEmp);
+
+        currentPlayer.name = tempPendingEmp.name;
+        currentPlayer.matricula = tempPendingEmp.matricula;
+        currentPlayer.portfolio = tempPendingEmp.portfolio || "Honda";
+        currentPlayer.isAdmin = !!tempPendingEmp.isAdmin;
+
+        finalizeLoginAndDirectToPortal();
       }
     };
 
-    function finalizeCloudLogin(emp) {
-      currentPlayer.name = emp.name;
-      currentPlayer.matricula = emp.matricula;
-      currentPlayer.portfolio = emp.portfolio || "Honda";
-      currentPlayer.isAdmin = !!emp.isAdmin;
-
+    function finalizeLoginAndDirectToPortal() {
       if (window.syncFirebaseData && currentPlayer.matricula) {
         window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
           if (cloudData) {
@@ -1488,161 +2217,327 @@
       sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
       updateSessionUI();
       closeRegistrationModal();
+      
+      isPasswordChangeStep = false;
+      isPasswordLoginStep = false;
+      tempPendingEmp = null;
+
       switchSidebarTab('overview');
     }
 
-    function updateSessionUI() {
-      document.getElementById("sidebarPlayerName").innerText = currentPlayer.name;
-      document.getElementById("sidebarPlayerMat").innerText = `Mat: ${currentPlayer.matricula} | ${currentPlayer.portfolio}`;
-      document.getElementById("headerPlayerName").innerText = currentPlayer.name;
-      document.getElementById("sessionStatusIndicator").classList.remove("hidden");
-      document.getElementById("sessionStatusIndicator").classList.add("flex");
-      if (currentPlayer.isAdmin) {
-        document.getElementById("navAdmin").classList.remove("hidden");
-      }
-      document.getElementById("sessionActionContainer").innerHTML = `
-        <button onclick="logoutSession()" class="w-full py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg border border-red-800/50 text-[10px] font-bold transition">
-          Encerrar Sessão
-        </button>
-      `;
-    }
+    let isLaunching = false;
+    window.startCarAccelerationTransition = function() {
+      if (isLaunching) return;
+      isLaunching = true;
 
-    window.logoutSession = function() {
-      sessionStorage.removeItem("bulgarelli_active_session");
-      location.reload();
+      const carRoot = document.getElementById('carRoot');
+      const startBtn = document.getElementById('engineStartBtn');
+      const buttonLed = document.getElementById('buttonLed');
+      const engineStatusText = document.getElementById('engineStatusText');
+      const engineStatusDot = document.getElementById('engineStatusDot');
+      const rpmGauge = document.getElementById('rpmGauge');
+      const sceneWrapper = document.getElementById('sceneWrapper');
+      const roadStripes = document.getElementById('roadStripes');
+      const flashOverlay = document.getElementById('flashOverlay');
+
+      initAudio();
+
+      if (startBtn) startBtn.classList.add('running');
+      if (buttonLed) buttonLed.className = 'w-3 h-1 bg-green-400 rounded-full mt-1 shadow-[0_0_8px_#4ade80]';
+      if (engineStatusText) engineStatusText.innerText = 'VTEC ENGAGED';
+      if (engineStatusDot) engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+
+      let currentRpm = 850;
+      const rpmInterval = setInterval(() => {
+          if (currentRpm < 7800) {
+              currentRpm += 380;
+              if (rpmGauge) rpmGauge.innerText = `${currentRpm} RPM`;
+          }
+      }, 40);
+
+      if (roadStripes) roadStripes.classList.add('speeding');
+      if (sceneWrapper) sceneWrapper.classList.add('shake-screen');
+      if (carRoot) {
+        carRoot.classList.remove('idle-vibe');
+        carRoot.classList.add('launching');
+      }
+
+      setTimeout(() => { if (flashOverlay) flashOverlay.classList.add('active'); }, 900);
+      setTimeout(() => { if (flashOverlay) flashOverlay.classList.remove('active'); }, 1250);
+
+      setTimeout(() => {
+        clearInterval(rpmInterval);
+        const subCover = document.getElementById("subScreenCover");
+        const transMoto = document.getElementById("subScreenTransition");
+
+        if (subCover) subCover.classList.add("hidden");
+        if (transMoto) transMoto.classList.remove("hidden");
+
+        setTimeout(() => {
+          if (transMoto) transMoto.classList.add("hidden");
+          showLevelsScreenApart();
+          if (carRoot) carRoot.classList.remove('launching');
+          if (sceneWrapper) sceneWrapper.classList.remove('shake-screen');
+          if (roadStripes) roadStripes.classList.remove('speeding');
+          if (carRoot) carRoot.classList.add('idle-vibe');
+          if (startBtn) startBtn.classList.remove('running');
+          if (buttonLed) buttonLed.className = 'w-3 h-1 bg-white rounded-full mt-1';
+          if (engineStatusText) engineStatusText.innerText = 'ENGINE IDLE';
+          if (engineStatusDot) engineStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse';
+          if (rpmGauge) rpmGauge.innerText = '850 RPM';
+          isLaunching = false;
+        }, 1800);
+      }, 1350);
     };
 
+    function showLevelsScreenApart() {
+      const subCover = document.getElementById("subScreenCover");
+      const subGame = document.getElementById("subScreenGame");
+      const subLevels = document.getElementById("subScreenLevels");
+
+      if (subCover) subCover.classList.add("hidden");
+      if (subGame) subGame.classList.add("hidden");
+      if (subLevels) subLevels.classList.remove("hidden");
+
+      document.querySelectorAll('#subScreenLevels #displayPlayerName').forEach(el => el.innerText = currentPlayer.name);
+      document.querySelectorAll('#subScreenLevels #displayPlayerMatricula').forEach(el => el.innerText = currentPlayer.matricula);
+      document.querySelectorAll('#subScreenLevels #displayPlayerPortfolio').forEach(el => el.innerText = currentPlayer.portfolio || "Honda");
+      document.querySelectorAll('#subScreenLevels #displayPlayerScore').forEach(el => el.innerText = `${currentPlayer.score} pts`);
+      
+      const levelAvatarPreview = document.getElementById("levelAvatarPreview");
+      if (levelAvatarPreview) {
+        levelAvatarPreview.innerText = getAvatarEmoji(playerAvatar);
+      }
+
+      renderLevelsGridApart();
+    }
+
+    function renderLevelsGridApart() {
+      const grid = document.querySelector("#subScreenLevels #levelsGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      if (countdownTimerInterval) clearInterval(countdownTimerInterval);
+
+      const playerLevels = getPlayerLevels();
+
+      playerLevels.forEach(lvl => {
+        const unlocked = isLevelUnlocked(lvl);
+        const doneRounds = lvl.rounds.filter(r => currentPlayer.completedRounds.includes(r.id)).length;
+
+        const card = document.createElement("div");
+        card.className = `glass-card p-5 rounded-2xl border transition duration-300 flex flex-col justify-between ${
+          unlocked ? 'border-red-500/50 hover:border-red-500' : 'border-slate-800 opacity-70'
+        }`;
+
+        let statusTag = `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-green-950 text-green-300 font-bold border border-green-500/40">Disponível</span>`;
+        let buttonHTML = `<button onclick="startLevelApart(${lvl.id})" class="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 honda-red honda-red-hover text-white transition shadow-md">${lvl.isTraining ? 'INICIAR TREINAMENTO' : 'INICIAR DESAFIO'} <i class="fa-solid fa-play"></i></button>`;
+
+        if (!unlocked) {
+          statusTag = `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Bloqueado</span>`;
+          buttonHTML = `
+            <div class="w-full py-2 bg-black/60 border border-slate-700 rounded-xl text-center space-y-0.5">
+              <span class="text-[10px] text-slate-300 uppercase tracking-widest block font-mono font-bold">Disponível em:</span>
+              <span id="countdown_lvl_${lvl.id}" class="text-xs font-black text-amber-400 font-mono">Calculando...</span>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-bold text-base text-white">${lvl.title}</h3>
+              ${statusTag}
+            </div>
+            <p class="text-xs text-slate-300 mb-4 font-medium">${doneRounds}/${lvl.rounds.length} rodadas concluídas</p>
+          </div>
+          ${buttonHTML}
+        `;
+        grid.appendChild(card);
+      });
+
+      countdownTimerInterval = setInterval(() => {
+        playerLevels.forEach(lvl => {
+          if (!isLevelUnlocked(lvl) && lvl.unlockDate) {
+            const t = getTimeRemaining(lvl.unlockDate);
+            const el = document.getElementById(`countdown_lvl_${lvl.id}`);
+            if (el) {
+              el.innerText = `${t.days}d ${t.hours}h ${t.minutes}m ${t.seconds}s`;
+            }
+          }
+        });
+      }, 1000);
+    }
+
+    window.startLevelApart = function(levelId) {
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === levelId);
+      if (!lvl) return;
+
+      if (!isLevelUnlocked(lvl)) {
+        alert("Este nível está bloqueado. Aguarde a data de liberação programada!");
+        return;
+      }
+
+      currentRoundState = { levelId: levelId, roundIndex: 0, clueIndex: 0, roundData: lvl.rounds[0] };
+      setupRoundDisplayApart();
+
+      const subLevels = document.getElementById("subScreenLevels");
+      const subGame = document.getElementById("subScreenGame");
+
+      if (subLevels) subLevels.classList.add("hidden");
+      if (subGame) subGame.classList.remove("hidden");
+    };
+
+    function setupRoundDisplayApart() {
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
+      const round = lvl.rounds[currentRoundState.roundIndex];
+      currentRoundState.roundData = round;
+      currentRoundState.clueIndex = 0;
+
+      const gLvlTitle = document.querySelector("#subScreenGame #gameLevelTitle");
+      const gRndTitle = document.querySelector("#subScreenGame #gameRoundTitle");
+      const gScoreDisp = document.querySelector("#subScreenGame #gameScoreDisplay");
+      const inAns = document.getElementById("inputAnswer");
+
+      if (gLvlTitle) gLvlTitle.innerText = lvl.title;
+      if (gRndTitle) gRndTitle.innerText = `${round.titleName} de ${lvl.rounds.length}`;
+      if (gScoreDisp) gScoreDisp.innerText = `${currentPlayer.score} pts`;
+
+      if (inAns) inAns.value = "";
+      renderCluesApart();
+    }
+
+    function renderCluesApart() {
+      const container = document.querySelector("#subScreenGame #cluesContainer");
+      if (!container) return;
+      container.innerHTML = "";
+      const round = currentRoundState.roundData;
+
+      for (let i = 0; i <= currentRoundState.clueIndex; i++) {
+        const clue = round.clues[i];
+        const clueDiv = document.createElement("div");
+        clueDiv.className = "glass-card p-4 rounded-xl border border-red-500/40 flex items-start gap-3 shadow-md";
+        clueDiv.innerHTML = `
+          <div class="bg-red-600/40 text-yellow-300 font-bold px-2.5 py-1 rounded-lg text-xs border border-red-500/50">${clue.points} Pts</div>
+          <p class="text-xs sm:text-sm text-slate-100 font-medium">${clue.text}</p>
+        `;
+        container.appendChild(clueDiv);
+      }
+    }
+
+    window.handleAnswerSubmit = function(e) {
+      e.preventDefault();
+      const input = document.getElementById("inputAnswer");
+      if (!input) return;
+      const userAns = normalizeString(input.value);
+      const round = currentRoundState.roundData;
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
+
+      let isCorrect = false;
+      const possibleAnswers = [round.answer, ...(round.acceptedAnswers || [])];
+      isCorrect = possibleAnswers.some(ans => normalizeString(ans) === userAns);
+
+      if (isCorrect) {
+        const points = round.clues[currentRoundState.clueIndex].points;
+        const alreadyCompleted = currentPlayer.completedRounds.includes(round.id);
+
+        if (!lvl.isTraining && !alreadyCompleted) {
+          currentPlayer.completedRounds.push(round.id);
+          currentPlayer.score += points;
+          sessionStorage.setItem("bulgarelli_active_session", JSON.stringify(currentPlayer));
+          savePlayerToCloudRanking();
+        }
+
+        showModal("<i class='fa-solid fa-circle-check text-5xl text-green-400'></i>", "Resposta Correta!", round.explanation, "PRÓXIMO DESAFIO", () => advanceGameApart());
+      } else {
+        if (currentRoundState.clueIndex < 2) {
+          currentRoundState.clueIndex++;
+          renderCluesApart();
+          input.value = "";
+          showModal("<i class='fa-solid fa-circle-xmark text-5xl text-yellow-400'></i>", "Resposta Divergente!", "Incorreta! A próxima pista foi liberada.", "TENTAR NOVAMENTE", null);
+        } else {
+          showModal("<i class='fa-solid fa-face-frown text-5xl text-red-500'></i>", "Fim das Pistas!", `A resposta correta era: ${round.answer}`, "CONTINUAR", () => advanceGameApart());
+        }
+      }
+    };
+
+    function advanceGameApart() {
+      const playerLevels = getPlayerLevels();
+      const lvl = playerLevels.find(l => l.id === currentRoundState.levelId);
+      if (currentRoundState.roundIndex < lvl.rounds.length - 1) {
+        currentRoundState.roundIndex++;
+        setupRoundDisplayApart();
+      } else {
+        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts (Sincronizada)`, "VOLTAR AO MENU", () => showLevelsScreenApart());
+      }
+    }
+
+    async function savePlayerToCloudRanking() {
+      const data = { 
+        name: currentPlayer.name, 
+        matricula: currentPlayer.matricula, 
+        portfolio: currentPlayer.portfolio || "Honda",
+        score: currentPlayer.score, 
+        completedRounds: currentPlayer.completedRounds,
+        completedRoundsCount: currentPlayer.completedRounds.length,
+        updatedAt: Date.now()
+      };
+
+      if (window.savePlayerToFirebase) {
+        await window.savePlayerToFirebase(data);
+      }
+    }
+
     function showModal(iconHTML, title, message, btnText, callback) {
-      document.getElementById("modalIconContainer").innerHTML = iconHTML;
-      document.getElementById("modalTitle").innerHTML = title;
-      document.getElementById("modalMessage").innerHTML = message;
-      document.getElementById("modalButton").innerText = btnText;
+      const icEl = document.getElementById("modalIconContainer");
+      const titleEl = document.getElementById("modalTitle");
+      const msgEl = document.getElementById("modalMessage");
+      const btn = document.getElementById("modalButton");
+
+      if (icEl) icEl.innerHTML = iconHTML;
+      if (titleEl) titleEl.innerHTML = title;
+      if (msgEl) msgEl.innerHTML = message;
+      if (btn) {
+        btn.innerText = btnText || "CONTINUAR";
+        btn.className = "w-full py-3 font-bold rounded-xl text-white transition honda-red honda-red-hover shadow-lg";
+      }
       window.modalCallback = callback;
-      document.getElementById("modalOverlay").classList.remove("hidden");
+
+      const overlay = document.getElementById("modalOverlay");
+      const card = document.getElementById("modalCard");
+      if (overlay) overlay.classList.remove("hidden");
+      setTimeout(() => { 
+        if (card) {
+          card.classList.remove("scale-95", "opacity-0"); 
+          card.classList.add("scale-100", "opacity-100"); 
+        }
+      }, 10);
     }
 
     window.closeModal = function() {
-      document.getElementById("modalOverlay").classList.add("hidden");
-      if (window.modalCallback) {
-        const cb = window.modalCallback;
-        window.modalCallback = null;
-        cb();
+      const overlay = document.getElementById("modalOverlay");
+      const card = document.getElementById("modalCard");
+      if (card) {
+        card.classList.remove("scale-100", "opacity-100");
+        card.classList.add("scale-95", "opacity-0");
       }
-    };
-
-    window.populateAdminDashboard = function() {
-      const select = document.getElementById("adminSelectEmployee");
-      if (!select) return;
-      select.innerHTML = "";
-      window.authorizedEmployees.forEach(emp => {
-        const opt = document.createElement("option");
-        opt.value = emp.matricula;
-        opt.innerText = `${emp.name} (Mat: ${emp.matricula} | ${emp.portfolio || 'Honda'})`;
-        select.appendChild(opt);
-      });
-      onAdminSelectEmployeeChange();
-    };
-
-    window.onAdminSelectEmployeeChange = function() {
-      const sel = document.getElementById("adminSelectEmployee");
-      if (!sel) return;
-      const emp = window.authorizedEmployees.find(e => e.matricula === sel.value);
-      if (emp) {
-        document.getElementById("adminNewName").value = emp.name;
-        document.getElementById("adminNewPortfolio").value = emp.portfolio || "Honda";
-        document.getElementById("adminNewRole").value = emp.isAdmin ? "Admin" : "Comum";
-      }
-    };
-
-    window.adminSaveEmployeeChanges = function() {
-      const sel = document.getElementById("adminSelectEmployee");
-      const emp = window.authorizedEmployees.find(e => e.matricula === sel.value);
-      if (emp) {
-        emp.name = document.getElementById("adminNewName").value.trim().toUpperCase();
-        emp.portfolio = document.getElementById("adminNewPortfolio").value;
-        emp.isAdmin = document.getElementById("adminNewRole").value === "Admin";
-        window.saveEmployeesToFirebaseCloud();
-        populateAdminDashboard();
-        alert("Colaborador atualizado no Firebase!");
-      }
-    };
-
-    window.adminResetPasswordIndividual = function() {
-      const sel = document.getElementById("adminSelectEmployee");
-      const emp = window.authorizedEmployees.find(e => e.matricula === sel.value);
-      if (emp) {
-        emp.password = "123Mudar";
-        window.saveEmployeesToFirebaseCloud();
-        alert("Senha resetada para '123Mudar' no Firebase.");
-      }
-    };
-
-    window.processSpreadsheetImport = function() {
-      const text = document.getElementById("importSpreadsheetInput").value.trim();
-      if (!text) return;
-      text.split("\n").forEach(line => {
-        const p = line.split(/\t|,|;/).map(x => x.trim());
-        if (p.length >= 2) {
-          const name = p[0].toUpperCase();
-          const mat = p[1];
-          const port = p[2] || "Honda";
-          const adm = (p[3] || "").toLowerCase().includes("admin");
-          let existing = window.authorizedEmployees.find(e => e.matricula === mat);
-          if (existing) {
-            existing.name = name;
-            existing.portfolio = port;
-            existing.isAdmin = adm;
-          } else {
-            window.authorizedEmployees.push({ name, matricula: mat, portfolio: port, password: "123Mudar", isAdmin: adm });
-          }
+      setTimeout(() => {
+        if (overlay) overlay.classList.add("hidden");
+        if (window.modalCallback) {
+          const cb = window.modalCallback;
+          window.modalCallback = null;
+          cb();
         }
-      });
-      window.saveEmployeesToFirebaseCloud();
-      populateAdminDashboard();
-      alert("Colaboradores importados e salvos no Firebase com sucesso!");
-      document.getElementById("importSpreadsheetInput").value = "";
-    };
-
-    window.exportEmployeesCSV = function() {
-      let csv = "Nome,Matricula,Carteira,Perfil\n";
-      window.authorizedEmployees.forEach(e => {
-        csv += `"${e.name}","${e.matricula}","${e.portfolio || 'Honda'}","${e.isAdmin ? 'Admin' : 'Comum'}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.setAttribute("download", "colaboradores_firebase.csv");
-      link.click();
+      }, 200);
     };
 
     window.adminAddNewGame = function(e) {
       e.preventDefault();
-      alert("Novo jogo cadastrado!");
+      alert("Novo jogo cadastrado com sucesso!");
       e.target.reset();
-    };
-
-    function toggleThemeManual() {
-      document.documentElement.classList.toggle("dark");
-      document.documentElement.classList.toggle("light");
-    }
-
-    let sidebarHidden = false;
-    window.toggleSidebarManual = function() {
-      const sidebar = document.getElementById("sidebarNav");
-      const floatBtn = document.getElementById("sidebarToggleFloat");
-      if (!sidebarHidden) {
-        sidebar.style.transform = "translateX(-100%)";
-        sidebar.style.width = "0";
-        sidebar.style.padding = "0";
-        if (floatBtn) floatBtn.classList.remove("hidden");
-        sidebarHidden = true;
-      } else {
-        sidebar.style.transform = "translateX(0)";
-        sidebar.style.width = "16rem";
-        sidebar.style.padding = "";
-        if (floatBtn) floatBtn.classList.add("hidden");
-        sidebarHidden = false;
-      }
     };
   </script>
 </body>
