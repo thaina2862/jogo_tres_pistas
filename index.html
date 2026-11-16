@@ -212,7 +212,7 @@
       <div class="w-64 mx-auto bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700">
         <div id="preloaderBar" class="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-400 h-full w-0 transition-all duration-300 ease-out"></div>
       </div>
-      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Sincronizando dados...</p>
+      <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Sincronizando Firestore...</p>
     </div>
   </div>
 
@@ -228,7 +228,7 @@
             </div>
             <div>
               <span class="font-extrabold text-sm tracking-wide block uppercase">Bulgarelli Play</span>
-              <span class="text-[10px] text-slate-400 font-mono">Hub Online</span>
+              <span class="text-[10px] text-slate-400 font-mono">Firestore Online</span>
             </div>
           </div>
           <button onclick="toggleSidebarManual()" class="text-slate-400 hover:text-white p-1 rounded-lg" title="Recolher Menu">
@@ -264,7 +264,7 @@
 
         <div>
           <p id="sidebarPlayerName" class="font-bold truncate">Visitante / Não Logado</p>
-          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Autenticação Firebase</p>
+          <p id="sidebarPlayerMat" class="text-[10px] text-slate-400">Autenticação Firestore</p>
         </div>
         
         <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between">
@@ -295,7 +295,7 @@
           <button onclick="toggleSidebarManual()" class="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-200 transition" title="Manejar Menu Lateral">
             <i class="fa-solid fa-bars text-sm"></i>
           </button>
-          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play — Hub Online</span>
+          <span class="font-bold text-xs uppercase tracking-wider text-red-600">Bulgarelli Play — Firestore Online</span>
         </div>
 
         <div class="flex items-center gap-3">
@@ -314,7 +314,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h1 class="text-2xl font-bold font-game tracking-wider">Visão Geral do Portal</h1>
-            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais integrados em nuvem.</p>
+            <p class="text-xs text-slate-400">Atalhos de navegação e simuladores operacionais integrados ao Firestore.</p>
           </div>
         </div>
 
@@ -329,7 +329,7 @@
               </div>
               <div>
                 <h4 id="overviewFolderTitle" class="text-sm font-bold">Minha Carteira Vinculada</h4>
-                <p class="text-[10px] text-slate-400">Sincronizado via Firebase</p>
+                <p class="text-[10px] text-slate-400">Sincronizado via Firestore</p>
               </div>
             </div>
           </div>
@@ -368,7 +368,7 @@
       <section id="screenAdmin" class="hidden flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-6">
         <div>
           <h1 class="text-2xl font-bold font-game tracking-wider text-yellow-600">Painel Admin — Treinamento &amp; Qualidade</h1>
-          <p class="text-xs text-slate-400">Métricas operacionais em nuvem, importação de planilhas e gestão de colaboradores.</p>
+          <p class="text-xs text-slate-400">Métricas operacionais no Firestore, importação de planilhas e gestão de colaboradores.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -412,7 +412,7 @@
             <textarea id="importSpreadsheetInput" rows="4" placeholder="Exemplo:&#10;Fulano da Silva 1234 Honda Comum&#10;Marina Santos 5678 Stellantis Admin" class="w-full p-3 bg-black/60 border border-slate-700 rounded-xl text-xs font-mono text-white"></textarea>
             <div class="flex gap-3">
               <button onclick="processSpreadsheetImport()" class="px-6 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
-                <i class="fa-solid fa-upload"></i> Processar e Sincronizar no Firebase
+                <i class="fa-solid fa-upload"></i> Processar e Sincronizar no Firestore
               </button>
               <button onclick="exportEmployeesCSV()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-xl text-xs font-bold transition">
                 Exportar Lista Atual
@@ -735,7 +735,7 @@
             </div>
             <div class="flex items-center gap-3">
               <div class="text-right bg-black/50 px-4 py-1.5 rounded-xl border border-yellow-500/40">
-                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Total (Cloud)</span>
+                <span class="text-[10px] text-slate-300 uppercase block font-bold">Pontuação Total (Firestore)</span>
                 <span id="displayPlayerScore" class="text-lg font-black text-yellow-400">0 pts</span>
               </div>
               <button onclick="closeGameApart()" class="px-3 py-2 bg-red-900/80 hover:bg-red-800 text-xs font-bold rounded-xl border border-red-500/50 transition flex items-center gap-1.5 text-white">
@@ -753,11 +753,11 @@
             <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           </div>
 
-          <!-- RANKING ONLINE EM TEMPO REAL (FIREBASE) -->
+          <!-- RANKING ONLINE EM TEMPO REAL (FIRESTORE) -->
           <div class="glass-card p-6 rounded-2xl border-red-500/30 mt-6 space-y-6">
             <div class="flex justify-between items-center">
               <h2 class="text-lg font-bold font-game text-yellow-400 flex items-center gap-2">
-                <i class="fa-solid fa-ranking-star"></i> Ranking Online Compartilhado (Firebase)
+                <i class="fa-solid fa-ranking-star"></i> Ranking Online Compartilhado (Firestore)
               </h2>
               <span class="text-xs text-green-400 font-mono flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Sincronizado ao Vivo</span>
             </div>
@@ -779,7 +779,7 @@
                   </tr>
                 </thead>
                 <tbody id="internalRankingTableBody">
-                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Conectando ao Firebase para carregar ranking compartilhado...</td></tr>
+                  <tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Conectando ao Firestore para carregar ranking compartilhado...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -824,7 +824,7 @@
       </section>
 
       <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-auto">
-        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS — Banco de Dados em Nuvem Firebase — 2026</p>
+        <p>Portal operacional Bulgarelli SERVIÇOS FINANCEIROS — Cloud Firestore — 2026</p>
       </footer>
     </div>
   </div>
@@ -972,7 +972,7 @@
     <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/40 shadow-2xl relative">
       <div class="text-center mb-6">
         <i class="fa-solid fa-id-card text-4xl text-red-500 mb-2"></i>
-        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Acesso Online Firebase</h2>
+        <h2 id="modalAuthTitle" class="text-2xl font-bold font-game text-white">Acesso Cloud Firestore</h2>
         <p id="modalAuthSubtitle" class="text-xs text-slate-300 font-medium">Insira seu Nome e Matrícula para autenticar no Portal Bulgarelli Play</p>
       </div>
       <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
@@ -1049,7 +1049,7 @@
         .replace(/[^a-z0-9]/g, "");
     }
 
-    // Sinalizador visual de status online / conectado
+    // Sinalizador visual de status online / conectado no Firestore
     window.updateConnectionStatusUI = function(isConnected) {
       const dot = document.getElementById("connectionDot");
       const txt = document.getElementById("connectionText");
@@ -1057,7 +1057,7 @@
 
       if (isConnected) {
         dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
-        txt.innerText = "Online";
+        txt.innerText = "Firestore Online";
         txt.className = "text-[11px] font-bold text-green-400";
       } else {
         dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
@@ -1072,7 +1072,7 @@
       if (!tbody || !podiumEl) return;
 
       if (!ranking || ranking.length === 0) {
-        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Aguardando dados de ranking do Firebase...</div>`;
+        podiumEl.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 italic">Aguardando dados de ranking do Firestore...</div>`;
         tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Nenhum operador pontuou no ranking compartilhado ainda.</td></tr>`;
         return;
       }
@@ -1143,13 +1143,13 @@
     };
   </script>
 
-  <!-- FIREBASE REALTIME ENGINE COM URL DE CONEXÃO E FORÇAGEM GOONLINE -->
+  <!-- FIRESTORE ENGINE (MIGRAÇÃO DE RTDB PARA FIRESTORE) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, runTransaction, goOnline } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     window.db = null;
-    window.firebaseReady = false;
+    window.firestoreReady = false;
 
     try {
       const firebaseConfig = {
@@ -1159,108 +1159,101 @@
         storageBucket: "jogo-tres-pontos.firebasestorage.app",
         messagingSenderId: "60682371403",
         appId: "1:60682371403:web:d4641b60bc7e5b8a1de8ce",
-        measurementId: "G-22N725HK6E",
-        databaseURL: "https://jogo-tres-pontos-default-rtdb.firebaseio.com"
+        measurementId: "G-22N725HK6E"
       };
 
       const app = initializeApp(firebaseConfig);
-      window.db = getDatabase(app);
-      
-      // Força a conexão imediata com o servidor em tempo real
-      goOnline(window.db);
-      window.firebaseReady = true;
+      window.db = getFirestore(app);
+      window.firestoreReady = true;
 
-      // Monitor de conexão online/offline do Firebase
-      const connectedRef = ref(window.db, ".info/connected");
-      onValue(connectedRef, (snap) => {
-        const isConnected = snap.val() === true;
-        if (window.updateConnectionStatusUI) {
-          window.updateConnectionStatusUI(isConnected);
-        }
-      });
+      if (window.updateConnectionStatusUI) {
+        window.updateConnectionStatusUI(true);
+      }
 
-      // Sincronização do ranking compartilhado
-      window.syncFirebaseRanking();
+      // Sincronização do ranking compartilhado no Firestore (Coleção: rankings, Documento: global)
+      window.syncFirestoreRanking();
 
-      // Sincronização de funcionários e permissões em tempo real
-      const employeesRef = ref(window.db, 'config/authorizedEmployees');
-      onValue(employeesRef, (snapshot) => {
-        const cloudEmployees = snapshot.val();
-        if (cloudEmployees && Array.isArray(cloudEmployees)) {
-          authorizedEmployees = cloudEmployees;
-          if (typeof populateAdminDashboard === 'function') {
-            populateAdminDashboard();
+      // Sincronização de funcionários e permissões no Firestore (Coleção: config, Documento: employees)
+      const configDocRef = doc(window.db, "config", "employees");
+      onSnapshot(configDocRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData && Array.isArray(cloudData.list)) {
+            authorizedEmployees = cloudData.list;
+            if (typeof populateAdminDashboard === 'function') {
+              populateAdminDashboard();
+            }
           }
         } else {
-          set(employeesRef, authorizedEmployees);
+          setDoc(configDocRef, { list: authorizedEmployees });
         }
       });
 
     } catch(e) {
-      console.error("Erro ao inicializar o Firebase:", e);
+      console.error("Erro ao inicializar o Firestore:", e);
       if (window.updateConnectionStatusUI) window.updateConnectionStatusUI(false);
     }
 
-    window.syncFirebaseData = function(matricula, callback) {
+    window.syncFirestoreData = async function(matricula, callback) {
       if (!window.db || !matricula) return;
       try {
-        const playerRef = ref(window.db, 'rankings/global/' + matricula);
-        onValue(playerRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data && callback) {
-            callback(data);
-          }
-        });
+        const docRef = doc(window.db, "rankings_global", String(matricula));
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && callback) {
+          callback(docSnap.data());
+        }
       } catch(e) {}
     };
 
-    window.syncFirebaseRanking = function() {
+    window.syncFirestoreRanking = function() {
       if (!window.db) return;
       try {
-        const rankingRef = ref(window.db, 'rankings/global');
-        onValue(rankingRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const rankingArray = Object.values(data);
-            rankingArray.sort((a, b) => b.score - a.score);
-            if (window.renderInternalRankingTable) window.renderInternalRankingTable(rankingArray);
-            if (window.updateAdminMetrics) window.updateAdminMetrics(rankingArray);
-          } else {
-            if (window.renderInternalRankingTable) window.renderInternalRankingTable([]);
-            if (window.updateAdminMetrics) window.updateAdminMetrics([]);
-          }
+        const colRef = collection(window.db, "rankings_global");
+        onSnapshot(colRef, (snapshot) => {
+          const rankingArray = [];
+          snapshot.forEach((doc) => {
+            rankingArray.push(doc.data());
+          });
+          rankingArray.sort((a, b) => b.score - a.score);
+          if (window.renderInternalRankingTable) window.renderInternalRankingTable(rankingArray);
+          if (window.updateAdminMetrics) window.updateAdminMetrics(rankingArray);
         });
       } catch(e) {}
     };
 
-    window.savePlayerToFirebase = async function(playerData) {
+    window.savePlayerToFirestore = async function(playerData) {
       if (!window.db) return false;
-      const playerRef = ref(window.db, 'rankings/global/' + playerData.matricula);
       try {
-        await runTransaction(playerRef, (currentData) => {
-          if (currentData === null) {
-            return playerData;
-          } else {
-            return {
-              ...currentData,
-              score: Math.max(currentData.score || 0, playerData.score),
-              completedRounds: Array.from(new Set([...(currentData.completedRounds || []), ...(playerData.completedRounds || [])])),
-              completedRoundsCount: Math.max(currentData.completedRoundsCount || 0, playerData.completedRoundsCount),
-              updatedAt: Date.now()
-            };
-          }
-        });
+        const docRef = doc(window.db, "rankings_global", String(playerData.matricula));
+        const docSnap = await getDoc(docRef);
+        
+        let finalScore = playerData.score;
+        let finalRounds = playerData.completedRounds || [];
+
+        if (docSnap.exists()) {
+          const existing = docSnap.data();
+          finalScore = Math.max(existing.score || 0, playerData.score);
+          finalRounds = Array.from(new Set([...(existing.completedRounds || []), ...finalRounds]));
+        }
+
+        await setDoc(docRef, {
+          ...playerData,
+          score: finalScore,
+          completedRounds: finalRounds,
+          completedRoundsCount: finalRounds.length,
+          updatedAt: Date.now()
+        }, { merge: true });
         return true;
       } catch(e) {
         return false;
       }
     };
 
-    window.saveEmployeesToFirebaseCloud = async function() {
+    window.saveEmployeesToFirestoreCloud = async function() {
       if (!window.db) return;
       try {
-        const employeesRef = ref(window.db, 'config/authorizedEmployees');
-        await set(employeesRef, authorizedEmployees);
+        const docRef = doc(window.db, "config", "employees");
+        await setDoc(docRef, { list: authorizedEmployees });
       } catch(e) {}
     };
   </script>
@@ -1615,8 +1608,8 @@
             currentPlayer = parsed;
             updateSessionUI();
             
-            if (window.syncFirebaseData && currentPlayer.matricula) {
-              window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
+            if (window.syncFirestoreData && currentPlayer.matricula) {
+              window.syncFirestoreData(currentPlayer.matricula, (cloudData) => {
                 if (cloudData) {
                   currentPlayer.score = Math.max(currentPlayer.score || 0, cloudData.score || 0);
                   currentPlayer.completedRounds = Array.from(new Set([...(currentPlayer.completedRounds || []), ...(cloudData.completedRounds || [])]));
@@ -1816,7 +1809,7 @@
             </div>
             <div>
               <h3 class="text-lg font-bold">Carteira ${port}</h3>
-              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais em nuvem.</p>
+              <p class="text-xs text-slate-400">Simuladores e treinamentos operacionais no Firestore.</p>
             </div>
           </div>
 
@@ -1944,11 +1937,11 @@
         emp.portfolio = newPort;
         emp.isAdmin = (newRole === "Admin");
 
-        if (window.saveEmployeesToFirebaseCloud) {
-          window.saveEmployeesToFirebaseCloud();
+        if (window.saveEmployeesToFirestoreCloud) {
+          window.saveEmployeesToFirestoreCloud();
         }
         populateAdminDashboard();
-        alert("Dados do colaborador salvos no Firebase com sucesso!");
+        alert("Dados do colaborador salvos no Firestore com sucesso!");
       }
     };
 
@@ -1959,10 +1952,10 @@
       const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
       if (emp) {
         emp.password = "123Mudar";
-        if (window.saveEmployeesToFirebaseCloud) {
-          window.saveEmployeesToFirebaseCloud();
+        if (window.saveEmployeesToFirestoreCloud) {
+          window.saveEmployeesToFirestoreCloud();
         }
-        alert(`Senha do colaborador ${emp.name} resetada no Firebase para: 123Mudar.`);
+        alert(`Senha do colaborador ${emp.name} resetada no Firestore para: 123Mudar.`);
         populateAdminDashboard();
       }
     };
@@ -2004,11 +1997,11 @@
         }
       });
 
-      if (window.saveEmployeesToFirebaseCloud) {
-        window.saveEmployeesToFirebaseCloud();
+      if (window.saveEmployeesToFirestoreCloud) {
+        window.saveEmployeesToFirestoreCloud();
       }
       populateAdminDashboard();
-      alert(`Importação concluída! ${countAdded} novos colaboradores sincronizados no Firebase.`);
+      alert(`Importação concluída! ${countAdded} novos colaboradores sincronizados no Firestore.`);
       document.getElementById("importSpreadsheetInput").value = "";
     };
 
@@ -2021,7 +2014,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.setAttribute("download", "colaboradores_bulgarelli_firebase.csv");
+      link.setAttribute("download", "colaboradores_bulgarelli_firestore.csv");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -2061,7 +2054,7 @@
         updateHeaderAvatarDisplay();
       } else {
         if (sidebarName) sidebarName.innerText = "Visitante / Não Logado";
-        if (sidebarMat) sidebarMat.innerText = "Autenticação Firebase";
+        if (sidebarMat) sidebarMat.innerText = "Autenticação Firestore";
         if (headerName) headerName.innerText = "Visitante";
         if (navAdmin) navAdmin.classList.add("hidden");
 
@@ -2156,7 +2149,7 @@
             if (authBtn) authBtn.innerText = "ENTRAR NO PORTAL";
           }
         } else {
-          alert("Colaborador não encontrado na base de dados do Firebase. Solicite ao gestor a importação via planilha.");
+          alert("Colaborador não encontrado na base de dados do Firestore. Solicite ao gestor a importação via planilha.");
           return;
         }
       } else if (isPasswordChangeStep) {
@@ -2180,8 +2173,8 @@
         let existingIndex = authorizedEmployees.findIndex(e => e.matricula === tempPendingEmp.matricula);
         if (existingIndex >= 0) authorizedEmployees[existingIndex] = tempPendingEmp;
         
-        if (window.saveEmployeesToFirebaseCloud) {
-          window.saveEmployeesToFirebaseCloud();
+        if (window.saveEmployeesToFirestoreCloud) {
+          window.saveEmployeesToFirestoreCloud();
         }
         
         currentPlayer.name = tempPendingEmp.name;
@@ -2207,8 +2200,8 @@
     };
 
     function finalizeLoginAndDirectToPortal() {
-      if (window.syncFirebaseData && currentPlayer.matricula) {
-        window.syncFirebaseData(currentPlayer.matricula, (cloudData) => {
+      if (window.syncFirestoreData && currentPlayer.matricula) {
+        window.syncFirestoreData(currentPlayer.matricula, (cloudData) => {
           if (cloudData) {
             currentPlayer.score = Math.max(currentPlayer.score || 0, cloudData.score || 0);
             currentPlayer.completedRounds = Array.from(new Set([...(currentPlayer.completedRounds || []), ...(cloudData.completedRounds || [])]));
@@ -2474,7 +2467,7 @@
         currentRoundState.roundIndex++;
         setupRoundDisplayApart();
       } else {
-        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts (Sincronizada)`, "VOLTAR AO MENU", () => showLevelsScreenApart());
+        showModal("<i class='fa-solid fa-trophy text-6xl text-yellow-400'></i>", "Módulo Concluído!", `Sua pontuação total é: ${currentPlayer.score} pts (Sincronizada Firestore)`, "VOLTAR AO MENU", () => showLevelsScreenApart());
       }
     }
 
@@ -2489,8 +2482,8 @@
         updatedAt: Date.now()
       };
 
-      if (window.savePlayerToFirebase) {
-        await window.savePlayerToFirebase(data);
+      if (window.savePlayerToFirestore) {
+        await window.savePlayerToFirestore(data);
       }
     }
 
