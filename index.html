@@ -1143,10 +1143,10 @@
     };
   </script>
 
-  <!-- FIREBASE REALTIME ENGINE 100% ONLINE COM A SUA CONFIGURAÇÃO -->
+  <!-- FIREBASE REALTIME ENGINE COM URL DE CONEXÃO E FORÇAGEM GOONLINE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, set, get, onValue, runTransaction, goOnline } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     window.db = null;
     window.firebaseReady = false;
@@ -1165,6 +1165,9 @@
 
       const app = initializeApp(firebaseConfig);
       window.db = getDatabase(app);
+      
+      // Força a conexão imediata com o servidor em tempo real
+      goOnline(window.db);
       window.firebaseReady = true;
 
       // Monitor de conexão online/offline do Firebase
