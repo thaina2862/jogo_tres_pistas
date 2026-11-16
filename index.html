@@ -253,7 +253,7 @@
       </div>
 
       <div class="p-4 m-4 rounded-2xl bg-black/40 border border-slate-800 text-xs space-y-3">
-        <!-- Sinalização de status de conexão solicitada -->
+        <!-- Sinalização de status de conexão -->
         <div id="connectionSignalBadge" class="flex items-center justify-between bg-black/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
           <span class="text-[10px] text-slate-400 font-bold uppercase">Status:</span>
           <div class="flex items-center gap-1.5">
@@ -488,7 +488,7 @@
         </div>
       </section>
 
-      <!-- ================= ABA DO JOGO (PRESERVADA EXATAMENTE COMO ANTES) ================= -->
+      <!-- ================= ABA DO JOGO ================= -->
       <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative bg-[#090a0f] text-slate-100">
         <div id="subScreenCover" class="flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden p-4">
           <div id="flashOverlay" class="launch-flash"></div>
@@ -527,7 +527,7 @@
               </div>
           </div>
 
-          <!-- HONDA CIVIC TYPE-R 3D ORIGINAL COMPLETO -->
+          <!-- HONDA CIVIC TYPE-R 3D -->
           <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
               <div class="road-perspective pointer-events-none">
                   <div class="road-grid"></div>
@@ -762,10 +762,10 @@
               <span class="text-xs text-green-400 font-mono flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Sincronizado ao Vivo</span>
             </div>
 
-            <!-- PÓDIO (1°, 2°, 3°) -->
+            <!-- PÓDIO -->
             <div id="podiumContainer" class="grid grid-cols-3 gap-3 pt-2 pb-4 border-b border-slate-700"></div>
 
-            <!-- TABELA DEMAIS COLOCAÇÕES -->
+            <!-- TABELA DE CLASSIFICAÇÃO -->
             <div class="overflow-x-auto">
               <table class="w-full text-left text-sm">
                 <thead>
@@ -1016,7 +1016,7 @@
     </div>
   </div>
 
-  <!-- MODAL FEEDBACK / CORREÇÃO -->
+  <!-- MODAL FEEDBACK -->
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
     <div id="modalCard" class="max-w-md w-full glass-card p-6 sm:p-8 rounded-3xl border border-red-500/50 text-center shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
       <div id="modalIconContainer" class="mb-4"></div>
@@ -1049,7 +1049,6 @@
         .replace(/[^a-z0-9]/g, "");
     }
 
-    // Sinalizador visual de status online / conectado no Firestore
     window.updateConnectionStatusUI = function(isConnected) {
       const dot = document.getElementById("connectionDot");
       const txt = document.getElementById("connectionText");
@@ -1143,10 +1142,10 @@
     };
   </script>
 
-  <!-- FIRESTORE ENGINE (MIGRAÇÃO DE RTDB PARA FIRESTORE) -->
+  <!-- FIRESTORE ENGINE (COM SUAS CREDENCIAIS EXATAS) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     window.db = null;
     window.firestoreReady = false;
@@ -1170,10 +1169,10 @@
         window.updateConnectionStatusUI(true);
       }
 
-      // Sincronização do ranking compartilhado no Firestore (Coleção: rankings, Documento: global)
+      // Sincronização em tempo real do ranking compartilhado
       window.syncFirestoreRanking();
 
-      // Sincronização de funcionários e permissões no Firestore (Coleção: config, Documento: employees)
+      // Sincronização de funcionários e permissões
       const configDocRef = doc(window.db, "config", "employees");
       onSnapshot(configDocRef, (docSnap) => {
         if (docSnap.exists()) {
