@@ -58,17 +58,17 @@ background: rgba(255, 255, 255, 0.04);
 backdrop-filter: blur(12px);
 border: 1px solid rgba(255, 255, 255, 0.1);
 }
-/* MODO CLARO AJUSTADO COM CORES FORTES E ALTO CONTRASTE */
+/* MODO CLARO COM ALTO CONTRASTE */
 .light body, .light {
-background-color: #f1f5f9 !important;
-color: #090d16 !important;
+background-color: #e2e8f0 !important;
+color: #0f172a !important;
 }
 .light .glass-card {
 background: #ffffff !important;
 backdrop-filter: blur(12px);
-border: 1px solid #cbd5e1 !important;
-box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-color: #090d16 !important;
+border: 1px solid #94a3b8 !important;
+box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+color: #0f172a !important;
 }
 .light aside {
 background-color: #ffffff !important;
@@ -80,17 +80,20 @@ border-bottom: 1px solid #cbd5e1 !important;
 }
 .light input, .light select, .light textarea {
 background-color: #ffffff !important;
-border: 1px solid #64748b !important;
-color: #090d16 !important;
+border: 1px solid #475569 !important;
+color: #0f172a !important;
+font-weight: 600;
 }
 .light input::placeholder, .light textarea::placeholder {
-color: #94a3b8 !important;
+color: #64748b !important;
 }
 .light .text-slate-400 { color: #334155 !important; }
 .light .text-slate-300 { color: #1e293b !important; }
 .light .text-slate-200 { color: #0f172a !important; }
-.light h1, .light h2, .light h3, .light h4 { color: #090d16 !important; }
-/* ISOLAMENTO ABSOLUTO DO JOGO: PERMANECE ESCURO MESMO NO MODO CLARO */
+.light h1, .light h2, .light h3, .light h4 { color: #0f172a !important; }
+.light #screenAdmin h1, .light #screenAdmin h2, .light #screenAdmin h3 { color: #b45309 !important; }
+
+/* JOGO MANTIDO TOTALMENTE ESCURO COM FUNDO PRETO E NEON */
 #screenGameStandalone,
 #screenGameStandalone .glass-card {
 background-color: #090a0f !important;
@@ -185,14 +188,18 @@ background-position: 0 0, 10px 10px; background-size: 20px 20px;
 .start-button-ring { background: radial-gradient(circle, #555 0%, #222 60%, #111 100%); border: 3px solid #8e959e; }
 .start-button-core { background: radial-gradient(circle at 35% 35%, #ff3b30 0%, #b80d0d 65%, #7a0000 100%); }
 .modal-backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); z-index: 99999; }
+
+/* INDICADOR DO BANCO INTEGRADO NO MENU LATERAL */
 #firebaseStatusIndicator {
-position: fixed; top: 12px; right: 14px; z-index: 10000;
 display: inline-flex; align-items: center; gap: 7px;
-min-height: 28px; padding: 4px 9px;
-border: 1px solid rgba(255,255,255,.14); border-radius: 999px;
+width: 100%; min-height: 28px; padding: 6px 10px;
+border: 1px solid rgba(255,255,255,.14); border-radius: 8px;
 background: rgba(15,17,21,.88); color: #f8fafc;
 font: 700 11px/1 system-ui, sans-serif;
-box-shadow: 0 3px 12px rgba(0,0,0,.3); backdrop-filter: blur(8px);
+box-shadow: 0 2px 6px rgba(0,0,0,.2); backdrop-filter: blur(8px);
+}
+.light #firebaseStatusIndicator {
+background: #f1f5f9; color: #0f172a; border: 1px solid #94a3b8;
 }
 #firebaseStatusDot {
 width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%;
@@ -204,7 +211,7 @@ background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.2);
 #firebaseStatusIndicator.offline #firebaseStatusDot {
 background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.2);
 }
-/* ESTILOS DE DESTAQUE DO PÓDIO E RANKING */
+
 #podiumContainer > div {
 transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -224,10 +231,6 @@ box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
 </style>
 </head>
 <body class="bg-[#090a0f] text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
-<div id="firebaseStatusIndicator" class="checking" role="status" aria-live="polite" title="Verificando conexão com o banco">
-<span id="firebaseStatusDot" aria-hidden="true"></span>
-<span id="firebaseStatusText">Verificando banco</span>
-</div>
 
 <!-- TELA DE CARREGAMENTO (TABELA PERIÓDICA) -->
 <div id="preloader" class="fixed inset-0 z-50 bg-[#040508] flex flex-col items-center justify-center p-4">
@@ -240,10 +243,11 @@ box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
 <p id="preloaderStatusText" class="text-xs text-slate-400 font-mono">Conectando ao Cloud Firestore...</p>
 </div>
 </div>
+
 <div id="appContainer" class="flex-1 flex w-full min-h-screen relative overflow-x-hidden">
 <!-- MENU LATERAL RETRÁTIL -->
 <aside id="sidebarNav" class="w-64 bg-[#040508] border-r border-slate-800 flex flex-col justify-between fixed md:sticky top-0 h-screen z-40 transition-all duration-300">
-<div class="p-5">
+<div class="p-5 flex flex-col h-full overflow-y-auto">
 <div class="flex items-center justify-between mb-8">
 <div class="flex items-center gap-3">
 <div class="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-900/50">
@@ -258,7 +262,7 @@ box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
 <i class="fa-solid fa-chevron-left text-sm"></i>
 </button>
 </div>
-<nav class="space-y-2">
+<nav class="space-y-2 flex-1">
 <a href="#" onclick="switchSidebarTab('overview')" id="navOverview" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
 <i class="fa-solid fa-house text-sm"></i> Visão Geral
 </a>
@@ -272,8 +276,16 @@ box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
 <i class="fa-solid fa-user-shield text-sm"></i> Painel Admin
 </a>
 </nav>
+
+<!-- BLOCO INFERIOR DO MENU LATERAL -->
+<div class="mt-auto pt-4 space-y-3">
+<!-- INDICADOR DO BANCO INTEGRADO DISCRETO -->
+<div id="firebaseStatusIndicator" class="checking" role="status" aria-live="polite" title="Verificando conexão com o banco">
+<span id="firebaseStatusDot" aria-hidden="true"></span>
+<span id="firebaseStatusText">Verificando banco</span>
 </div>
-<div class="p-4 m-4 rounded-2xl bg-black/40 border border-slate-800 text-xs space-y-3">
+
+<div class="p-4 rounded-2xl bg-black/40 border border-slate-800 text-xs space-y-3">
 <div id="sessionStatusIndicator" class="hidden items-center gap-2">
 <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
 <span class="text-slate-300 font-semibold">Sessão Ativa</span>
@@ -295,7 +307,10 @@ Acessar Login
 </button>
 </div>
 </div>
+</div>
+</div>
 </aside>
+
 <button id="sidebarToggleFloat" onclick="toggleSidebarManual()" class="fixed top-4 left-4 z-40 bg-red-600 text-white p-2.5 rounded-xl shadow-lg hidden hover:bg-red-700 transition">
 <i class="fa-solid fa-bars"></i>
 </button>
@@ -347,7 +362,6 @@ Acessar Login
 <i class="fa-solid fa-list-check text-red-600"></i> <span>Jogos Liberados para sua Carteira</span>
 </div>
 <div id="overviewAllowedGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<!-- Dinâmico conforme a carteira do usuário -->
 </div>
 </div>
 </section>
@@ -358,7 +372,6 @@ Acessar Login
 <p class="text-xs text-slate-400">Operações e simuladores liberados para o seu perfil.</p>
 </div>
 <div id="carteirasContainerList" class="space-y-6">
-<!-- Renderizado por script conforme permissão -->
 </div>
 </section>
 <!-- BIBLIOTECA DE JOGOS -->
@@ -368,7 +381,6 @@ Acessar Login
 <p class="text-xs text-slate-400">Catálogo de módulos de capacitação e treinamentos corporativos autorizados.</p>
 </div>
 <div id="libraryGamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<!-- Renderizado conforme carteira do operador -->
 </div>
 </section>
 <!-- PAINEL ADMIN -->
@@ -431,7 +443,7 @@ Exportar Lista Atual
 <h3 class="font-bold text-sm uppercase text-red-600 flex items-center gap-2">
 <i class="fa-solid fa-users-gear"></i> Gerenciar Perfil e Carteira do Colaborador
 </h3>
-<p class="text-xs text-slate-400">Selecione um colaborador para alterar nome, carteira, perfil de acesso ou resetar a senha para <strong>123Mudar</strong>.</p>
+<p class="text-xs text-slate-400">Selecione um colaborador para alterar nome, carteira, perfil de acesso, resetar senha ou excluí-lo permanentemente.</p>
 <div class="space-y-3">
 <div>
 <label class="block text-[10px] uppercase font-semibold text-slate-300 mb-1">Selecione o Colaborador</label>
@@ -458,9 +470,10 @@ Exportar Lista Atual
 </select>
 </div>
 </div>
-<div class="flex gap-2 pt-2">
+<div class="flex gap-2 pt-2 flex-wrap">
 <button onclick="adminSaveEmployeeChanges()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Salvar Alterações</button>
-<button onclick="adminResetPasswordIndividual()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition" title="Reseta a senha para 123Mudar">Resetar Senha (123Mudar)</button>
+<button onclick="adminResetPasswordIndividual()" class="px-3 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition" title="Reseta a senha para 123Mudar">Resetar Senha</button>
+<button onclick="adminDeleteEmployee()" class="px-3 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl text-xs font-bold transition" title="Excluir Colaborador"><i class="fa-solid fa-trash"></i> Excluir</button>
 </div>
 </div>
 </div>
@@ -492,7 +505,7 @@ Exportar Lista Atual
 </div>
 </div>
 </section>
-<!-- ================= ABA APARTADA DO JOGO (COM FUNDO ESCURO GARANTIDO) ================= -->
+<!-- ================= ABA APARTADA DO JOGO (FUNDO ESCURO NEON) ================= -->
 <section id="screenGameStandalone" class="hidden flex-1 flex flex-col w-full h-full relative bg-[#090a0f] text-slate-100">
 <div id="subScreenCover" class="flex-1 flex flex-col justify-between items-center w-full relative overflow-hidden p-4">
 <div id="flashOverlay" class="launch-flash"></div>
@@ -527,7 +540,7 @@ Treinamento de Negociação e Recuperação de Crédito — <span class="text-re
 </p>
 </div>
 </div>
-<!-- HONDA CIVIC TYPE-R 3D COMPLETO INTEGRADO (DESTAQUE APLICADO) -->
+<!-- HONDA CIVIC TYPE-R 3D -->
 <main id="sceneWrapper" class="stage-wrapper relative w-full max-w-4xl flex-1 flex items-center justify-center overflow-visible min-h-[360px]">
 <div class="road-perspective pointer-events-none">
 <div class="road-grid"></div>
@@ -740,7 +753,7 @@ VAMOS JOGAR!
 </div>
 <div id="levelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 </div>
-<!-- RANKING ONLINE COM PÓDIO E TABELA (DESEMPATE POR QUEM FINALIZOU PRIMEIRO) -->
+<!-- RANKING ONLINE COM PÓDIO E TABELA -->
 <div class="glass-card p-6 rounded-2xl border-red-500/25 mt-6 space-y-6">
 <div class="flex justify-between items-center">
 <h2 class="text-lg font-bold font-game text-yellow-500 flex items-center gap-2">
@@ -748,11 +761,8 @@ VAMOS JOGAR!
 </h2>
 <span class="text-xs text-slate-400 font-mono">Atualização em tempo real</span>
 </div>
-<!-- PÓDIO (1°, 2°, 3°) REESTILIZADO -->
 <div id="podiumContainer" class="grid grid-cols-3 gap-3 pt-2 pb-4 border-b border-slate-800">
-<!-- Renderizado via JS -->
 </div>
-<!-- TABELA DEMAIS COLOCAÇÕES -->
 <div class="overflow-x-auto">
 <table class="w-full text-left text-sm">
 <thead>
@@ -940,7 +950,7 @@ VAMOS JOGAR!
 </div>
 </div>
 </div>
-<!-- MODAL AUTENTICAÇÃO (OBRIGATÓRIO ANTES DE ENTRAR NA PÁGINA INICIAL) -->
+<!-- MODAL AUTENTICAÇÃO -->
 <div id="modalRegistration" class="fixed inset-0 z-50 modal-backdrop flex justify-center items-center p-4">
 <div class="max-w-md w-full glass-card p-8 rounded-3xl border-red-600/30 shadow-2xl relative">
 <div class="text-center mb-6">
@@ -949,7 +959,6 @@ VAMOS JOGAR!
 <p id="modalAuthSubtitle" class="text-xs text-slate-400">Insira seu Nome e Matrícula para acessar o Portal Bulgarelli Play</p>
 </div>
 <form id="formRegistration" onsubmit="handleAuthSubmit(event)" class="space-y-4">
-<!-- ETAPA 1: NOME E MATRÍCULA -->
 <div id="step1Fields" class="space-y-4">
 <div>
 <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nome e Sobrenome</label>
@@ -960,7 +969,6 @@ VAMOS JOGAR!
 <input type="text" id="inputMatricula" placeholder="1234" class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
 </div>
 </div>
-<!-- ETAPA 2: PRIMEIRO ACESSO OU APÓS RESET (SENHA 123Mudar -> CRIAR NOVA SENHA) -->
 <div id="step2Fields" class="hidden space-y-4">
 <div class="p-3 bg-red-950/40 border border-red-500/40 rounded-xl text-xs text-red-200 text-center">
 Primeiro acesso ou senha resetada! Defina sua nova senha pessoal de preferência abaixo.
@@ -974,7 +982,6 @@ Primeiro acesso ou senha resetada! Defina sua nova senha pessoal de preferência
 <input type="password" id="inputPasswordConfirm" placeholder="Repita a senha criada..." class="w-full px-4 py-3 bg-black/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-red-500 transition">
 </div>
 </div>
-<!-- ETAPA 3: LOGIN REGULAR (SENHA JÁ CADASTRADA E DIFERENTE DE 123Mudar) -->
 <div id="loginPasswordFields" class="hidden space-y-4">
 <div>
 <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Insira sua Senha de Acesso</label>
@@ -999,7 +1006,7 @@ Primeiro acesso ou senha resetada! Defina sua nova senha pessoal de preferência
 <!-- FIREBASE FIRESTORE: USUARIOS, SESSAO E RANKING -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, writeBatch, onSnapshot, serverTimestamp, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, writeBatch, onSnapshot, serverTimestamp, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 const firebaseConfig = {
 apiKey: "AIzaSyBqCYHv6kzXeF_zCsbzCNSMkHfwrImhjVc",
 authDomain: "jogo-tres-pontos.firebaseapp.com",
@@ -1066,6 +1073,10 @@ async saveUser(user) {
 const id = String(user.matricula).trim();
 await setDoc(doc(db, "usuarios", id), { ...user, matricula: id, updatedAt: serverTimestamp() }, { merge: true });
 },
+async deleteUser(matricula) {
+const id = String(matricula).trim();
+await deleteDoc(doc(db, "usuarios", id));
+},
 async importUsers(users) {
 const batch = writeBatch(db);
 users.forEach(user => {
@@ -1092,6 +1103,14 @@ updatedAt: serverTimestamp()
 }, { merge: true });
 });
 },
+subscribeUsers(callback) {
+return onSnapshot(collection(db, "usuarios"), snap => {
+const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+callback(rows);
+}, error => {
+console.error("Falha ao sincronizar usuários Firestore:", error);
+});
+},
 subscribeRanking(callback) {
 return onSnapshot(collection(db, "ranking"), snap => {
 const rows = snap.docs.map(d => {
@@ -1104,7 +1123,6 @@ else if (typeof data.updatedAt === 'number') timeVal = data.updatedAt;
 }
 return { id: d.id, ...data, _timeVal: timeVal };
 });
-// ORDENAÇÃO: MAIOR PONTUAÇÃO PRIMEIRO; EM CASO DE EMPATE, QUEM FINALIZOU PRIMEIRO (MENOR _timeVal)
 rows.sort((a, b) => {
 if (Number(b.score || 0) !== Number(a.score || 0)) {
 return Number(b.score || 0) - Number(a.score || 0);
@@ -1173,7 +1191,11 @@ setTimeout(() => {
 const preloader = document.getElementById("preloader");
 if (preloader) {
 preloader.classList.add("transition-opacity", "duration-500", "opacity-0");
-setTimeout(() => preloader.classList.add("hidden"), 500);
+setTimeout(() => {
+preloader.classList.add("hidden");
+// ABRE O LOGIN IMEDIATAMENTE APÓS O FIM DO CARREGAMENTO
+openRegistrationModal();
+}, 500);
 }
 }, 300);
 }
@@ -1216,14 +1238,13 @@ if (floatBtn) floatBtn.classList.add("hidden");
 sidebarHidden = false;
 }
 }
-// BASE DE COLABORADORES
+
 let authorizedEmployees = [];
-// DEFINIÇÃO DOS NÍVEIS COM DATAS DE DESBLOQUEIO EXATAS E SINÔNIMOS AMPLIADOS
 const gameLevels = [
 {
 id: 1,
 title: "Nível 1: Fase de Treinamento (Sem Pontuação)",
-isTraining: true, // Não pontua
+isTraining: true,
 rounds: [
 {
 id: "1-1",
@@ -1302,7 +1323,7 @@ explanation: "A solicitação ao Jurídico (Ocorrência 2601) é obrigatória pa
 {
 id: 3,
 title: "Nível 3: Argumentação & Objeções",
-unlockDate: "2026-11-27T00:00:00", // 27/11
+unlockDate: "2026-11-27T00:00:00",
 rounds: [
 {
 id: "3-1",
@@ -1342,7 +1363,7 @@ explanation: "O pagamento da primeira parcela (ou primeira parcela de acordo) é
 {
 id: 4,
 title: "Nível 4: Estratégias de Retenção & Acordos Especiais",
-unlockDate: "2026-12-11T00:00:00", // 11/12
+unlockDate: "2026-12-11T00:00:00",
 rounds: [
 {
 id: "4-1",
@@ -1382,7 +1403,7 @@ explanation: "A baixa de protesto restabelece o cliente no mercado após a liqui
 {
 id: 5,
 title: "Nível 5: Mestres da Negociação & Fechamento Avançado",
-unlockDate: "2026-12-18T00:00:00", // 18/12
+unlockDate: "2026-12-18T00:00:00",
 rounds: [
 {
 id: "5-1",
@@ -1429,7 +1450,7 @@ let currentPlayer = { name: "", matricula: "", portfolio: "", score: 0, complete
 let currentRoundState = { levelId: null, roundIndex: 0, clueIndex: 0, roundData: null };
 let internalRanking = [];
 let countdownTimerInterval = null;
-// ALEATORIEDADE RESTRITA ESTRITAMENTE AO ESCOPO DE CADA NÍVEL (NÃO MISTURA TEMAS)
+
 function getShuffledRoundsForLevel(lvl, matricula) {
 let seed = 0;
 const strKey = `${matricula || "1234"}_level_${lvl.id}`;
@@ -1455,12 +1476,29 @@ return gameLevels.map(lvl => ({
 rounds: getShuffledRoundsForLevel(lvl, currentPlayer.matricula || "1234")
 }));
 }
+
 window.addEventListener("DOMContentLoaded", async () => {
 initPreloader();
 updateSessionUI();
 const startFirestore = async () => {
 try {
-authorizedEmployees = await window.firestoreApi.listUsers();
+window.firestoreApi.subscribeUsers((users) => {
+authorizedEmployees = users;
+if (currentPlayer.matricula) {
+const updatedMe = users.find(u => u.matricula === currentPlayer.matricula);
+if (updatedMe) {
+currentPlayer.isAdmin = !!updatedMe.isAdmin;
+currentPlayer.portfolio = updatedMe.portfolio || currentPlayer.portfolio;
+updateSessionUI();
+} else {
+alert("Sua conta foi removida pelo administrador.");
+logoutSession();
+}
+}
+if (document.getElementById("screenAdmin") && !document.getElementById("screenAdmin").classList.contains("hidden")) {
+populateAdminDashboard();
+}
+});
 window.firestoreApi.subscribeRanking((rows) => {
 internalRanking = rows;
 window.renderInternalRankingTable(rows);
@@ -1481,9 +1519,8 @@ alert("Não foi possível conectar ao Firestore. Verifique as regras e o domíni
 };
 if (window.firestoreApi) await startFirestore();
 else window.addEventListener("firestore-ready", startFirestore, { once: true });
-// GARANTE O MODAL DE LOGIN ABERTO ANTES DE QUALQUER NAVEGAÇÃO
-openRegistrationModal();
 });
+
 function isLevelUnlocked(lvl) {
 if (currentPlayer.isAdmin) return true;
 if (!lvl.unlockDate) return true;
@@ -1784,6 +1821,30 @@ alert(`Senha do colaborador ${emp.name} resetada com sucesso para: 123Mudar. No 
 populateAdminDashboard();
 }
 };
+window.adminDeleteEmployee = async function() {
+const sel = document.getElementById("adminSelectEmployee");
+if (!sel) return;
+const key = sel.value;
+const emp = authorizedEmployees.find(e => e.matricula === key || e.name === key);
+if (!emp) {
+alert("Selecione um colaborador válido para excluir.");
+return;
+}
+if (emp.matricula === currentPlayer.matricula) {
+alert("Você não pode excluir sua própria conta enquanto está conectado!");
+return;
+}
+if (confirm(`Tem certeza que deseja excluir permanentemente o colaborador ${emp.name} (Matrícula: ${emp.matricula}) do banco de dados?`)) {
+try {
+await window.firestoreApi.deleteUser(emp.matricula);
+alert("Colaborador excluído com sucesso do banco de dados!");
+populateAdminDashboard();
+} catch (error) {
+console.error("Erro ao excluir colaborador:", error);
+alert("Erro ao excluir colaborador do Firestore.");
+}
+}
+};
 window.updateAdminMetrics = function(rankingData) {
 const totalPlayers = authorizedEmployees.length;
 let totalRounds = 0;
@@ -1809,6 +1870,7 @@ return;
 }
 const lines = rawText.split("\n");
 let countAdded = 0;
+let usersToBatch = [];
 lines.forEach(line => {
 const parts = line.split(/\t|,|;/).map(p => p.trim()).filter(p => p);
 if (parts.length >= 2) {
@@ -1817,13 +1879,7 @@ const matricula = parts[1];
 const portfolio = parts[2] || "Honda";
 const perfilInput = (parts[3] || "comum").toLowerCase();
 const isAdmin = perfilInput.includes("admin") || perfilInput.includes("adm");
-let existing = authorizedEmployees.find(e => e.matricula === matricula);
-if (existing) {
-existing.name = name;
-existing.portfolio = portfolio;
-existing.isAdmin = isAdmin;
-} else {
-authorizedEmployees.push({
+usersToBatch.push({
 name: name,
 matricula: matricula,
 portfolio: portfolio,
@@ -1832,10 +1888,12 @@ isAdmin: isAdmin
 });
 countAdded++;
 }
-}
 });
+if (usersToBatch.length > 0) {
+await window.firestoreApi.importUsers(usersToBatch);
+}
 populateAdminDashboard();
-alert(`Importação concluída! ${countAdded} novos colaboradores adicionados com senha padrão 123Mudar.`);
+alert(`Importação concluída e salva no banco! ${countAdded} colaboradores adicionados/atualizados com senha padrão 123Mudar.`);
 document.getElementById("importSpreadsheetInput").value = "";
 };
 window.exportEmployeesCSV = function() {
@@ -1997,7 +2055,7 @@ isAdmin: !!emp.isAdmin, score: progress.score || 0,
 completedRounds: progress.completedRounds || [], completedLevels: [], updatedAt: Date.now()
 };
 if (emp.avatar) playerAvatar = emp.avatar;
-updateSessionUI(); 
+updateSessionUI();
 const modalReg = document.getElementById("modalRegistration");
 if (modalReg) modalReg.classList.add("hidden");
 isPasswordChangeStep = false; isPasswordLoginStep = false; tempPendingEmp = null;
@@ -2246,7 +2304,6 @@ const first = ranking[0] || null;
 const second = ranking[1] || null;
 const third = ranking[2] || null;
 podiumEl.innerHTML = `
-<!-- 2º LUGAR -->
 <div class="glass-card p-4 rounded-2xl border border-slate-600/60 text-center flex flex-col items-center justify-end bg-slate-900/60 transform translate-y-2">
 <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-500 flex items-center justify-center text-slate-300 font-bold mb-2 shadow-md">
 <i class="fa-solid fa-medal text-slate-300 text-lg"></i>
@@ -2255,8 +2312,6 @@ podiumEl.innerHTML = `
 <p class="text-xs font-bold truncate w-full mt-1 text-slate-200">${second ? second.name : '---'}</p>
 <span class="text-xs text-slate-300 font-black mt-0.5">${second ? second.score + ' pts' : '0 pts'}</span>
 </div>
-
-<!-- 1º LUGAR (DESTAQUE MÁXIMO) -->
 <div class="glass-card p-5 rounded-2xl podium-first text-center flex flex-col items-center justify-end -mt-4 shadow-2xl relative z-10">
 <div class="absolute -top-3 w-8 h-8 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-lg font-bold">
 <i class="fa-solid fa-crown text-sm"></i>
@@ -2265,8 +2320,6 @@ podiumEl.innerHTML = `
 <p class="text-sm font-extrabold truncate w-full mt-1 text-white">${first ? first.name : '---'}</p>
 <span class="text-sm text-yellow-400 font-black mt-0.5">${first ? first.score + ' pts' : '0 pts'}</span>
 </div>
-
-<!-- 3º LUGAR -->
 <div class="glass-card p-4 rounded-2xl border border-amber-800/50 text-center flex flex-col items-center justify-end bg-amber-950/20 transform translate-y-3">
 <div class="w-10 h-10 rounded-full bg-amber-950 border border-amber-600/50 flex items-center justify-center text-amber-500 font-bold mb-2 shadow-md">
 <i class="fa-solid fa-award text-amber-500 text-lg"></i>
